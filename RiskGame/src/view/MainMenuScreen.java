@@ -14,6 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import MapEditorPackage.MapView;
+
+
 /**
  * MainMenuScreen Class of Game
  * Contains all commands given
@@ -23,6 +27,11 @@ import javax.swing.JTextField;
  */
 public class MainMenuScreen extends JFrame implements ActionListener {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *  The button new game. 
@@ -91,7 +100,7 @@ public class MainMenuScreen extends JFrame implements ActionListener {
 	        frame.add(scroll); //We add the scroll, since the scroll already contains the textArea
 	        frame.pack();
 	        frame.setVisible(true);
-		addWindowListener(new WindowAdapter() {
+		     addWindowListener(new WindowAdapter() {
 			/*
 			 * (non-Javadoc)
 			 *
@@ -106,8 +115,27 @@ public class MainMenuScreen extends JFrame implements ActionListener {
 	}
 		@Override
 		public void actionPerformed(ActionEvent event) {
-			// TODO Auto-generated method stub
-
+			
+			if(event.getSource()==btnNewGame)
+			{
+				NewGameMenu gameMenu= new NewGameMenu();
+				gameMenu.setVisible(true);
+				dispose();
+			}
+			
+			else if(event.getSource()==btnMapEditor)
+			{
+				
+				MapView mapView = new MapView();
+				mapView.setVisible(true);
+				dispose();
+				
+			}
+			
+			else {
+				System.exit(0);
+			}
+			
 		}
 	}
 

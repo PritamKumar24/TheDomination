@@ -33,5 +33,6 @@ public class Game {
 	public static void main(String[] args) {
 		MainMenuScreen initialScreen = new MainMenuScreen();
 		initialScreen.setVisible(true);
+		
 	}
 }
