@@ -58,6 +58,13 @@ public class CountryModel {
 		this.setBelongsTo(continent);
 	}
 	 
+	
+	public CountryModel(String countryName, int countryPosition, ContinentModel belongsTo) {
+		this.countryName = countryName;
+		this.countryPosition = countryPosition;
+		this.belongsTo = belongsTo;
+	}
+
 	/**
 	 * getCountryName Method Getter Function to get String name.
 	 *
@@ -106,6 +113,13 @@ public class CountryModel {
 
 	public boolean addNeighbour(int neighbourCountryPosition) {
 		return this.listOfNewNeighbours.add(neighbourCountryPosition);
+	}
+	
+	//2019
+	public boolean deleteNeighbour(int neighbourCountryPosition) {
+		
+		return this.listOfNewNeighbours.remove(Integer.valueOf(neighbourCountryPosition));
+		 
 	}
 
 	
@@ -159,7 +173,7 @@ public class CountryModel {
 	 */
 	@Override
 	public String toString() {
-		return "CountryModel [countryName=" + countryName + ", belongsTo=" + belongsTo + ", noOfArmiesCountry="
+		return "CountryModel [" + countryPosition + "]" + countryName + ", belongsTo=" + belongsTo + ", noOfArmiesCountry="
 				+ noOfArmiesCountry + ", listOfNewNeighbours=" + listOfNewNeighbours + "]";
 	}
 

@@ -2,6 +2,8 @@ package com.thedomination.model;
 
 import java.util.ArrayList;
 
+import com.thedomination.model.CountryModel;
+
 /**
  * The Class ContinentModel.
  *
@@ -111,7 +113,23 @@ public class ContinentModel {
 	public void deleteCountry(CountryModel country) {
 		countriesList.remove(country);
 	}
-
+	
+	/**
+	 * searchCountry Method Function to search a country in this continent.
+	 * 
+	 * @param countryName the name of the country
+	 * @return the country object found in this continent or null if can't find
+	 */
+	public CountryModel searchCountry(String countryName) {
+		countryName = countryName.toLowerCase();
+		for (CountryModel loopCountry : countriesList) {
+			if (loopCountry.getCountryName().equalsIgnoreCase(countryName)) {
+				return loopCountry;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * setControlValue Method Sets the control value.
 	 * 
@@ -132,7 +150,8 @@ public class ContinentModel {
 
 	@Override
 	public String toString() {
-		return "ContinentModel [continentName=" + continentName + "]";
+		//return "ContinentModel [continentName=" + continentName + "]";
+		return "Continent Model [" + continentPosition + "]" + continentName ;
 	}
 
 
