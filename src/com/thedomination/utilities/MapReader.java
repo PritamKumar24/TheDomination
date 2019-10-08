@@ -72,11 +72,78 @@ public class MapReader {
 					}
 					continue;
 				}
+
+				if (isCountry) {
+					String[] countryValues = currentLine.split(" ");
+					CountryModel countryModel = new CountryModel();
+					
+					for (int i = 0; i < countryValues.length; i++) {
+						if (i == 0) {
+							countryModel.setCountryPosition(Integer.parseInt(countryValues[i]));	
+						}
+						else if(i == 1){
+							countryModel.setCountryName(countryValues[i]);
+						} 
+						else if(i == 2) {
+							ContinentModel continentModel = continentModels.get(Integer.parseInt(countryValues[i])-1);
+							countryModel.setBelongsTo(continentModel);
+						}
+						else {
+							// do nothing as we have skipped the coordinates
+						}
+					}
+					
+					countryModels.add(countryModel);
+					
+					
+					if (countryValues.length > 0) {
+						for (ContinentModel continentModelValue : continentModels) {
+							if (continentModelValue.getContinentName().trim()
+									.equalsIgnoreCase(countryModel.getBelongsTo().getContinentName().trim())) {
+								continentModelValue.addCountry(countryModel);
+							}
+						}
+
+					}
+				}
+				
+				if(isBorders) {
+					String[] borderValues = currentLine.split(" ");
+
+
+					for (CountryModel tempCountryModel : countryModels) {
+						CountryModel checkCountryModel = new CountryModel();
+						checkCountryModel.setCountryPosition(Integer.parseInt(borderValues[0]));
+						if (tempCountryModel.equals(checkCountryModel)) {
+							for(int i=1; i<borderValues.length; i++) {
+								tempCountryModel.addNeighbour(Integer.parseInt(borderValues[i]));
+							}
+						}
+					}
+				}
+			}
+			
+			MapOperations.getInstance().setContinentsList(continentModels); //2019
+			
+			MapOperations.getInstance().setCountryList(countryModels); //2109
+			
+			
+		for(ContinentModel temp: continentModels) {   //2019
+				System.out.println("------Continents--------");
+				System.out.println(temp.toString());
+		}
+		System.out.println("");
+		
+		for(CountryModel temp: countryModels) {
+			System.out.println("------Countries--------");
+			System.out.println(temp.toString());
+	}
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return MapOperations.getInstance(); 
+		return MapOperations.getInstance(); //2109
 	}
 
 }
