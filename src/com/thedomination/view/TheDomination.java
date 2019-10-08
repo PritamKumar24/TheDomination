@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import com.thedomination.controller.MapOperations;
+import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
 
 /**
@@ -15,14 +16,8 @@ import com.thedomination.utilities.MapReader;
 
 public class TheDomination {
 
-
-	MapReader mapReader;
-
-
 	public static void main(String ar[]) {
-		MapReader mapReader = new MapReader();
-
-		mapReader.parseAndValidateMap("C:/Users/Dell/Downloads/APP/world.map");
+		
 		commandReader();
 	}
 
@@ -75,6 +70,9 @@ public class TheDomination {
 						i=i+2;
 					}
 				}
+			}
+			else if(inputCommand[0].equalsIgnoreCase("loadmap")) {
+				MapLocator.mapLocation(inputCommand[1]);
 			}
 
 			commandReader();
