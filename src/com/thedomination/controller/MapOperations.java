@@ -21,7 +21,6 @@ public class MapOperations {
 	private ArrayList<ContinentModel> continentsList;
 	
 	private ArrayList<CountryModel> countryList;
-
 	
 	//edited
 	private static MapOperations UniqueInstance;
@@ -36,12 +35,6 @@ public class MapOperations {
 
 	public MapOperations() {
 		this.continentsList = new ArrayList<>();
-		this.countryList = new ArrayList<>();
-	}
-
-	public MapOperations(String conquestMapName, int totalCountries) {
-		this.conquestMapName = conquestMapName;
-		this.continentsList = new ArrayList<ContinentModel>();
 		this.countryList = new ArrayList<>();
 	}
 
@@ -95,6 +88,47 @@ public class MapOperations {
 			for(ContinentModel temp1:continentsList)
 			{
 			System.out.println(temp1);}
+		return "";
+	}
+
+	public CountryModel searchCountry(String countryName) {
+		CountryModel country = null;
+		for (ContinentModel loopContinent : getContinentsList()) {
+			country = loopContinent.searchCountry(countryName);
+			if (country != null)
+				return country;
+		}
+		return null;
+	}
+	
+	public String addCountry(String countryName, String continentName) {
+		ContinentModel targetContinent = searchContinent(continentName);
+		if (targetContinent == null) {
+			return "Continent <" + continentName + "> does not exists";
+		}
+		if (searchCountry(countryName) != null) {
+			return "Country <" + countryName + "> already exists";
+		}
+		
+		CountryModel newCountry = new CountryModel(countryName, (countryList.size())+1, targetContinent);
+		targetContinent.addCountry(newCountry);
+		countryList.add(newCountry);
+
+		System.out.println(countryList.toString());
+		return "";
+	}
+
+
+	public String deleteCountry(String countryName) {
+		CountryModel deleteCountry = searchCountry(countryName);
+		if (deleteCountry != null) {
+			deleteCountry.getBelongsTo().deleteCountry(deleteCountry);
+			getCountryList().remove(deleteCountry);
+			deleteCountry = null;
+		} else {
+			return "Can't find country with this name";
+		}
+		System.out.println(countryList.toString());
 		return "";
 	}
 
