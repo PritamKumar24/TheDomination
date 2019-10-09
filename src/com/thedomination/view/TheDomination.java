@@ -1,14 +1,12 @@
 package com.thedomination.view;
 
-import java.util.HashMap;
 import java.util.Scanner;
 
 import com.thedomination.controller.MapOperations;
-import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
 
 /**
- * The Class MapHierarchyModel.
+ * The Class Main.
  *
  * @author Ankur Singla
  * @version 1.0.0
@@ -16,8 +14,12 @@ import com.thedomination.utilities.MapReader;
 
 public class TheDomination {
 
-	public static void main(String ar[]) {
-		
+	MapReader mapReader;
+
+	public static void main(String args[]) {
+		MapReader mapReader = new MapReader();
+
+		mapReader.parseAndValidateMap("C:/Users/Dell/Downloads/APP/world.map");
 		commandReader();
 	}
 
@@ -70,9 +72,6 @@ public class TheDomination {
 						i=i+2;
 					}
 				}
-			}
-			else if(inputCommand[0].equalsIgnoreCase("loadmap")) {
-				MapLocator.mapLocation(inputCommand[1]);
 			}
 
 			commandReader();
