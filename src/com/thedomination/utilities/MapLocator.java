@@ -5,6 +5,6 @@ public class MapLocator {
 	public static void mapLocation(String mapName) {
 		
 		MapReader mapReader = new MapReader(); 
-		mapReader.parseAndValidateMap(System.getProperty("user.dir") + "/src/com/thedomination/resources/" + mapName);
+		mapReader.parseAndValidateMap(System.getProperty("user.dir") + "/resources/" + mapName);
 	}
 }
