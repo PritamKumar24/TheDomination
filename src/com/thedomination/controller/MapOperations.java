@@ -1,6 +1,8 @@
 package com.thedomination.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import com.thedomination.model.CountryModel;
 import com.thedomination.model.ContinentModel;
@@ -196,5 +198,54 @@ public class MapOperations {
 		System.out.println(countryList.toString());
 		return "";
 	}
+
+	    
+	 public void bfs(String connectedGraph[][], int source)
+	    {
+	        int number_of_nodes = connectedGraph[source].length - 1;
+	 
+	        int[] visited = new int[number_of_nodes + 1];
+	        int i, element;
+	        visited[source] = 1;
+	   	 Queue<Integer> queue;
+	        queue = new LinkedList<Integer>();
+	        queue.add(source);
+	        while (!queue.isEmpty())
+	        {
+	            element = queue.remove();
+	            i = element;
+	            while (i <= number_of_nodes)
+	            {
+	                if (connectedGraph[element][i] == "1" && visited[i] == 0)
+	                {
+	                    queue.add(i);
+	                    visited[i] = 1;
+	                }
+	                i++;
+	            }
+	        }  
+	        boolean connected = false; 
+	 
+	        for (int vertex = 1; vertex <= number_of_nodes; vertex++)
+	        {
+	            if (visited[vertex] == 1)
+	            {
+	                connected = true;
+	            } else
+	            {
+	                connected = false;
+	                break;
+	            }
+	        }
+	 
+	        if (connected)
+	        {
+	            System.out.println("The graph is connected");
+	        } else
+	        {
+	            System.out.println("The graph is disconnected");
+	        }
+	    }
+
 
 }
