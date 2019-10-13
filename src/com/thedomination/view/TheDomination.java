@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import com.thedomination.controller.MapOperations;
 import com.thedomination.model.CountryModel;
+import com.thedomination.model.PlayerModel;
 import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
 
@@ -16,11 +17,15 @@ import com.thedomination.utilities.MapReader;
  */
 
 public class TheDomination {
+
+	static ArrayList<String>playerNameList= new ArrayList<String>();
+	static  int playerno=0;
+
 	public static void main(String args[]) {
 		commandReader();
 	}
 
-	public static void exit() {  
+	public static void exit() {
 		System.exit(0);
 	}
 
@@ -28,6 +33,9 @@ public class TheDomination {
 		Scanner scan = new Scanner(System.in);
 
 		String readLine= scan.nextLine();
+		 ArrayList<String>countList= new ArrayList<String>();
+
+
 
 		if(readLine.equalsIgnoreCase("exit")) {
 			exit();
@@ -36,7 +44,7 @@ public class TheDomination {
 			String[] inputCommand = readLine.split("\\s+");
 			if((inputCommand[0]).equalsIgnoreCase("editcontinent")) {
 				for(int i=1;i<inputCommand.length;i++) {
-					if((inputCommand[i]).equalsIgnoreCase("-add")) { 
+					if((inputCommand[i]).equalsIgnoreCase("-add")) {
 						MapOperations.getInstance().addContinent(inputCommand[i+1],Integer.parseInt(inputCommand[i+2]));
 						i=i+2;
 					}
@@ -85,7 +93,7 @@ public class TheDomination {
 				for(CountryModel loop:loopCountryList) {
 					connectedGraph[i][0]=loop.getCountryName() ;
 					connectedGraph[0][i]=loop.getCountryName();
-					
+
 					for(Integer j:loop.getListOfNewNeighbours()) {
 						connectedGraph[i][j]="1";
 						connectedGraph[j][i]="1";
@@ -105,10 +113,61 @@ public class TheDomination {
 					}
 				System.out.println();
 				}
-				
+
+			}
+			else if (inputCommand[0].equalsIgnoreCase("gameplayer")) {
+
+				  for (int i = 1; i < inputCommand.length; i++) {
+
+					  countList.add(inputCommand[i]);
+				}
+
+				  for (int i = 0; i < countList.size(); i++) {
+
+
+					  if(countList.get(i).equalsIgnoreCase("-add"))
+					  {
+
+							if(playerNameList!=null) {
+
+
+								if(!playerNameList.contains(countList.get(i+1))) {
+
+
+									playerNameList.add(countList.get(i+1));
+									System.out.println("Player " + countList.get(i+1)+ " has been added");
+								}else {
+									System.out.println("Player " + countList.get(i+1)+ " already exists");
+								}
+							}
+					  }
+
+					  else if(countList.get(i).equalsIgnoreCase("-remove"))
+					  {
+							if(playerNameList!=null) {
+								if(playerNameList.contains(countList.get(i+1))) {
+									playerNameList.remove(countList.get(i+1));
+									System.out.println("Player " + countList.get(i+1)+ " has been removed");
+								}else {
+									System.out.println("Player " + countList.get(i+1)+ " does not exist");
+								}
+							}
+					  }
+				}
+
+				  playerno=playerNameList.size();
+
+
+				}
+
+			else  if(inputCommand[0].equalsIgnoreCase("populateCountries")) {
+				PlayerModel p=new PlayerModel();
+
+				p.populateCountries(playerno);
+			}
 			}
 
 			commandReader();
 		}
 	}
-}
+
