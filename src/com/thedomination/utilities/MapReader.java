@@ -40,6 +40,10 @@ public class MapReader {
 			while ((currentLine = br.readLine()) != null) {
 				if (currentLine.isEmpty())
 					continue;
+				if (!currentLine.equalsIgnoreCase("[continents]")||!currentLine.equalsIgnoreCase("[countries]")||!currentLine.equalsIgnoreCase("[continents]")) {
+					System.out.println("Map Invalid");
+					break;
+				}
 				if (currentLine.equalsIgnoreCase("[continents]")) {
 					isContinent = true;
 					isCountry = false;
@@ -60,6 +64,7 @@ public class MapReader {
 					//write code if it throws any error
 				}
 				if (isContinent) {
+					
 					if(currentLine.indexOf(" ")>0)
 					{
 					String[] continentValues = currentLine.split(" ");
@@ -68,6 +73,7 @@ public class MapReader {
 						if (continentValues.length > 1)
 							continentModel.setControlValue(Integer.valueOf(continentValues[1]));
 						continentModels.add(continentModel);
+						
 					}
 					}
 					continue;
