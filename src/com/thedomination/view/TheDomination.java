@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.thedomination.controller.MapOperations;
+import com.thedomination.controller.PlayerOperations;
 import com.thedomination.model.CountryModel;
 import com.thedomination.model.PlayerModel;
 import com.thedomination.utilities.MapLocator;
@@ -33,9 +34,6 @@ public class TheDomination {
 		Scanner scan = new Scanner(System.in);
 
 		String readLine= scan.nextLine();
-		 ArrayList<String>countList= new ArrayList<String>();
-
-
 
 		if(readLine.equalsIgnoreCase("exit")) {
 			exit();
@@ -116,58 +114,24 @@ public class TheDomination {
 
 			}
 			else if (inputCommand[0].equalsIgnoreCase("gameplayer")) {
-
-				  for (int i = 1; i < inputCommand.length; i++) {
-
-					  countList.add(inputCommand[i]);
+				for(int i=1;i<inputCommand.length;i++) {
+					if((inputCommand[i]).equalsIgnoreCase("-add")) {
+						PlayerOperations.getInstance().addPlayer(inputCommand[i+1]);
+						i=i+1;
+					}
+					else if((inputCommand[i]).equalsIgnoreCase("-remove")) {
+						PlayerOperations.getInstance().removePlayer(inputCommand[i+1]);
+						i=i+1;
+					}
 				}
-
-				  for (int i = 0; i < countList.size(); i++) {
-
-
-					  if(countList.get(i).equalsIgnoreCase("-add"))
-					  {
-
-							if(playerNameList!=null) {
-
-
-								if(!playerNameList.contains(countList.get(i+1))) {
-
-
-									playerNameList.add(countList.get(i+1));
-									System.out.println("Player " + countList.get(i+1)+ " has been added");
-								}else {
-									System.out.println("Player " + countList.get(i+1)+ " already exists");
-								}
-							}
-					  }
-
-					  else if(countList.get(i).equalsIgnoreCase("-remove"))
-					  {
-							if(playerNameList!=null) {
-								if(playerNameList.contains(countList.get(i+1))) {
-									playerNameList.remove(countList.get(i+1));
-									System.out.println("Player " + countList.get(i+1)+ " has been removed");
-								}else {
-									System.out.println("Player " + countList.get(i+1)+ " does not exist");
-								}
-							}
-					  }
-				}
-
-				  playerno=playerNameList.size();
-
-
 				}
 
 			else  if(inputCommand[0].equalsIgnoreCase("populateCountries")) {
-				PlayerModel p=new PlayerModel();
-
-				p.populateCountries(playerno);
+				PlayerOperations.getInstance().populateCountries();
 			}
-			}
-
-			commandReader();
 		}
+
+		commandReader();
 	}
+}
 
