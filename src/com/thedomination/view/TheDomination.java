@@ -16,6 +16,15 @@ import com.thedomination.utilities.MapReader;
  */
 
 public class TheDomination {
+	
+	
+	//static ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
+	//System.out.println(loopCountryList);
+
+	//static String [][] connectedGraph = new String[loopCountryList.size()+1][loopCountryList.size()+1];
+	
+	
+	
 	public static void main(String args[]) {
 		commandReader();
 	}
@@ -71,8 +80,11 @@ public class TheDomination {
 				}
 			}
 			else if(inputCommand[0].equalsIgnoreCase("loadmap")) {
+				
 				MapLocator.mapLocation(inputCommand[1]);
 				ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
+				while( loopCountryList.size()!=0)
+				{
 				String [][] connectedGraph = new String[loopCountryList.size()+1][loopCountryList.size()+1];
 				for(int i=0;i<=loopCountryList.size();i++) {
 					for(int j=0;j<=loopCountryList.size();j++) {
@@ -89,26 +101,24 @@ public class TheDomination {
 					for(Integer j:loop.getListOfNewNeighbours()) {
 						connectedGraph[i][j]="1";
 						connectedGraph[j][i]="1";
-//						System.out.println("j=" + j);
-//						System.out.println("Country Position" + loop.getCountryPosition());
-//						System.out.println();
-//						while(j==loop.getCountryPosition()) {
-//							connectedGraph[i][j]="1";
-//							connectedGraph[j][i]="1";
-//						}
+
 					}
 					i++;
 				}
+				//static String [][] connectedGraph1 = new String[loopCountryList.size()+1][loopCountryList.size()+1];
 				for(int k=0;k<=loopCountryList.size();k++) {
 					for(int j=0;j<=loopCountryList.size();j++) {
 						System.out.print(connectedGraph[k][j] +"");
 					}
+				
 				System.out.println();
 				}
 				
 			}
-
-			commandReader();
+			
+			}
+			
+				commandReader();
 		}
 	}
 }
