@@ -17,7 +17,9 @@ public class PlayerOperations {
 
 	private ArrayList<PlayerModel> playerModelList;
 	private int  armiesToAssign = 0;
-
+	private  int placeArmyCounter =0;
+	private  int fortifyCountryCounter =0;
+	
 	private static PlayerOperations UniqueInstance;
 
 	public static PlayerOperations getInstance() {
@@ -52,7 +54,6 @@ public class PlayerOperations {
 			else {
 				System.out.println("Player name "+playerName+"Already exists");
 			}
-
 		}
 	}
 	public PlayerModel searchPlayer(String playerName) {
@@ -65,7 +66,6 @@ public class PlayerOperations {
 	}
 
 		public void  removePlayer(String playerName) {
-
 			if (playerName != null && !playerName.trim().isEmpty() ) {
 				if(searchPlayer(playerName)==null){
 					System.out.println("Player name "+playerName+" does not exist");
@@ -75,7 +75,6 @@ public class PlayerOperations {
 					System.out.println("Player name "+playerName+" deleted");
 				}
 			}
-
 		}
 
 		public void populateCountries() {
@@ -135,5 +134,49 @@ public class PlayerOperations {
 		      for(PlayerModel tempPlayer : playerModelList) {
 		  		  System.out.println(tempPlayer.toString());	
 		  		}
+		}
+		
+		public void placeArmy(String countryName) {
+			
+			placeArmyCounter++;
+			System.out.println(placeArmyCounter);
+		
+			int playerIndex = 0;
+			int playerPosition = 0;
+			playerPosition = placeArmyCounter % PlayerOperations.getInstance().getPlayersList().size();
+			
+			if(playerPosition == 0) {
+				playerIndex =  (placeArmyCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+			}
+			else {
+				playerIndex = playerPosition-1;
+			}
+	
+			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			System.out.println(tempPlayerModel);
+			CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
+			tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
+			tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
+			
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+			System.out.println(loopPlayer);
+			}
+			
+		}
+		public void placeAll() {
+			int pickedNumber;
+			Random randomNumber = new Random();
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+				for(int j=loopPlayer.getnoOfArmyInPlayer();j!=0;j--) {
+					pickedNumber=randomNumber.nextInt(loopPlayer.getPlayerCountryList().size());
+					CountryModel loopCountry = loopPlayer.getPlayerCountryList().get(pickedNumber);
+					loopCountry.setNoOfArmiesCountry(loopCountry.getNoOfArmiesCountry()+1);
+					loopPlayer.setnoOfArmyInPlayer(loopPlayer.getnoOfArmyInPlayer()-1);
+					//System.out.println("getnoOfArmyInPlayer()" + loopPlayer.getnoOfArmyInPlayer());
+				}
+			}
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+			System.out.println(loopPlayer);
+			}
 		}
 }
