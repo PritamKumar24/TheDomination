@@ -23,7 +23,7 @@ public class CountryModel {
 	private ContinentModel belongsTo;
 
 	/** The no of armies country. */
-	private int noOfArmiesCountry = 1;
+	private int noOfArmiesCountry;
 	
 	private ArrayList<Integer> listOfNewNeighbours;
 
@@ -31,6 +31,7 @@ public class CountryModel {
 	 * ContryModel Constructor Create a new empty ArrayList.
 	 */
 	public CountryModel() {
+		
 		this.listOfNewNeighbours = new ArrayList<>();
 	}
 	
@@ -112,6 +113,7 @@ public class CountryModel {
 	}
 
 	public boolean addNeighbour(int neighbourCountryPosition) {
+	
 		return this.listOfNewNeighbours.add(neighbourCountryPosition);
 	}
 	
