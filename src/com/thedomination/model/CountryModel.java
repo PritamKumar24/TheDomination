@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.thedomination.model;
 
@@ -24,7 +24,7 @@ public class CountryModel {
 
 	/** The no of armies country. */
 	private int noOfArmiesCountry;
-	
+  
 	private ArrayList<Integer> listOfNewNeighbours;
 
 	/**
@@ -33,7 +33,7 @@ public class CountryModel {
 	public CountryModel() {
 		this.listOfNewNeighbours = new ArrayList<>();
 	}
-	
+
 	/**   chane the comment Ankur Singla
 	 * CountryModel Parameterized Constructor.
 	 *
@@ -46,7 +46,7 @@ public class CountryModel {
 		this.countryPosition = countryPosition;
 		this.countryName = countryName;
 	}
-	
+
 	/**
 	 * CountryModel Parameterized Constructor.
 	 *
@@ -57,8 +57,8 @@ public class CountryModel {
 		this.setCountryName(countryName);
 		this.setBelongsTo(continent);
 	}
-	 
-	
+
+
 	public CountryModel(String countryName, int countryPosition, ContinentModel belongsTo) {
 		this.countryName = countryName;
 		this.countryPosition = countryPosition;
@@ -82,8 +82,8 @@ public class CountryModel {
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
 	}
-	
-	
+
+
 	public int getCountryPosition() {
 		return countryPosition;
 	}
@@ -114,15 +114,15 @@ public class CountryModel {
 	public boolean addNeighbour(int neighbourCountryPosition) {
 		return this.listOfNewNeighbours.add(neighbourCountryPosition);
 	}
-	
+
 	//2019
 	public boolean deleteNeighbour(int neighbourCountryPosition) {
-		
+
 		return this.listOfNewNeighbours.remove(Integer.valueOf(neighbourCountryPosition));
-		 
+
 	}
 
-	
+
 	public ArrayList<Integer> getListOfNewNeighbours() {
 		return listOfNewNeighbours;
 		//we may be need this
@@ -168,7 +168,7 @@ public class CountryModel {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
