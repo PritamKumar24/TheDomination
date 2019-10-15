@@ -133,8 +133,7 @@ public class PlayerOperations {
 		      }
 
 		      for(PlayerModel tempPlayer : playerModelList) {
-		  		System.out.println(tempPlayer.toString());
+		  		  System.out.println(tempPlayer.toString());	
 		  		}
-
 		}
 }
