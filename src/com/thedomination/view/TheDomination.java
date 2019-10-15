@@ -19,9 +19,6 @@ import com.thedomination.utilities.MapReader;
 
 public class TheDomination {
 
-	static ArrayList<String>playerNameList= new ArrayList<String>();
-	static  int playerno=0;
-
 	public static void main(String args[]) {
 		commandReader();
 	}
@@ -77,41 +74,12 @@ public class TheDomination {
 				}
 			}
 			else if(inputCommand[0].equalsIgnoreCase("loadmap")) {
-				MapLocator.mapLocation(inputCommand[1]);
-				ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
-				String [][] connectedGraph = new String[loopCountryList.size()+1][loopCountryList.size()+1];
-				for(int i=0;i<=loopCountryList.size();i++) {
-					for(int j=0;j<=loopCountryList.size();j++) {
-						connectedGraph[i][j]="0";
-					}
+				for (int i = 1; i < inputCommand.length; i++) {
+					MapOperations.getInstance().loadMap(inputCommand[i]);
 				}
-//				Arrays.fill(connectedGraph,"0");
-				connectedGraph[0][0]="C/C";
-				int i=1;
-				for(CountryModel loop:loopCountryList) {
-					connectedGraph[i][0]=loop.getCountryName() ;
-					connectedGraph[0][i]=loop.getCountryName();
-
-					for(Integer j:loop.getListOfNewNeighbours()) {
-						connectedGraph[i][j]="1";
-						connectedGraph[j][i]="1";
-//						System.out.println("j=" + j);
-//						System.out.println("Country Position" + loop.getCountryPosition());
-//						System.out.println();
-//						while(j==loop.getCountryPosition()) {
-//							connectedGraph[i][j]="1";
-//							connectedGraph[j][i]="1";
-//						}
-					}
-					i++;
-				}
-				for(int k=0;k<=loopCountryList.size();k++) {
-					for(int j=0;j<=loopCountryList.size();j++) {
-						System.out.print(connectedGraph[k][j] +"");
-					}
-				System.out.println();
-				}
-
+			}
+			else if(inputCommand[0].equalsIgnoreCase("validatemap")) {
+				MapOperations.getInstance().validateMap();
 			}
 			else if (inputCommand[0].equalsIgnoreCase("gameplayer")) {
 				for(int i=1;i<inputCommand.length;i++) {
@@ -126,7 +94,7 @@ public class TheDomination {
 				}
 				}
 
-			else  if(inputCommand[0].equalsIgnoreCase("populateCountries")) {
+			else  if(inputCommand[0].equalsIgnoreCase("populatecountries")) {
 				PlayerOperations.getInstance().populateCountries();
 			}
 			

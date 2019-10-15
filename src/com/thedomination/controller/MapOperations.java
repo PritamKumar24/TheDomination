@@ -1,9 +1,11 @@
 package com.thedomination.controller;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import com.thedomination.model.CountryModel;
 import com.thedomination.model.ContinentModel;
+import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
 
 
@@ -16,14 +18,16 @@ import com.thedomination.utilities.MapReader;
 public class MapOperations {
 
 	private String DefaultName = "NewMapFile";
-	
+
 	//2019
 	private MapReader mapReader;
-	
+
 	private ArrayList<ContinentModel> continentsList;
-	
+
 	private ArrayList<CountryModel> countryList;
-	
+
+	private String[][] connectedGraph;
+
 	//2019
 	private static MapOperations UniqueInstance;
 	//2019
@@ -70,6 +74,14 @@ public class MapOperations {
 		this.countryList = countryModels;
 	}
 
+	public String[][] getConnectedGraph() {
+		return connectedGraph;
+	}
+
+	public void setConnectedGraph(String[][] connectedGraph) {
+		this.connectedGraph = connectedGraph;
+	}
+
 	public ContinentModel searchContinent(String continentName) {
 		for (ContinentModel loopContinent : getContinentsList()) {
 			if (loopContinent.getContinentName().equalsIgnoreCase(continentName)) {
@@ -89,7 +101,7 @@ public class MapOperations {
 		}
 		for(ContinentModel temp1:continentsList)
 		{
-		System.out.println(temp1);}	
+			System.out.println(temp1);}	
 	}
 
 	public String deleteContinent(String continentName) {
@@ -101,24 +113,22 @@ public class MapOperations {
 			getContinentsList().remove(deleteContinent);
 			deleteContinent = null;
 		}
-			for(ContinentModel temp1:continentsList)
-			{
+		for(ContinentModel temp1:continentsList)
+		{
 			System.out.println(temp1);}
 		return "";
 	}
-
-
 
 	public CountryModel searchCountry(String countryName) {
 		CountryModel country = null;
 
 		for(CountryModel tempCountry : countryList) {
 			if (tempCountry.getCountryName().equals(countryName))
-			return tempCountry;
+				return tempCountry;
 		}
 		return null;
 	}
-	
+
 	public String addCountry(String countryName, String continentName) {
 		ContinentModel targetContinent = searchContinent(continentName);
 		if (targetContinent == null) {
@@ -127,7 +137,7 @@ public class MapOperations {
 		if (searchCountry(countryName) != null) {
 			return "Country |" + countryName + "| already exists";
 		}
-		
+
 		CountryModel newCountry = new CountryModel(countryName, (countryList.size())+1, targetContinent);
 		targetContinent.addCountry(newCountry);
 		countryList.add(newCountry);
@@ -135,56 +145,57 @@ public class MapOperations {
 		System.out.println(countryList.toString());
 		return "";
 	}
-	
+
 	public String addNeighbourCountry(String countryName, String neighbourCountryName) {
-		
+
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
-		//	System.out.println(neighbourCountryName);
+			//	System.out.println(neighbourCountryName);
 			return "Countries <" + neighbourCountryName + countryName + "> Not found";
 		}
-		
+
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
-			
+
 			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
-			
+
 			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
-			
+
 			CountryModel countryFound = searchCountry(countryName);
-		
+
 			countryFound.addNeighbour(neighbourCountryPosition);
-			
+
 			System.out.println(countryList.toString());
 		}
-		
-		return "";
-	}
-	
-	public String deleteNeighbourCountry(String countryName, String neighbourCountryName) {
-		
-		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
-		//	System.out.println(neighbourCountryName);
-			return "Countries <" + neighbourCountryName + countryName + "> Not found";
-		}
-		
-		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
-			
-			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
-			
-			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
-			
-			CountryModel countryFound = searchCountry(countryName);
-		
-			//countryFound.addNeighbour(neighbourCountryPosition);
-			countryFound.deleteNeighbour(neighbourCountryPosition);
-			
-			System.out.println(countryList.toString());
-		}
-		
+
 		return "";
 	}
 
-	
+	public String deleteNeighbourCountry(String countryName, String neighbourCountryName) {
+
+		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
+			//	System.out.println(neighbourCountryName);
+			return "Countries <" + neighbourCountryName + countryName + "> Not found";
+		}
+
+		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
+
+			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
+
+			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
+
+			CountryModel countryFound = searchCountry(countryName);
+
+			//countryFound.addNeighbour(neighbourCountryPosition);
+			countryFound.deleteNeighbour(neighbourCountryPosition);
+
+			System.out.println(countryList.toString());
+		}
+
+		return "";
+	}
+
+
 	public String deleteCountry(String countryName) {
+		
 		CountryModel deleteCountry = searchCountry(countryName);
 		if (deleteCountry != null) {
 			deleteCountry.getBelongsTo().deleteCountry(deleteCountry);
@@ -197,4 +208,79 @@ public class MapOperations {
 		return "";
 	}
 
+	public void loadMap(String fileName) {
+		
+		MapLocator.mapLocation(fileName);
+		ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
+
+		String[][] connectedGraph = new String[loopCountryList.size() + 1][loopCountryList.size() + 1];
+		for (int i = 0; i <= loopCountryList.size(); i++) {
+			for (int j = 0; j <= loopCountryList.size(); j++) {
+				connectedGraph[i][j] = "0";
+			}
+		}
+		// Arrays.fill(connectedGraph,"0");
+		connectedGraph[0][0] = "C/C";
+		int i = 1;
+		for (CountryModel loop : loopCountryList) {
+			connectedGraph[i][0] = loop.getCountryName();
+			connectedGraph[0][i] = loop.getCountryName();
+
+			for (Integer j : loop.getListOfNewNeighbours()) {
+				connectedGraph[i][j] = "1";
+				connectedGraph[j][i] = "1";
+			}
+			i++;
+		}
+		MapOperations.getInstance().setConnectedGraph(connectedGraph);
+
+		for (int k = 0; k <= loopCountryList.size(); k++) {
+			for (int j = 0; j <= loopCountryList.size(); j++) {
+				System.out.print(connectedGraph[k][j] + "");
+			}
+
+			System.out.println();
+		}
+		MapOperations.getInstance().validateMap();
+	}
+
+	public void validateMap() {
+		Stack<Integer> stack = new Stack<Integer>();
+		int source = 1;
+		String[][] connectedGraph = MapOperations.getInstance().getConnectedGraph();
+		int number_of_nodes = connectedGraph[source].length - 1;
+		System.out.println(number_of_nodes);
+		int[] visited = new int[number_of_nodes + 1];
+		int i, element;
+		visited[source] = 1;
+		stack.push(source);
+		//System.out.println("after stack");
+		while (!stack.isEmpty()) {
+			element = stack.pop();
+			i = 1;// element;
+			while (i <= number_of_nodes) {
+				if (connectedGraph[element][i] == "1" && visited[i] == 0) {
+					stack.push(i);
+					visited[i] = 1;
+				}
+				i++;
+			}
+		}
+
+		System.out.print("The source node " + source + " is connected to: ");
+		int count = 0;
+		for (int v = 1; v <= number_of_nodes; v++) {
+			if (visited[v] == 1)
+			{
+				System.out.print(v + " ");
+				count++;
+			}
+		}
+		if (count == number_of_nodes) {
+			System.out.print("\nThe Graph is Connected ");
+		}  
+		else {
+			System.out.print("\nThe Graph is Disconnected ");
+		}  
+	}
 }
