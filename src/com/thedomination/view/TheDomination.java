@@ -133,6 +133,10 @@ public class TheDomination {
 			else if (inputCommand[0].equalsIgnoreCase("placearmy")) {
 				PlayerOperations.getInstance().placeArmy(inputCommand[1]);
 			}
+			
+			else if (inputCommand[0].equalsIgnoreCase("placeall")) {
+				PlayerOperations.getInstance().placeAll();
+			}
 		}
 
 		commandReader();

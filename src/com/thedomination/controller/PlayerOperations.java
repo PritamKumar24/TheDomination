@@ -164,4 +164,20 @@ public class PlayerOperations {
 			}
 			
 		}
+		public void placeAll() {
+			int pickedNumber;
+			Random randomNumber = new Random();
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+				for(int j=loopPlayer.getnoOfArmyInPlayer();j!=0;j--) {
+					pickedNumber=randomNumber.nextInt(loopPlayer.getPlayerCountryList().size());
+					CountryModel loopCountry = loopPlayer.getPlayerCountryList().get(pickedNumber);
+					loopCountry.setNoOfArmiesCountry(loopCountry.getNoOfArmiesCountry()+1);
+					loopPlayer.setnoOfArmyInPlayer(loopPlayer.getnoOfArmyInPlayer()-1);
+					//System.out.println("getnoOfArmyInPlayer()" + loopPlayer.getnoOfArmyInPlayer());
+				}
+			}
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+			System.out.println(loopPlayer);
+			}
+		}
 }
