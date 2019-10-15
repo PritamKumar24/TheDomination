@@ -137,6 +137,16 @@ public class TheDomination {
 			else if (inputCommand[0].equalsIgnoreCase("placeall")) {
 				PlayerOperations.getInstance().placeAll();
 			}
+			
+			else if(inputCommand[0].equalsIgnoreCase("fortify")) {
+				if(inputCommand[1].equalsIgnoreCase("none")) {
+					PlayerOperations.getInstance().fortifyCountry(inputCommand[1],"","");
+				}
+				else {
+					PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]);
+				}
+				
+			}
 		}
 
 		commandReader();
