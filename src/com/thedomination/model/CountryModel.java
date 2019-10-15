@@ -23,7 +23,7 @@ public class CountryModel {
 	private ContinentModel belongsTo;
 
 	/** The no of armies country. */
-	private int noOfArmiesCountry = 1;
+	private int noOfArmiesCountry;
 	
 	private ArrayList<Integer> listOfNewNeighbours;
 

@@ -129,6 +129,10 @@ public class TheDomination {
 			else  if(inputCommand[0].equalsIgnoreCase("populateCountries")) {
 				PlayerOperations.getInstance().populateCountries();
 			}
+			
+			else if (inputCommand[0].equalsIgnoreCase("placearmy")) {
+				PlayerOperations.getInstance().placeArmy(inputCommand[1]);
+			}
 		}
 
 		commandReader();
