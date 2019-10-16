@@ -11,9 +11,10 @@ import com.thedomination.model.CountryModel;
  */
 public class ContinentModel {
 
-	/** The continent name. */
+	/** The continent Position. */
 	private int continentPosition;
 	
+	/** The continent name. */
 	private String continentName;
 	
 	/** The countries list. */
@@ -150,10 +151,9 @@ public class ContinentModel {
 
 //	@Override
 //	public String toString() {
-//		//return "ContinentModel [continentName=" + continentName + "]";
-//		return "Continent Model [" + continentPosition + "]" + continentName ;
+//		return "ContinentModel [continentName=" + continentName + ", countriesList=" + countriesList + ", controlValue="
+//				+ controlValue + "]";
 //	}
-
 
 	
 }

@@ -3,6 +3,7 @@ package com.thedomination.view;
 import java.util.Scanner;
 import com.thedomination.controller.MapOperations;
 import com.thedomination.controller.PlayerOperations;
+import com.thedomination.controller.SaveMapFile;
 
 /**
  * The Class Main.
@@ -116,6 +117,13 @@ public class TheDomination {
 				else {
 					MapOperations.getInstance().showMapGamePlay();
 				}
+			}
+			else if((inputCommand[0]).equalsIgnoreCase("savemap")) {
+			      SaveMapFile smf = new SaveMapFile();
+			      smf.getMapOperationConcateString(MapOperations.getInstance(), inputCommand[1]);
+			      smf.saveMapFile(MapOperations.getInstance(), inputCommand[1]);
+			      System.out.println(inputCommand[1]+ " Map file has been created");
+	
 			}
 		}
 

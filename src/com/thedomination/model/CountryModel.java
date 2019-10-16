@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.thedomination.model;
 
 import java.util.ArrayList;
