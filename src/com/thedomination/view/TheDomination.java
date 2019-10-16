@@ -125,6 +125,9 @@ public class TheDomination {
 			      System.out.println(inputCommand[1]+ " Map file has been created");
 	
 			}
+			else if (inputCommand[0].equalsIgnoreCase("reinforce")) {
+				PlayerOperations.getInstance().reInforce(inputCommand[1], Integer.parseInt(inputCommand[2]));
+			}
 		}
 
 		commandReader();

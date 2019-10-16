@@ -1,6 +1,7 @@
 package com.thedomination.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +20,9 @@ public class PlayerOperations {
 	private int  armiesToAssign = 0;
 	private  int placeArmyCounter =0;
 	private  int fortifyCountryCounter =0;
+	private  int reInforceCountryCounter =1;
+	boolean reinforceFlag = true;
+	private int reInforceNoOfArmy;
 	
 	private static PlayerOperations UniqueInstance;
 	
@@ -215,6 +219,69 @@ public class PlayerOperations {
 			else {
 				System.out.println("Fortification Not possible.");
 			}
+			return "";
+		}
+		
+		
+		public String reInforce(String countryName, int num) {
+
+			int playerIndex = 0;
+			int playerPosition = 0;
+			playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
+
+			if(playerPosition == 0) {
+				playerIndex =  (reInforceCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+			}
+			else {
+				playerIndex = playerPosition-1;
+			}
+			
+			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			System.out.println(tempPlayerModel.getPlayerName()+" is going to reinforce his armies..");
+			System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
+			
+			//Calculate reInforce army
+			if(reinforceFlag) {
+				Double tempReInforceNoOfArmy = (tempPlayerModel.getPlayerCountryList().size())/3.0;
+				reInforceNoOfArmy = (int) Math.floor(tempReInforceNoOfArmy);
+				//check if armies is < 3 if yes assign 3 number of armies else assign based on the calculated one
+				reInforceNoOfArmy = reInforceNoOfArmy<3 ? 3 : reInforceNoOfArmy;
+
+				for(ContinentModel tempContinentModel : MapOperations.getInstance().getContinentsList()) {
+					List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
+					Iterator<CountryModel> iterator = tempCountryModelList.iterator();
+					while(iterator.hasNext()) {
+						CountryModel getCountry = iterator.next();
+						CountryModel tempPlayerCountry = tempPlayerModel.searchCountry(getCountry.getCountryName());
+						if(tempPlayerCountry != null) {
+							iterator.remove();
+						}
+					}
+
+					if(tempCountryModelList.size()==0) {
+						reInforceNoOfArmy = reInforceNoOfArmy + tempContinentModel.getControlValue();
+					}
+				}
+				reinforceFlag = false;
+			}
+			
+			System.out.println("Armies got as reinforment "+reInforceNoOfArmy);
+			tempPlayerModel.setnoOfArmyInPlayer(reInforceNoOfArmy);
+			
+			while(reInforceNoOfArmy>0) {
+				CountryModel countryAssignedArmy = tempPlayerModel.searchCountry(countryName);
+				countryAssignedArmy.setNoOfArmiesCountry(countryAssignedArmy.getNoOfArmiesCountry() + num);
+				tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-num);
+				reInforceNoOfArmy = reInforceNoOfArmy - num;
+				break;
+				
+			}
+			System.out.println("No of Armies left to assign "+ reInforceNoOfArmy );
+			if(reInforceNoOfArmy == 0) {
+				reInforceCountryCounter++;
+				reinforceFlag = true;
+			}
+			//System.out.println(tempPlayerModel);
 			return "";
 		}
 }

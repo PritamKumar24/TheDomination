@@ -147,11 +147,8 @@ public class MapOperations {
 		}
 
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
-
 			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
-
 			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
-
 			CountryModel countryFound = searchCountry(countryName);
 
 			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) == null) {
@@ -181,11 +178,8 @@ public class MapOperations {
 		}
 
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
-
 			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
-
 			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
-
 			CountryModel countryFound = searchCountry(countryName);
 
 			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) != null) {
