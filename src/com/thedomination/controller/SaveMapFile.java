@@ -1,5 +1,6 @@
 package com.thedomination.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
@@ -68,13 +69,16 @@ public class SaveMapFile {
 	
 
 	public boolean saveMapFile(MapOperations MapOperations, String fileName) {
+		
+		File checkFile = new File(System.getProperty("user.dir")+"/resources/"+fileName);
 		boolean isFileSaved = false;
+		boolean exists = checkFile.exists();
 		String concateString = getMapOperationConcateString(MapOperations, fileName);
 
-		if (!(concateString == null || concateString.isEmpty() || concateString.trim().equalsIgnoreCase(""))) {
+		if (!(concateString == null || concateString.isEmpty() || concateString.trim().equalsIgnoreCase("")) && exists == false) {
 			PrintWriter out = null;
 			try {
-				out = new PrintWriter(fileName + ".map");
+				out = new PrintWriter(System.getProperty("user.dir")+ "/resources/" +fileName +".map");
 				out.println(concateString);
 				isFileSaved = true;
 			} catch (FileNotFoundException e) {
@@ -83,6 +87,16 @@ public class SaveMapFile {
 			} finally {
 				out.close();
 			}
+		}
+		
+		else if (!(concateString == null || concateString.isEmpty() || concateString.trim().equalsIgnoreCase("")) && exists == false) {
+			try {
+				PrintWriter out = new PrintWriter(System.getProperty("user.dir")+ "/resources/" +checkFile);
+				out.println(concateString);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
 		}
 		return isFileSaved;
 
