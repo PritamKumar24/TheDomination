@@ -1,5 +1,8 @@
 package com.thedomination.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -393,6 +396,35 @@ public class MapOperations {
 		listOfConnectedNodes.remove(index);
 	}
 	
+	public void editMap(String fileName) {
+		
+		File tempFile = new File(System.getProperty("user.dir")+ "/resources/" + fileName);
+		boolean exists = tempFile.exists();
+		
+		listOfConnectedNodes =  new ArrayList<ArrayList<String>>();
+		ArrayList<String> insideList =  new ArrayList<String>();
+		insideList.add("C/C");
+		listOfConnectedNodes.add(insideList);
+		
+		if(exists) {
+			System.out.println("There is a map file "+fileName);
+			//MapLocator.mapLocation(fileName);
+			loadMap(fileName);
+			System.out.println("Map file "+fileName+" has been loaded.. you can start editing the file using commands..");
+		}
+		else {
+			System.out.println("There is no map file "+fileName);
+			try {
+				PrintWriter out = new PrintWriter(fileName + ".map");
+				System.out.println("A new file has been created named "+fileName);
+				System.out.println("Please start entering new Continents, Countries and their Neighbors using commands");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} 
+			//call to method
+		}
+		
+	}
 	/**
 	 * loadMap method to load a user-saved map file
 	 * 
@@ -482,7 +514,7 @@ public class MapOperations {
 			}
 		}
 		if (count == number_of_nodes) {
-			message="This is a valid Graph.";
+			message="This is a valid Graph";
 		}  
 		else {
 			message="Invalid Graph - Disconnected Graph";
