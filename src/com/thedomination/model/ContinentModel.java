@@ -148,11 +148,11 @@ public class ContinentModel {
 		return controlValue;
 	}
 
-	@Override
-	public String toString() {
-		//return "ContinentModel [continentName=" + continentName + "]";
-		return "Continent Model [" + continentPosition + "]" + continentName ;
-	}
+//	@Override
+//	public String toString() {
+//		//return "ContinentModel [continentName=" + continentName + "]";
+//		return "Continent Model [" + continentPosition + "]" + continentName ;
+//	}
 
 
 	

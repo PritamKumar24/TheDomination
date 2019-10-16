@@ -60,15 +60,14 @@ public class MapReader {
 					//write code if it throws any error
 				}
 				if (isContinent) {
-					if(currentLine.indexOf(" ")>0)
-					{
-					String[] continentValues = currentLine.split(" ");
-					if (continentValues.length > 0) {
-						ContinentModel continentModel = new ContinentModel(continentValues[0]);
-						if (continentValues.length > 1)
-							continentModel.setControlValue(Integer.valueOf(continentValues[1]));
-						continentModels.add(continentModel);
-					}
+					if(currentLine.indexOf(" ")>0) {
+						String[] continentValues = currentLine.split(" ");
+						if (continentValues.length > 0) {
+							ContinentModel continentModel = new ContinentModel(continentValues[0]);
+							if (continentValues.length > 1)
+								continentModel.setControlValue(Integer.valueOf(continentValues[1]));
+							continentModels.add(continentModel);
+						}
 					}
 					continue;
 				}

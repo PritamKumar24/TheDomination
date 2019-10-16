@@ -80,7 +80,7 @@ public class PlayerOperations {
 		public void populateCountries() {
 			int i=0;
 			for(i=0;i<getPlayersList().size();i++) {
-				System.out.println("Player: " + i + " Player name: " + playerModelList.get(i).getPlayerName());
+				System.out.println("Player: " + ((int)(i+1)) + " Player Name: " + playerModelList.get(i).getPlayerName());
 			}
 			i=0;
 			for(CountryModel loopCountry: MapOperations.getInstance().getCountryList()) {
@@ -93,47 +93,47 @@ public class PlayerOperations {
 					i=0;
 				}
 			}
-			
-			for(i=0;i<getPlayersList().size();i++) {
-				System.out.println("Player " + i);
-				System.out.println("Countries for this player" + playerModelList.get(i).getPlayerCountryList());
-			}
+			System.out.println("The countries have been populated");
+//			for(i=0;i<getPlayersList().size();i++) {
+//				System.out.println("Player " + i);
+//				System.out.println("Countries for this player" + playerModelList.get(i).getPlayerCountryList());
+//			}
 		      switch (getPlayersList().size()) {
 		          case 2:
 		        	  for(i=0;i<getPlayersList().size();i++) {
 		        		  getPlayersList().get(i).setnoOfArmyInPlayer(40);
 		        	  }
-		              System.out.println("Players have been assigned 40 armies.");
+		              System.out.println("Players have been assigned 40 armies each.");
 		              break;
 		          case 3:
 		        	  for(i=0;i<getPlayersList().size();i++) {
 		        		  getPlayersList().get(i).setnoOfArmyInPlayer(35);
 		        	  }
-		              System.out.println("Players have been assigned 35 armies.");
+		              System.out.println("Players have been assigned 35 armies each.");
 		              break;
 		          case 4:
 		        	  for(i=0;i<getPlayersList().size();i++) {
 		        		  getPlayersList().get(i).setnoOfArmyInPlayer(30);
 		        	  }
-		              System.out.println("Players have been assigned 30 armies.");
+		              System.out.println("Players have been assigned 30 armies each.");
 		              break;
 		          case 5:
 		        	  for(i=0;i<getPlayersList().size();i++) {
 		        		  getPlayersList().get(i).setnoOfArmyInPlayer(25);
 		        	  }
-		              System.out.println("Players have been assigned 25 armies.");
+		              System.out.println("Players have been assigned 25 armies each.");
 		              break;
 		          case 6:
 		        	  for(i=0;i<getPlayersList().size();i++) {
 		        		  getPlayersList().get(i).setnoOfArmyInPlayer(20);
 		        	  }
-		              System.out.println("Players have been assigned 20 armies.");
+		              System.out.println("Players have been assigned 20 armies each.");
 		              break;
 		      }
 
-		      for(PlayerModel tempPlayer : playerModelList) {
-		  		System.out.println(tempPlayer.toString());	
-		  		}
+//		      for(PlayerModel tempPlayer : playerModelList) {
+//		  		System.out.println(tempPlayer.toString());	
+//		  		}
 			
 		}
 		
@@ -154,14 +154,15 @@ public class PlayerOperations {
 			}
 	
 			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-			System.out.println(tempPlayerModel);
+			//System.out.println(tempPlayerModel);
 			CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
 			tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
 			tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
 			
-			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
-			System.out.println(loopPlayer);
-			}
+//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+//			System.out.println(loopPlayer);
+//			}
+			System.out.println("The army has been placed on the country: " + countryName);
 			
 		}
 		
@@ -177,9 +178,10 @@ public class PlayerOperations {
 					//System.out.println("getnoOfArmyInPlayer()" + loopPlayer.getnoOfArmyInPlayer());
 				}
 			}
-			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
-			System.out.println(loopPlayer);
-			}
+//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+//			System.out.println(loopPlayer);
+//			}
+			System.out.println("The the armies have been assigned randomly");
 		}
 		
 		public String fortifyCountry(String fromCountry,String toCountry, String num) {
@@ -207,8 +209,8 @@ public class PlayerOperations {
 				tempToCountryModel.setNoOfArmiesCountry((tempToCountryModel.getNoOfArmiesCountry()+Integer.parseInt(num)));
 				tempFromCountryModel.setNoOfArmiesCountry((tempFromCountryModel.getNoOfArmiesCountry()-Integer.parseInt(num)));
 				System.out.println("Fortification Done.");
-				System.out.println(tempFromCountryModel);
-				System.out.println(tempToCountryModel);
+//				System.out.println(tempFromCountryModel);
+//				System.out.println(tempToCountryModel);
 			}
 			else {
 				System.out.println("Fortification Not possible.");

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import com.thedomination.model.CountryModel;
+import com.thedomination.model.PlayerModel;
 import com.thedomination.model.ContinentModel;
 import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
@@ -89,9 +90,10 @@ public class MapOperations {
 			getContinentsList().add(newContinent);
 
 		}
-		for(ContinentModel temp1:continentsList){
-			System.out.println(temp1);
-		}	
+//		for(ContinentModel temp1:continentsList)
+//		{
+//			System.out.println(temp1);}	
+		System.out.println("The Continent " + continentName +" has been added");
 	}
 
 	public String deleteContinent(String continentName) {
@@ -103,9 +105,10 @@ public class MapOperations {
 			getContinentsList().remove(deleteContinent);
 			deleteContinent = null;
 		}
-		for(ContinentModel temp1:continentsList){
-			System.out.println(temp1);
-		}
+//		for(ContinentModel temp1:continentsList) {
+//			System.out.println(temp1);
+//		}
+		System.out.println("The Continent " + continentName +" has been deleted");
 		return "";
 	}
 
@@ -132,7 +135,8 @@ public class MapOperations {
 		targetContinent.addCountry(newCountry);
 		countryList.add(newCountry);
 
-		System.out.println(countryList.toString());
+		//System.out.println(countryList.toString());
+		System.out.println("The Country " + countryName +" has been added");
 		return "";
 	}
 
@@ -203,7 +207,8 @@ public class MapOperations {
 		} else {
 			return "There is no country with this name";
 		}
-		System.out.println(countryList.toString());
+		//System.out.println(countryList.toString());
+		System.out.println("The Country " + countryName +" has been deleted");
 		return "";
 	}
 
@@ -218,7 +223,6 @@ public class MapOperations {
 				connectedGraph[i][j] = "0";
 			}
 		}
-		// Arrays.fill(connectedGraph,"0");
 		connectedGraph[0][0] = "C/C";
 		int i = 1;
 		for (CountryModel loop : loopCountryList) {
@@ -233,22 +237,23 @@ public class MapOperations {
 		}
 		MapOperations.getInstance().setConnectedGraph(connectedGraph);
 
-		for (int k = 0; k <= loopCountryList.size(); k++) {
-			for (int j = 0; j <= loopCountryList.size(); j++) {
-				System.out.print(connectedGraph[k][j] + "");
-			}
-
-			System.out.println();
-		}
-		MapOperations.getInstance().validateMap();
+//		for (int k = 0; k <= loopCountryList.size(); k++) {
+//			for (int j = 0; j <= loopCountryList.size(); j++) {
+//				System.out.print(connectedGraph[k][j] + "");
+//			}
+//
+//			System.out.println();
+//		}
+		System.out.println(MapOperations.getInstance().validateMap());
 	}
 
-	public void validateMap() {
+	public String validateMap() {
+		String message="";
 		Stack<Integer> stack = new Stack<Integer>();
 		int source = 1;
 		String[][] connectedGraph = MapOperations.getInstance().getConnectedGraph();
 		int number_of_nodes = connectedGraph[source].length - 1;
-		System.out.println(number_of_nodes);
+		//System.out.println(number_of_nodes);
 		int[] visited = new int[number_of_nodes + 1];
 		int i, element;
 		visited[source] = 1;
@@ -266,20 +271,60 @@ public class MapOperations {
 			}
 		}
 
-		System.out.print("The source node " + source + " is connected to: ");
+		//System.out.print("The source node " + source + " is connected to: ");
 		int count = 0;
 		for (int v = 1; v <= number_of_nodes; v++) {
 			if (visited[v] == 1)
 			{
-				System.out.print(v + " ");
+				//System.out.print(v + " ");
 				count++;
 			}
 		}
 		if (count == number_of_nodes) {
-			System.out.print("\nThe Graph is Connected ");
+			message="This is a valid Graph.";
 		}  
 		else {
-			System.out.print("\nThe Graph is Disconnected ");
-		}  
+			message="Invalid Graph - Disconnected Graph";
+		}
+		return message;
+	}
+	
+	public void showMapEditor() {
+		System.out.println("*****List of Continents*****");
+		for(ContinentModel loopContinent : continentsList) {
+			System.out.println("Continent Name: " +loopContinent.getContinentName() +" Continent Value: " + loopContinent.getControlValue());
+			
+			for(CountryModel loopCountry: loopContinent.getCountriesList()) {
+				System.out.println("     Country Name: " + loopCountry.getCountryName());
+				
+				for(Integer loopNeighbour : loopCountry.getListOfNewNeighbours()) {
+					System.out.println("          Neighbours: " + MapOperations.getInstance().searchOnCountryPosition(loopNeighbour));
+				}
+			}
+			System.out.println();
+		}
+		
+		
+	}
+	
+	public String searchOnCountryPosition(Integer countryPosition) {
+		for(CountryModel loopCountry : MapOperations.getInstance().getCountryList()) {
+			if(loopCountry.getCountryPosition() == countryPosition) {
+				return loopCountry.getCountryName();
+			}
+		}
+		return "";
+	}
+	
+	public void showMapGamePlay() {
+		showMapEditor();
+		
+		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
+			System.out.println("Player Name: " +loopPlayer.getPlayerName());
+			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
+				System.out.println("     Country: " + loopCountry.getCountryName());
+				System.out.println("          Armies: "+ loopCountry.getNoOfArmiesCountry());
+			}
+		}
 	}
 }

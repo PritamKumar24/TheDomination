@@ -1,14 +1,8 @@
 package com.thedomination.view;
 
-import java.util.ArrayList;
 import java.util.Scanner;
-
 import com.thedomination.controller.MapOperations;
 import com.thedomination.controller.PlayerOperations;
-import com.thedomination.model.CountryModel;
-import com.thedomination.model.PlayerModel;
-import com.thedomination.utilities.MapLocator;
-import com.thedomination.utilities.MapReader;
 
 /**
  * The Class Main.
@@ -79,7 +73,7 @@ public class TheDomination {
 				}
 			}
 			else if(inputCommand[0].equalsIgnoreCase("validatemap")) {
-				MapOperations.getInstance().validateMap();
+				System.out.println(MapOperations.getInstance().validateMap());
 			}
 			else if (inputCommand[0].equalsIgnoreCase("gameplayer")) {
 				for(int i=1;i<inputCommand.length;i++) {
@@ -114,6 +108,14 @@ public class TheDomination {
 					PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]);
 				}
 				
+			}
+			else if(inputCommand[0].equalsIgnoreCase("showmap")) {
+				if(PlayerOperations.getInstance().getPlayersList().size()==0) {
+					MapOperations.getInstance().showMapEditor();	
+				}
+				else {
+					MapOperations.getInstance().showMapGamePlay();
+				}
 			}
 		}
 
