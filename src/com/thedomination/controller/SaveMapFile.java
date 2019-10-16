@@ -8,13 +8,20 @@ import com.thedomination.model.ContinentModel;
 import com.thedomination.model.CountryModel;
 
 /**
- * 
+ *saveMapFile class for saving a map to a text file.
  *
  * @author Pritam Kumar
  * @version 1.0.0
  */
 
 public class SaveMapFile {
+	/**
+	 * getMapOperationConcateString method to align the map file according to continents and countries.
+	 * 
+	 * @param MapOperations object for the MapOperations class.
+	 * @param fileName name of the map file.
+	 * @return the concatenated map file in string format. 
+	 */
 
 	public String getMapOperationConcateString(MapOperations MapOperations, String fileName) {
 		String concateString = "name "+fileName +" Map"+ System.lineSeparator();
@@ -51,7 +58,13 @@ public class SaveMapFile {
 		}
 		return concateString;
 	}
-
+/**
+ * saveMapFile method to save mapFile in text format.
+ * 
+ * @param MapOperations object for MapOperations class.
+ * @param fileName name of map file.
+ * @return boolean true if file saved else false.
+ */
 	
 
 	public boolean saveMapFile(MapOperations MapOperations, String fileName) {

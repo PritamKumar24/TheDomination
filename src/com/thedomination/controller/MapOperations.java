@@ -11,33 +11,56 @@ import com.thedomination.utilities.MapReader;
 
 
 /**
- * The Class 
- *
+ * The Class MapOperations Initializes the Map file name as DefaultName
+ * object for MapReader class mapReader
+ * ArrayList of ContinentModel type as continentsList
+ * ArrayList of CountryModel type as countryList
+ * object for MapOperation as uniqueInstance
+ * 
  * @author Ankur Singla
  * @author Pritam Kumar
  * @version 1.0.0
  */
 public class MapOperations {
+
+
+	/**The object for MapReader Class */
 	private MapReader mapReader;
 
+	/**The ArrayList of ContinentModel type*/
 	private ArrayList<ContinentModel> continentsList;
 
+	/**The ArrayList of ContinentModel type*/
 	private ArrayList<CountryModel> countryList;
 
+	/**The ArrayList of  ConnectedNodes.*/
 	private ArrayList<ArrayList<String> > listOfConnectedNodes;
-
+	
+	/**
+	 * getListOfConnectedNodes method to get all the connected nodes.
+	 * @return listOfConnectedNodes list of connected nodes.
+	 */
 	public ArrayList<ArrayList<String>> getListOfConnectedNodes() {
 		return listOfConnectedNodes;
 	}
-
+	/**
+	 * setListOfConnectedNodes setter method to set the list of connected nodes.
+	 * @param listOfConnectedNodes ArrayList of connected nodes.
+	 */
 
 	public void setListOfConnectedNodes(ArrayList<ArrayList<String>> listOfConnectedNodes) {
 		this.listOfConnectedNodes = listOfConnectedNodes;
 	}
 
-	//2019
+	/** The object of MapOperation class.*/
 	private static MapOperations UniqueInstance;
-	//2019
+
+	/**
+	 * getInstance Method to generate the object for the MapOPeration Class. 
+	 * 
+	 * @return object for the MapOperations class.
+	 */
+
 	public static MapOperations getInstance() {
 		if(MapOperations.UniqueInstance == null) {
 			MapOperations.UniqueInstance = new MapOperations();
@@ -45,11 +68,19 @@ public class MapOperations {
 		return MapOperations.UniqueInstance;
 	}
 
-
+	/**
+	 * Constructor for the MapOperations class
+	 */
 	public MapOperations() {
 		this.continentsList = new ArrayList<>();
 		this.countryList = new ArrayList<>();
 	}
+	/**
+	 * Parameterized Constructor for the MapOperations class
+	 * 
+	 * @param conquestMapName  Map name.
+	 * @param totalCountries   Total number of countries.
+	 */
 
 	public MapOperations(String conquestMapName, int totalCountries) {
 		this.continentsList = new ArrayList<ContinentModel>();
@@ -58,22 +89,53 @@ public class MapOperations {
 
 
 
+/**
+	 * getContinentList method Gets Continent List. Getter function for
+	 * Continent List.
+	 * 
+	 * @return continentsList List of continents.
+	 */
 	public ArrayList<ContinentModel> getContinentsList() {
 		return continentsList;
 	}
 
+	/**
+	 * setContinentList method sets the list of continents. Setter function for
+	 * list of continents.
+	 * 
+	 * @param continentsList list of continents.
+	 */
 	public void setContinentsList(ArrayList<ContinentModel> continentsList) {
 		this.continentsList = continentsList;
 	}
 
+	/**
+	 * getCountryList method Gets Country List. Getter function for
+	 * Country List.
+	 * 
+	 * @return getCountryList List of countries.
+	 */
 	public ArrayList<CountryModel> getCountryList() {
 		return countryList;
 	}
 
+	/**
+	 * setCountryList method sets the list of countries. Setter function for
+	 * list of countries.
+	 * 
+	 * @param setCountryList ArrayList of Countries.
+	 */	
 	public void setCountryList(ArrayList<CountryModel> countryModels) {
 		this.countryList = countryModels;
 	}
 
+	/**
+	 * searchContinent Method to search the Continent.
+	 * 
+	 * 
+	 * @param continentName String Name of the Continent to be searched.
+	 * @return loopContinent name of the continent that was searched else null if not found. 
+	 */
 	public ContinentModel searchContinent(String continentName) {
 		for (ContinentModel loopContinent : getContinentsList()) {
 			if (loopContinent.getContinentName().equalsIgnoreCase(continentName)) {
@@ -82,8 +144,13 @@ public class MapOperations {
 		}
 		return null;
 	}
-
-
+	
+	/**
+	 * addContinent Method to add the continent
+	 * 
+	 * @param continentName name of the continent.
+	 * @param continentValue control value for the continent.
+	 */
 	public void  addContinent(String continentName,int continentValue) {
 
 		if (continentName != null && !continentName.trim().isEmpty() && continentValue>0 ) {
@@ -96,7 +163,13 @@ public class MapOperations {
 //			System.out.println(temp1);}	
 		System.out.println("The Continent " + continentName +" has been added");
 	}
-
+/**
+ * deleteContinent is Method to delete the Continent.
+ * 
+ * @param continentName String for the name of Continent.
+ * @return delete the continent if the continent is found else print not found statement.
+ */
+	
 	public String deleteContinent(String continentName) {
 		ContinentModel deleteContinent = searchContinent(continentName);
 		if (deleteContinent != null) {
@@ -113,6 +186,13 @@ public class MapOperations {
 		return "";
 	}
 
+	/**
+	 * searchCountry Method to search the Country.
+	 * 
+	 * 
+	 * @param countryName String Name of the Country to be searched.
+	 * @return tempCountry name of the country if got else null if not found. 
+	 */
 	public CountryModel searchCountry(String countryName) {
 		CountryModel country = null;
 
@@ -122,7 +202,13 @@ public class MapOperations {
 		}
 		return null;
 	}
-
+	/**
+	 * addCountry Method to add the country
+	 * 
+	 * @param continentName name of the continent in which country will be added.
+	 * @param countryName name of the country to be added.
+	 */
+	
 	public String addCountry(String countryName, String continentName) {
 		ContinentModel targetContinent = searchContinent(continentName);
 		if (targetContinent == null) {
@@ -141,6 +227,11 @@ public class MapOperations {
 		System.out.println("The Country " + countryName +" has been added");
 		return "";
 	}
+	/**
+	 * addConnectedGraphCountry method adds country to the connected graph.
+	 * 
+	 * @param countryName name of the country to be added.
+	 */
 	
 	public void addConnectedGraphCountry(String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
@@ -156,6 +247,13 @@ public class MapOperations {
         }
 	}
 
+	/**
+	 * addNeighbourCountry Method to add the neighbour to a country. 
+	 * 
+	 * @param countryName name of the country to which neighbour will be added.
+	 * 
+	 * @param neighbourCountryName name of neighbour country to be added.
+	 */
 	public void addNeighbourCountry(String countryName, String neighbourCountryName) {
 
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
@@ -177,6 +275,13 @@ public class MapOperations {
 		}
 	}
 	
+	/**
+	 * addConnectedGraphNeighbour method to add neighboour to the connected graph.
+	 * 
+	 * @param neighbourCountryName name of the neighbouring country to be added.
+	 * 
+	 * @param countryName name of the country to which neighbour has to be added.
+	 */
 	public void addConnectedGraphNeighbour(String neighbourCountryName, String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
 		int indexCountry = listOfConnectedNodes.get(0).indexOf(countryName);
@@ -185,6 +290,15 @@ public class MapOperations {
 		listOfConnectedNodes.get(indexCountry).set(indexNeighbourCountry,"1");
 		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"1");
 	}
+	/**
+	 * searchNeighbourCountry method to search the neighbour country.
+	 * 
+	 * @param countryName name of the country to be searched.
+	 * 
+	 * @param neighbourCountryPosition integer value of the country position.
+	 * 
+	 * @return country model object if found else null.
+	 */
 
 	public CountryModel searchNeighbourCountry(String countryName, int neighbourCountryPosition) {
 
@@ -197,7 +311,13 @@ public class MapOperations {
 		}
 		return null;
 	}
-
+	/**
+	 * deleteNeighbourCountry Method to delete the Neighbouring country.
+	 * 
+	 * @param countryName Country Name 
+	 * 
+	 * @param neighbourCountryName Neighbouring country to be deleted.
+	 */
 	public void deleteNeighbourCountry(String countryName, String neighbourCountryName) {
 
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
@@ -218,6 +338,13 @@ public class MapOperations {
 			}
 		}
 	}
+	/**
+	 * deleteConnectedGraphNeighbour method to delete the neighbour from connected graph.
+	 * 
+	 * @param neighbourCountryName neighbour country name to be deleted.
+	 * 
+	 * @param countryName country name of which neighbour is to be deleted.
+	 */
 
 	public void deleteConnectedGraphNeighbour(String neighbourCountryName, String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
@@ -228,6 +355,12 @@ public class MapOperations {
 		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"0");
 	}
 	
+	/**deleteCountry Method to delete the Country.
+	 * 
+	 * @param countryName Name of the country to be deleted.
+	 * 
+	 * @return delete the country if found else print not found message.
+	 */
 	public String deleteCountry(String countryName) {
 		
 		CountryModel deleteCountry = searchCountry(countryName);
@@ -243,6 +376,11 @@ public class MapOperations {
 		DeleteConnectedGraphCountry(countryName);
 		return "";
 	}
+	/**
+	 * DeleteConnectedGraphCountry method to delete the country from the connected graph.
+	 * 
+	 * @param countryName name of the country to be deleted.
+	 */
 	
 	public void DeleteConnectedGraphCountry(String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
@@ -254,6 +392,12 @@ public class MapOperations {
 		
 		listOfConnectedNodes.remove(index);
 	}
+	
+	/**
+	 * loadMap method to load a user-saved map file
+	 * 
+	 * @param fileName name of file.
+	 */
 	public void loadMap(String fileName) {
 		
 		MapLocator.mapLocation(fileName);
@@ -297,7 +441,12 @@ public class MapOperations {
 
 		System.out.println(MapOperations.getInstance().validateMap());
 	}
-
+	
+	/**
+	 * validateMap method for Verification of map correctness. 
+	 * 
+	 * @return message according to state of map.
+	 */
 	public String validateMap() {
 		String message="";
 		Stack<Integer> stack = new Stack<Integer>();
@@ -347,7 +496,9 @@ public class MapOperations {
 //        }
 		return message;
 	}
-	
+	/**
+	 * showMapEditor method to  show all continents and countries and their neighbors.
+	 */
 	public void showMapEditor() {
 		System.out.println("*****List of Continents*****");
 		for(ContinentModel loopContinent : continentsList) {
@@ -365,7 +516,13 @@ public class MapOperations {
 		
 		
 	}
-	
+	/**
+	 * searchOnCountryPosition method to search country according to position.
+	 * 
+	 * @param countryPosition position of country to be found.
+	 * 
+	 * @return country name.
+	 */
 	public String searchOnCountryPosition(Integer countryPosition) {
 		for(CountryModel loopCountry : MapOperations.getInstance().getCountryList()) {
 			if(loopCountry.getCountryPosition() == countryPosition) {
@@ -374,7 +531,9 @@ public class MapOperations {
 		}
 		return "";
 	}
-	
+	/**
+	 * showMapGamePlay method to show all countries and continents, armies on each country, ownership, and connectivity.
+	 */
 	public void showMapGamePlay() {
 		showMapEditor();
 		

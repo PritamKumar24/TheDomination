@@ -9,45 +9,82 @@ import com.thedomination.model.ContinentModel;
 import com.thedomination.model.CountryModel;
 import com.thedomination.model.PlayerModel;
 /**
- * The Class PlayerModel.
- *
+ * The Class PlayerModel Initializes ArrayList of PlayerModel type as playerModelList,
+ * armiesToAssign of Integer type, placeArmyCounter of Integer type,fortifyCountryCounter of Integer type,
+ * UniqueInstance object for PlayetrOperations class.
+ * 
  * @author Aditi
  * @version 1.0.0
  */
 public class PlayerOperations {
 
+	/** The playerModelList ArrayList of PlayerModel type */
 	private ArrayList<PlayerModel> playerModelList;
+	
+	/**The armies to Assign */
 	private int  armiesToAssign = 0;
+	
+	/**Initializes the integer placeArmyCounter */
 	private  int placeArmyCounter =0;
+	
+	/**Initializes the integer fortifyCountryCounter  */
 	private  int fortifyCountryCounter =0;
+	/**Initializes the integer reInforceCountryCounter  */
 	private  int reInforceCountryCounter =1;
+	/**The reinforceFlag  */
 	boolean reinforceFlag = true;
+	/** The reInforceNoOfArmy */
 	private int reInforceNoOfArmy;
-	
+	/** The object for the player operation */
 	private static PlayerOperations UniqueInstance;
-	
+	/**
+	 * Constructor for the PlayerOperation class.
+	 * 
+	 * @return object for the PlayerOperation class.
+	 */
 	public static PlayerOperations getInstance() {
 		if(PlayerOperations.UniqueInstance == null) {
 			PlayerOperations.UniqueInstance = new PlayerOperations();
 		}
 		return PlayerOperations.UniqueInstance;
 	}
-	
+	/** 
+	 * Constructor for the PlayerOperation class.
+	 */
 	public PlayerOperations() {
 		this.playerModelList = new ArrayList<>();
 	}
 
+	/**
+	 * getPlayersList to get list of players.
+	 * @return playerModelList players list.
+	 */
 	public ArrayList<PlayerModel> getPlayersList() {
 		return playerModelList;
 	}
 	
+	/**
+	 * getArmiesToAssign Method Getter Function to get armies to assign
+	 *
+	 * @return the armiesToAssign integer value of total number of armies.
+	 */
 	public int getArmiesToAssign() {
 		return armiesToAssign;
 	}
 
+	/**
+	 * setArmiesToAssign Method Setter Function to set armies of country.
+	 *
+	 * @param armiesToAssign the total number of armies .
+	 */
 	public void setArmiesToAssign(int armiesToAssign) {
 		this.armiesToAssign = armiesToAssign;
 	}
+	
+	/**
+	 * addPlayer to add players to playerModelList. 
+	 * @param playerName name of player to be added.
+	 */
 	public void  addPlayer(String playerName) {
 		if (playerName != null && !playerName.trim().isEmpty() ) {
 			if(searchPlayer(playerName)==null) {
@@ -60,6 +97,14 @@ public class PlayerOperations {
 			}
 		}
 	}
+	
+	
+	/**
+	 * searchPlayer to search player from playerModelList.
+	 * 
+	 * @param playerName name of player to be searched.
+	 * @return loopPlayer name of player if player found else return null. 
+	 */
 	public PlayerModel searchPlayer(String playerName) {
 		for (PlayerModel loopPlayer : playerModelList) {
 			if (loopPlayer.getPlayerName().equalsIgnoreCase(playerName)) {
@@ -68,6 +113,12 @@ public class PlayerOperations {
 		}
 		return null;
 	}
+	
+	/**
+	 * removePlayer to remove player from playerModelList.
+	 * 
+	 * @param playerName name of player to be removed. 
+	 */
 
 		public void  removePlayer(String playerName) {
 			if (playerName != null && !playerName.trim().isEmpty() ) {
@@ -80,7 +131,10 @@ public class PlayerOperations {
 				}
 			}
 		}
-		
+		/**
+		 * populateCountries method to allocate a number of initial armies, depending on the number of players .
+		 * 
+		 */
 		public void populateCountries() {
 			int i=0;
 			for(i=0;i<getPlayersList().size();i++) {
@@ -140,6 +194,10 @@ public class PlayerOperations {
 //		  		}
 			
 		}
+		/**
+		 * placeArmy method places army by each player until all players have placed all their armies
+		 * @param countryName anme of country for which army has to be placed.
+		 */
 		
 		public void placeArmy(String countryName) {
 			
@@ -169,7 +227,9 @@ public class PlayerOperations {
 			System.out.println("The army has been placed on the country: " + countryName);
 			
 		}
-		
+		/**
+		 * placeAll method to randomly place all remaining unplaced armies for all players.
+		 */
 		public void placeAll() {
 			int pickedNumber;
 			Random randomNumber = new Random();
@@ -187,6 +247,14 @@ public class PlayerOperations {
 //			}
 			System.out.println("The the armies have been assigned randomly");
 		}
+		/**
+		 * fortifyCountry implementation of a valid fortification move from one country to another.
+		 * 
+		 * @param fromCountry   country name from which armies has to be moved.
+		 * @param toCountry     country name to which armies have to be moved.
+		 * @param num			number of armies to be moved.
+		 * @return				empty string.
+		 */
 		
 		public String fortifyCountry(String fromCountry,String toCountry, String num) {
 			if(fromCountry.equalsIgnoreCase("none")) {
@@ -221,7 +289,13 @@ public class PlayerOperations {
 			}
 			return "";
 		}
-		
+		/**
+		 * reInforce method for player to place all reinforcement armies on the map
+		 * 
+		 * @param countryName name of country on which armies has to be placed.
+		 * @param num number of armies to be placed.
+		 * @return empty String
+		 */
 		
 		public String reInforce(String countryName, int num) {
 
