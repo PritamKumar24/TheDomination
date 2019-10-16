@@ -11,22 +11,48 @@ import com.thedomination.model.ContinentModel;
 import com.thedomination.model.CountryModel;
 
 /**
- * The Class MapReader.
+ * The Class MapReader initializes the ArrayList continentModels of ContinentModel type,
+ * ArrayList countryModels of CountryModel type.
  *
  * @author Pritam Kumar
  */
 public class MapReader {
-
+	
+	/**The continentModels ArrayList */
+	
 	 ArrayList<ContinentModel> continentModels = new ArrayList<>();
+	 
+	 /**The countryModels ArrayList */
+	 
 	 ArrayList<CountryModel> countryModels = new ArrayList<>();
 	
+	/**
+	 * getContinentModels method to get ArrayList of continents.
+	 * 
+	 * @return continentModels  ArralyList of continents.
+	 */
+	 
 	public ArrayList<ContinentModel> getContinentModels() {
 		return continentModels;
 	}
-
+	
+	/**
+	 * getCountryModels method to get ArrayList of countries.
+	 * 
+	 * @return countryModels ArralyList of countries.
+	 */
+	
 	public ArrayList<CountryModel> getCountryModels() {
 		return countryModels;
 	}
+	
+	/**
+	 * parseAndValidateMap method to parse the loaded map and save countries, continents, neighbours, in their corresponding
+	 * data structures.
+	 * 
+	 * @param filePath                       path of the file where the map file is placed.
+	 * @return MapOperations.getInstance()   object of the MapOperation class 
+	 */
 	
 	public MapOperations parseAndValidateMap(String filePath) {		
 		
@@ -122,12 +148,12 @@ public class MapReader {
 				}
 			}
 			
-			MapOperations.getInstance().setContinentsList(continentModels); //2019
+			MapOperations.getInstance().setContinentsList(continentModels);
 			
-			MapOperations.getInstance().setCountryList(countryModels); //2109
+			MapOperations.getInstance().setCountryList(countryModels);
 			
 			
-//		for(ContinentModel temp: continentModels) {   //2019
+//		for(ContinentModel temp: continentModels) {
 //				System.out.println("------Continents--------");
 //				System.out.println(temp.toString());
 //		}
@@ -142,7 +168,7 @@ public class MapReader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return MapOperations.getInstance(); //2109
+		return MapOperations.getInstance();
 	}
 
 }
