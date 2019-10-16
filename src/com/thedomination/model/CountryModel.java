@@ -64,6 +64,7 @@ public class CountryModel {
 		this.countryName = countryName;
 		this.countryPosition = countryPosition;
 		this.belongsTo = belongsTo;
+		this.listOfNewNeighbours = new ArrayList<>();
 	}
 
 	/**

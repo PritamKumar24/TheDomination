@@ -128,16 +128,16 @@ public class MapReader {
 			MapOperations.getInstance().setCountryList(countryModels); //2109
 			
 			
-		for(ContinentModel temp: continentModels) {   //2019
-				System.out.println("------Continents--------");
-				System.out.println(temp.toString());
-		}
-		System.out.println("");
-		
-		for(CountryModel temp: countryModels) {
-			System.out.println("------Countries--------");
-			System.out.println(temp.toString());
-	}
+//		for(ContinentModel temp: continentModels) {   //2019
+//				System.out.println("------Continents--------");
+//				System.out.println(temp.toString());
+//		}
+//		System.out.println("");
+//		
+//		for(CountryModel temp: countryModels) {
+//			System.out.println("------Countries--------");
+//			System.out.println(temp.toString());
+//	}
 			
 			
 		} catch (Exception e) {

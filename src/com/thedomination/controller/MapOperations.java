@@ -13,13 +13,10 @@ import com.thedomination.utilities.MapReader;
  * The Class 
  *
  * @author Ankur Singla
+ * @author Pritam Kumar
  * @version 1.0.0
  */
 public class MapOperations {
-
-	private String DefaultName = "NewMapFile";
-
-	//2019
 	private MapReader mapReader;
 
 	private ArrayList<ContinentModel> continentsList;
@@ -45,18 +42,11 @@ public class MapOperations {
 	}
 
 	public MapOperations(String conquestMapName, int totalCountries) {
-		this.DefaultName = conquestMapName;
 		this.continentsList = new ArrayList<ContinentModel>();
 		this.countryList = new ArrayList<>();
 	}
 
-	public String getDefaultName() {
-		return DefaultName;
-	}
 
-	public void setDefaultName(String defaultName) {
-		DefaultName = defaultName;
-	}
 
 	public ArrayList<ContinentModel> getContinentsList() {
 		return continentsList;
@@ -99,9 +89,9 @@ public class MapOperations {
 			getContinentsList().add(newContinent);
 
 		}
-		for(ContinentModel temp1:continentsList)
-		{
-			System.out.println(temp1);}	
+		for(ContinentModel temp1:continentsList){
+			System.out.println(temp1);
+		}	
 	}
 
 	public String deleteContinent(String continentName) {
@@ -113,9 +103,9 @@ public class MapOperations {
 			getContinentsList().remove(deleteContinent);
 			deleteContinent = null;
 		}
-		for(ContinentModel temp1:continentsList)
-		{
-			System.out.println(temp1);}
+		for(ContinentModel temp1:continentsList){
+			System.out.println(temp1);
+		}
 		return "";
 	}
 
@@ -146,11 +136,10 @@ public class MapOperations {
 		return "";
 	}
 
-	public String addNeighbourCountry(String countryName, String neighbourCountryName) {
+	public void addNeighbourCountry(String countryName, String neighbourCountryName) {
 
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
-			//	System.out.println(neighbourCountryName);
-			return "Countries <" + neighbourCountryName + countryName + "> Not found";
+			System.out.println("Countries |" + neighbourCountryName +" OR "+ countryName + "| Not found");
 		}
 
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
@@ -161,19 +150,30 @@ public class MapOperations {
 
 			CountryModel countryFound = searchCountry(countryName);
 
-			countryFound.addNeighbour(neighbourCountryPosition);
-
-			System.out.println(countryList.toString());
+			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) == null) {
+				countryFound.addNeighbour(neighbourCountryPosition);
+				addNeighbourCountry(neighbourCountryName, countryName);
+				System.out.println(countryFound);
+			}
 		}
-
-		return "";
 	}
 
-	public String deleteNeighbourCountry(String countryName, String neighbourCountryName) {
+	public CountryModel searchNeighbourCountry(String countryName, int neighbourCountryPosition) {
+
+		CountryModel country = MapOperations.getInstance().searchCountry(countryName);
+
+		for(Integer tempNeighbourPosition : country.getListOfNewNeighbours()) {
+			if (tempNeighbourPosition == neighbourCountryPosition) {
+				return country;
+			}
+		}
+		return null;
+	}
+
+	public void deleteNeighbourCountry(String countryName, String neighbourCountryName) {
 
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
-			//	System.out.println(neighbourCountryName);
-			return "Countries <" + neighbourCountryName + countryName + "> Not found";
+			System.out.println("Countries |" + neighbourCountryName +" OR "+ countryName + "| Not found"); 
 		}
 
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
@@ -184,13 +184,12 @@ public class MapOperations {
 
 			CountryModel countryFound = searchCountry(countryName);
 
-			//countryFound.addNeighbour(neighbourCountryPosition);
-			countryFound.deleteNeighbour(neighbourCountryPosition);
-
-			System.out.println(countryList.toString());
+			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) != null) {
+				countryFound.deleteNeighbour(neighbourCountryPosition);
+				deleteNeighbourCountry(neighbourCountryName, countryName);
+				System.out.println(countryFound);
+			}
 		}
-
-		return "";
 	}
 
 
@@ -202,7 +201,7 @@ public class MapOperations {
 			getCountryList().remove(deleteCountry);
 			deleteCountry = null;
 		} else {
-			return "Can't find country with this name";
+			return "There is no country with this name";
 		}
 		System.out.println(countryList.toString());
 		return "";
