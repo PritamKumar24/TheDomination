@@ -129,10 +129,23 @@ public class TheDomination {
 				}
 			}
 			else if((inputCommand[0]).equalsIgnoreCase("savemap")) {
-			      SaveMapFile smf = new SaveMapFile();
-			      smf.getMapOperationConcateString(MapOperations.getInstance(), inputCommand[1]);
-			      smf.saveMapFile(MapOperations.getInstance(), inputCommand[1]);
-			      System.out.println(inputCommand[1]+ " Map file has been created");
+				String validateString = MapOperations.getInstance().validateMap();
+				
+				if(validateString.equalsIgnoreCase("This is a valid Graph")) {
+					System.out.println(validateString);
+					SaveMapFile smf = new SaveMapFile();
+					smf.getMapOperationConcateString(MapOperations.getInstance(), inputCommand[1]);
+					smf.saveMapFile(MapOperations.getInstance(), inputCommand[1]);
+					System.out.println(inputCommand[1]+ " Map file has been created");
+				}
+				else {
+					System.out.println(validateString);
+					System.out.println("Map is Invalid so you can't save this map file");
+				}
+
+			}
+			else if((inputCommand[0]).equalsIgnoreCase("editmap")) {
+				MapOperations.getInstance().editMap(inputCommand[1]);
 	
 			}
 			else if (inputCommand[0].equalsIgnoreCase("reinforce")) {
