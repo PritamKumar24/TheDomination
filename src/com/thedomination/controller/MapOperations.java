@@ -24,7 +24,16 @@ public class MapOperations {
 
 	private ArrayList<CountryModel> countryList;
 
-	private String[][] connectedGraph;
+	private ArrayList<ArrayList<String> > listOfConnectedNodes;
+
+	public ArrayList<ArrayList<String>> getListOfConnectedNodes() {
+		return listOfConnectedNodes;
+	}
+
+
+	public void setListOfConnectedNodes(ArrayList<ArrayList<String>> listOfConnectedNodes) {
+		this.listOfConnectedNodes = listOfConnectedNodes;
+	}
 
 	//2019
 	private static MapOperations UniqueInstance;
@@ -63,14 +72,6 @@ public class MapOperations {
 
 	public void setCountryList(ArrayList<CountryModel> countryModels) {
 		this.countryList = countryModels;
-	}
-
-	public String[][] getConnectedGraph() {
-		return connectedGraph;
-	}
-
-	public void setConnectedGraph(String[][] connectedGraph) {
-		this.connectedGraph = connectedGraph;
 	}
 
 	public ContinentModel searchContinent(String continentName) {
@@ -134,10 +135,25 @@ public class MapOperations {
 		CountryModel newCountry = new CountryModel(countryName, (countryList.size())+1, targetContinent);
 		targetContinent.addCountry(newCountry);
 		countryList.add(newCountry);
+		addConnectedGraphCountry(countryName);
 
 		//System.out.println(countryList.toString());
 		System.out.println("The Country " + countryName +" has been added");
 		return "";
+	}
+	
+	public void addConnectedGraphCountry(String countryName) {
+		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
+		listOfConnectedNodes.get(0).add(countryName);
+		
+		ArrayList<String> list =new ArrayList<String>();
+		list.add(countryName);
+		listOfConnectedNodes.add(list);
+		
+		for (int i = 1; i < listOfConnectedNodes.size(); i++) { 
+			listOfConnectedNodes.get(i).add("0");
+			listOfConnectedNodes.get(listOfConnectedNodes.size()-1).add("0");
+        }
 	}
 
 	public void addNeighbourCountry(String countryName, String neighbourCountryName) {
@@ -154,9 +170,20 @@ public class MapOperations {
 			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) == null) {
 				countryFound.addNeighbour(neighbourCountryPosition);
 				addNeighbourCountry(neighbourCountryName, countryName);
-				System.out.println(countryFound);
+				addConnectedGraphNeighbour(neighbourCountryName, countryName);
+				//System.out.println(countryFound);
+				System.out.println(countryName + " and " + neighbourCountryName +" are neighbours now");
 			}
 		}
+	}
+	
+	public void addConnectedGraphNeighbour(String neighbourCountryName, String countryName) {
+		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
+		int indexCountry = listOfConnectedNodes.get(0).indexOf(countryName);
+		int indexNeighbourCountry=listOfConnectedNodes.get(0).indexOf(neighbourCountryName);
+		
+		listOfConnectedNodes.get(indexCountry).set(indexNeighbourCountry,"1");
+		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"1");
 	}
 
 	public CountryModel searchNeighbourCountry(String countryName, int neighbourCountryPosition) {
@@ -185,12 +212,22 @@ public class MapOperations {
 			if((MapOperations.getInstance().searchNeighbourCountry(countryFound.getCountryName(), neighbourCountryPosition)) != null) {
 				countryFound.deleteNeighbour(neighbourCountryPosition);
 				deleteNeighbourCountry(neighbourCountryName, countryName);
-				System.out.println(countryFound);
+				deleteConnectedGraphNeighbour(neighbourCountryName, countryName);
+				//System.out.println(countryFound);
+				System.out.println(countryName + " and " + neighbourCountryName +" are neighbours no more");
 			}
 		}
 	}
 
-
+	public void deleteConnectedGraphNeighbour(String neighbourCountryName, String countryName) {
+		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
+		int indexCountry = listOfConnectedNodes.get(0).indexOf(countryName);
+		int indexNeighbourCountry=listOfConnectedNodes.get(0).indexOf(neighbourCountryName);
+		
+		listOfConnectedNodes.get(indexCountry).set(indexNeighbourCountry,"0");
+		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"0");
+	}
+	
 	public String deleteCountry(String countryName) {
 		
 		CountryModel deleteCountry = searchCountry(countryName);
@@ -203,41 +240,61 @@ public class MapOperations {
 		}
 		//System.out.println(countryList.toString());
 		System.out.println("The Country " + countryName +" has been deleted");
+		DeleteConnectedGraphCountry(countryName);
 		return "";
 	}
-
+	
+	public void DeleteConnectedGraphCountry(String countryName) {
+		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
+		int index=listOfConnectedNodes.get(0).indexOf(countryName);
+		
+		for (int i = 0; i < listOfConnectedNodes.size(); i++) { 
+			listOfConnectedNodes.get(i).remove(index);
+        }
+		
+		listOfConnectedNodes.remove(index);
+	}
 	public void loadMap(String fileName) {
 		
 		MapLocator.mapLocation(fileName);
+		listOfConnectedNodes =  new ArrayList<ArrayList<String>>();
 		ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
-
-		String[][] connectedGraph = new String[loopCountryList.size() + 1][loopCountryList.size() + 1];
-		for (int i = 0; i <= loopCountryList.size(); i++) {
-			for (int j = 0; j <= loopCountryList.size(); j++) {
-				connectedGraph[i][j] = "0";
-			}
+		ArrayList<String> insideList =  new ArrayList<String>();
+		insideList.add("C/C");
+		for (CountryModel loop : loopCountryList) {
+			insideList.add(loop.getCountryName());
 		}
-		connectedGraph[0][0] = "C/C";
+		listOfConnectedNodes.add(insideList);
+		
+		for (CountryModel loop : loopCountryList) {
+			ArrayList<String> insideList1 =  new ArrayList<String>();
+			insideList1.add(loop.getCountryName());
+			listOfConnectedNodes.add(insideList1);
+		}
+		
+		for (int i = 1; i < listOfConnectedNodes.size(); i++) { 
+            for (int j = 1; j < listOfConnectedNodes.size(); j++) { 
+            	listOfConnectedNodes.get(i).add("0");
+            }
+        }
+		
 		int i = 1;
 		for (CountryModel loop : loopCountryList) {
-			connectedGraph[i][0] = loop.getCountryName();
-			connectedGraph[0][i] = loop.getCountryName();
-
 			for (Integer j : loop.getListOfNewNeighbours()) {
-				connectedGraph[i][j] = "1";
-				connectedGraph[j][i] = "1";
+				listOfConnectedNodes.get(i).set(j, "1");
+				listOfConnectedNodes.get(j).set(i, "1");
 			}
 			i++;
 		}
-		MapOperations.getInstance().setConnectedGraph(connectedGraph);
+//		for (int k = 0; k < listOfConnectedNodes.size(); k++) { 
+//            for (int j = 0; j < listOfConnectedNodes.get(k).size(); j++) { 
+//                System.out.print(listOfConnectedNodes.get(k).get(j) + " "); 
+//            } 
+//            System.out.println(); 
+//        }
+		
+		MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);
 
-//		for (int k = 0; k <= loopCountryList.size(); k++) {
-//			for (int j = 0; j <= loopCountryList.size(); j++) {
-//				System.out.print(connectedGraph[k][j] + "");
-//			}
-//
-//			System.out.println();
-//		}
 		System.out.println(MapOperations.getInstance().validateMap());
 	}
 
@@ -245,8 +302,9 @@ public class MapOperations {
 		String message="";
 		Stack<Integer> stack = new Stack<Integer>();
 		int source = 1;
-		String[][] connectedGraph = MapOperations.getInstance().getConnectedGraph();
-		int number_of_nodes = connectedGraph[source].length - 1;
+		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
+		//int number_of_nodes = connectedGraph[source].length - 1;
+		int number_of_nodes = listOfConnectedNodes.size() - 1;
 		//System.out.println(number_of_nodes);
 		int[] visited = new int[number_of_nodes + 1];
 		int i, element;
@@ -257,7 +315,7 @@ public class MapOperations {
 			element = stack.pop();
 			i = 1;// element;
 			while (i <= number_of_nodes) {
-				if (connectedGraph[element][i] == "1" && visited[i] == 0) {
+				if (listOfConnectedNodes.get(element).get(i) == "1" && visited[i] == 0) {
 					stack.push(i);
 					visited[i] = 1;
 				}
@@ -265,7 +323,7 @@ public class MapOperations {
 			}
 		}
 
-		//System.out.print("The source node " + source + " is connected to: ");
+		//System.out.println("The source node " + source + " is connected to: ");
 		int count = 0;
 		for (int v = 1; v <= number_of_nodes; v++) {
 			if (visited[v] == 1)
@@ -280,6 +338,13 @@ public class MapOperations {
 		else {
 			message="Invalid Graph - Disconnected Graph";
 		}
+//		System.out.println();
+//		for (int k = 0; k < listOfConnectedNodes.size(); k++) { 
+//            for (int j = 0; j < listOfConnectedNodes.get(k).size(); j++) { 
+//                System.out.print(listOfConnectedNodes.get(k).get(j) + " "); 
+//            } 
+//            System.out.println(); 
+//        }
 		return message;
 	}
 	

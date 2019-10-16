@@ -144,7 +144,7 @@ public class PlayerOperations {
 		public void placeArmy(String countryName) {
 			
 			placeArmyCounter++;
-			System.out.println(placeArmyCounter);
+			//System.out.println(placeArmyCounter);
 		
 			int playerIndex = 0;
 			int playerPosition = 0;
