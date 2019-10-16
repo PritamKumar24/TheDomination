@@ -26,20 +26,30 @@ public class ContinentModel {
 	/**
 	 * Constructor for Continent class.
 	 * 
-	 * @param continentPosition name of the new continent
+	 * @param continentPosition position of the new continent taken as Integer.
 	 */
 	public ContinentModel(int continentPosition) {
 		this.setContinentPosition(continentPosition);
 		//this.countriesList = new ArrayList<CountryModel>();
 	}
+	/**
+	 * Constructor for Continent class.
+	 * 
+	 * @param continentName name of the new continent ..
+	 */
 	
 	public ContinentModel(String continentName) {
 		this.continentName = continentName;
 		this.countriesList = new ArrayList<CountryModel>();
 	}
+	/**
+	 * Constructor for Continent class.
+	 * 
+	 * @param continentName and controlValue  name of the new continent and controlValue for the ContinentModel.
+	 */
 	
-	//edit 2019
-	public ContinentModel(String continentName, int controlValue) {
+	public ContinentModel(String continentName, int controlValue) 
+	{
 		this.continentName = continentName;
 		this.controlValue = controlValue;
 		this.countriesList = new ArrayList<CountryModel>();
@@ -47,7 +57,7 @@ public class ContinentModel {
 
 	/**
 	 * getContinentPosition method Gets the continent position. Getter function for
-	 * continent position
+	 * continent position.
 	 * 
 	 * @return the continentPosition
 	 */
@@ -57,7 +67,7 @@ public class ContinentModel {
 
 	/**
 	 * setContinentName Method Sets the continent name. Setter function for
-	 * continent name
+	 * continent Position.
 	 * 
 	 * @param continentName the continentName to set
 	 */
@@ -66,22 +76,32 @@ public class ContinentModel {
 	}
 	
 	
-
+	/**
+	 * getContinentName method Gets the continent Name. Getter function for
+	 * continent Name.
+	 * 
+	 * @return continentName Name of the continent.
+	 */
 	public String getContinentName() {
 		return continentName;
 	}
-
-
-
+	
+	
+	/**
+	 * setContinentName method sets the continent Name. setter function for
+	 * continent Name.
+	 * 
+	 * @param continentName Name of the Continent.
+	 */
 	public void setContinentName(String continentName) {
 		this.continentName = continentName;
 	}
 
 	/**
-	 * getCountriesList Method Gets the countries list. Getter function for country
-	 * list
+	 * getCountriesList method Gets the countries List. Getter function for
+	 * country List.
 	 * 
-	 * @return the countriesList
+	 * @return countriesList list of the countries.
 	 */
 	public ArrayList<CountryModel> getCountriesList() {
 		return countriesList;
@@ -107,9 +127,9 @@ public class ContinentModel {
 	}
 
 	/**
-	 * Method to delete a country from countryList.
+	 * Method to remove a country from countryList.
 	 * 
-	 * @param country country object to delete
+	 * @param country country object to be removed.
 	 */
 	public void deleteCountry(CountryModel country) {
 		countriesList.remove(country);
@@ -118,8 +138,8 @@ public class ContinentModel {
 	/**
 	 * searchCountry Method Function to search a country in this continent.
 	 * 
-	 * @param countryName the name of the country
-	 * @return the country object found in this continent or null if can't find
+	 * @param countryName the name of the country to be searched.
+	 * @return the country object if found in this continent or null if not found.
 	 */
 	public CountryModel searchCountry(String countryName) {
 		countryName = countryName.toLowerCase();
