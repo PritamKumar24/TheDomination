@@ -6,7 +6,7 @@ import com.thedomination.controller.PlayerOperations;
 import com.thedomination.controller.SaveMapFile;
 
 /**
- * The Class Main.
+ * TheDomination is the main class that reads all the command from console and calls the corresponding methods.
  *
  * @author Ankur Singla
  * @version 1.0.0
@@ -14,14 +14,24 @@ import com.thedomination.controller.SaveMapFile;
 
 public class TheDomination {
 
+	/**
+	 * The Main method calls the commandReader method. 
+	 * 
+	 */
 	public static void main(String args[]) {
 		commandReader();
 	}
 
+	/**
+	 *exit method which is used to exit from the console.
+	 */
 	public static void exit() {
 		System.exit(0);
 	}
 
+	/**
+	 * commandReader is the method used to read the commands from the console.
+	 */
 	public static void commandReader() {
 		Scanner scan = new Scanner(System.in);
 
