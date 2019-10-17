@@ -57,7 +57,12 @@ public class MapOperations {
 
 	/** The object of MapOperation class.*/
 	private static MapOperations UniqueInstance;
-
+	
+	/** The value error flag. */
+	private boolean valErrorFlag = false;
+	
+	/** The error message. */
+	private String errorMsg = "Map is invalid";
 	/**
 	 * getInstance Method to generate the object for the MapOPeration Class. 
 	 * 
@@ -131,7 +136,40 @@ public class MapOperations {
 	public void setCountryList(ArrayList<CountryModel> countryModels) {
 		this.countryList = countryModels;
 	}
+	/**
+	 * Checks if is value error flag.
+	 * 
+	 * @return the valErrorFlag
+	 */
+	public boolean isValErrorFlag() {
+		return valErrorFlag;
+	}
+	/**
+	 * Sets the value error flag.
+	 * 
+	 * @param valErrorFlag the valErrorFlag to set
+	 */
+	public void setValErrorFlag(boolean valErrorFlag) {
+		this.valErrorFlag = valErrorFlag;
+	}
+	/**
+	 * Gets the error message.
+	 * 
+	 * @return the errorMsg
+	 */
+	public String getErrorMsg() {
+		return errorMsg;
+	}
 
+	/**
+	 * Sets the error message.
+	 * 
+	 * @param errorMsg the errorMsg to set
+	 */
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+	
 	/**
 	 * searchContinent Method to search the Continent.
 	 * 
@@ -514,7 +552,7 @@ public class MapOperations {
 			}
 		}
 		if (count == number_of_nodes) {
-			message="This is a valid Graph";
+			message="This is a valid Graph.";
 		}  
 		else {
 			message="Invalid Graph - Disconnected Graph";
