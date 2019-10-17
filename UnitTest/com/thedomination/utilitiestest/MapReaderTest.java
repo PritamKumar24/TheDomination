@@ -50,9 +50,11 @@ public class MapReaderTest {
     
 	
 	
-	
-	
-	
+	/**
+	 * Test Method for Invalid Map Operation
+	 *
+	 *
+	 */
 	
 	@Test
 	public void inValidMapTest() {
@@ -68,7 +70,9 @@ public class MapReaderTest {
 		
 		Assert.assertEquals(expected, result);
 	}
-
+        /**
+	 * Method to check whether the map is valid or not.
+	 */
 	@Test
 	public void validMapTest() {
 		
@@ -78,6 +82,9 @@ public class MapReaderTest {
 		boolean expected=mapOperations1.isValErrorFlag();		
 	   Assert.assertEquals(expected, result);
 	}
+	 /**
+	 * Method to check whether the map is connected or not.
+	 */
 	@Test
 	public void loadAndValidateConnectedMap() {
 		mapOperations1.loadMap("world.map");
@@ -87,7 +94,9 @@ public class MapReaderTest {
 		String result=mapOperations1.validateMap();
 		   Assert.assertEquals(expected, result);
 	}
-	
+	 /**
+	 * Method to check whether the map is unconnected or not.
+	 */
 	@Test
 	public void loadAndValidateUnConnectedMap() {
 		mapOperations1.loadMap("UnconnectedGraph.map");
@@ -97,7 +106,9 @@ public class MapReaderTest {
 		String result=mapOperations1.validateMap();
 		   Assert.assertEquals(expected, result);
 	}
-	
+	 /**
+	 * Method to check whether the continent is connected or not.
+	 */
 	@Test
 	public void loadAndValidateUnConnectedContinentMap() {
 		mapOperations1.loadMap("UnconnectedGraph.map");
