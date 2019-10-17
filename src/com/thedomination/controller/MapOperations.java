@@ -433,6 +433,12 @@ public class MapOperations {
 		
 		listOfConnectedNodes.remove(index);
 	}
+
+       /**
+	 * load the map from existing file if there is any
+	 * if not then it will create a new file from scratch
+	 * @param fileName
+	 */
 	
 	public void editMap(String fileName) {
 		
