@@ -17,35 +17,35 @@ import com.thedomination.model.CountryModel;
  * @author Pritam Kumar
  */
 public class MapReader {
-	
+
 	/**The continentModels ArrayList */
-	
-	 ArrayList<ContinentModel> continentModels = new ArrayList<>();
-	 
-	 /**The countryModels ArrayList */
-	 
-	 ArrayList<CountryModel> countryModels = new ArrayList<>();
-	
+
+	ArrayList<ContinentModel> continentModels = new ArrayList<>();
+
+	/**The countryModels ArrayList */
+
+	ArrayList<CountryModel> countryModels = new ArrayList<>();
+
 	/**
 	 * getContinentModels method to get ArrayList of continents.
 	 * 
 	 * @return continentModels  ArralyList of continents.
 	 */
-	 
+
 	public ArrayList<ContinentModel> getContinentModels() {
 		return continentModels;
 	}
-	
+
 	/**
 	 * getCountryModels method to get ArrayList of countries.
 	 * 
 	 * @return countryModels ArralyList of countries.
 	 */
-	
+
 	public ArrayList<CountryModel> getCountryModels() {
 		return countryModels;
 	}
-	
+
 	/**
 	 * parseAndValidateMap method to parse the loaded map and save countries, continents, neighbours, in their corresponding
 	 * data structures.
@@ -53,14 +53,14 @@ public class MapReader {
 	 * @param filePath                       path of the file where the map file is placed.
 	 * @return MapOperations.getInstance()   object of the MapOperation class 
 	 */
-	
+
 	public MapOperations parseAndValidateMap(String filePath) {		
-		
+
 		boolean isContinent = false;
 		boolean isCountry = false;
 		boolean isBorders = false;
 
-		
+
 		try (BufferedReader br = new BufferedReader(new FileReader(new File(filePath)))) {
 			String currentLine;
 			while ((currentLine = br.readLine()) != null) {
@@ -76,14 +76,29 @@ public class MapReader {
 					isCountry = true;
 					isContinent = false;
 					isBorders = false;
+					if (!isContinent && continentModels.size() == 0) {
+						String valErrorMessage = "Map is invalid";
+						MapOperations.getInstance().setValErrorFlag(true);
+						MapOperations.getInstance().setErrorMsg(valErrorMessage);
+						System.out.println("Map is invalid as there are no continents defined");
+						break;
+					}
 					continue;
 				}
 				if(currentLine.equalsIgnoreCase("[borders]")) {
 					isBorders = true;
 					isCountry = false;
 					isContinent = false;
+
+					if (!isCountry && countryModels.size() == 0) {
+						String valErrorMessage = "Map is invalid";
+						MapOperations.getInstance().setValErrorFlag(true);
+						MapOperations.getInstance().setErrorMsg(valErrorMessage);
+						System.out.println("Map is invalid as there are no countries defined");
+						break;
+					}
 					continue;
-					//write code if it throws any error
+
 				}
 				if (isContinent) {
 					if(currentLine.indexOf(" ")>0) {
@@ -101,7 +116,7 @@ public class MapReader {
 				if (isCountry) {
 					String[] countryValues = currentLine.split(" ");
 					CountryModel countryModel = new CountryModel();
-					
+
 					for (int i = 0; i < countryValues.length; i++) {
 						if (i == 0) {
 							countryModel.setCountryPosition(Integer.parseInt(countryValues[i]));	
@@ -117,10 +132,10 @@ public class MapReader {
 							// do nothing as we have skipped the coordinates
 						}
 					}
-					
+
 					countryModels.add(countryModel);
-					
-					
+
+
 					if (countryValues.length > 0) {
 						for (ContinentModel continentModelValue : continentModels) {
 							if (continentModelValue.getContinentName().trim()
@@ -131,7 +146,7 @@ public class MapReader {
 
 					}
 				}
-				
+
 				if(isBorders) {
 					String[] borderValues = currentLine.split(" ");
 
@@ -147,24 +162,14 @@ public class MapReader {
 					}
 				}
 			}
-			
-			MapOperations.getInstance().setContinentsList(continentModels);
-			
-			MapOperations.getInstance().setCountryList(countryModels);
-			
-			
-//		for(ContinentModel temp: continentModels) {
-//				System.out.println("------Continents--------");
-//				System.out.println(temp.toString());
-//		}
-//		System.out.println("");
-//		
-//		for(CountryModel temp: countryModels) {
-//			System.out.println("------Countries--------");
-//			System.out.println(temp.toString());
-//	}
-			
-			
+			if(isBorders == false) {
+				MapOperations.getInstance().setValErrorFlag(true);
+				System.out.println("As it is invalid please pass a correct map");
+			}
+			else {
+				MapOperations.getInstance().setContinentsList(continentModels);
+				MapOperations.getInstance().setCountryList(countryModels);			
+			}	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
