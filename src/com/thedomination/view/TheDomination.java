@@ -19,6 +19,11 @@ public class TheDomination {
 	 * 
 	 */
 	public static void main(String args[]) {
+		System.out.println("Welcome to Domination GAME!!!");
+		System.out.println();
+		
+		System.out.println("Game Starting");
+		System.out.println("Please type the desired command :");
 		commandReader();
 	}
 
@@ -113,10 +118,11 @@ public class TheDomination {
 			
 			else if(inputCommand[0].equalsIgnoreCase("fortify")) {
 				if(inputCommand[1].equalsIgnoreCase("none")) {
-					PlayerOperations.getInstance().fortifyCountry(inputCommand[1],"","");
+					System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1],"",""));
 				}
 				else {
-					PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]);
+					
+					System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]));
 				}
 				
 			}
@@ -131,12 +137,12 @@ public class TheDomination {
 			else if((inputCommand[0]).equalsIgnoreCase("savemap")) {
 				String validateString = MapOperations.getInstance().validateMap();
 				
-				if(validateString.equalsIgnoreCase("This is a valid Graph")) {
+				if(validateString.equalsIgnoreCase("This is a valid Graph.")) {
 					System.out.println(validateString);
-					SaveMapFile smf = new SaveMapFile();
-					smf.getMapOperationConcateString(MapOperations.getInstance(), inputCommand[1]);
-					smf.saveMapFile(MapOperations.getInstance(), inputCommand[1]);
-					System.out.println(inputCommand[1]+ " Map file has been created");
+			      SaveMapFile smf = new SaveMapFile();
+			      smf.getMapOperationConcateString(MapOperations.getInstance(), inputCommand[1]);
+			      smf.saveMapFile(MapOperations.getInstance(), inputCommand[1]);
+			      System.out.println(inputCommand[1]+ " Map file has been created");
 				}
 				else {
 					System.out.println(validateString);
