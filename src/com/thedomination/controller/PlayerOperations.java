@@ -63,6 +63,15 @@ public class PlayerOperations {
 		return playerModelList;
 	}
 	
+	/** getPlayerModelList returns playerModelList */
+	public ArrayList<PlayerModel> getPlayerModelList() {
+		return playerModelList;
+	}
+
+	/** setPlayerModelList sets playerModelList */
+	public void setPlayerModelList(ArrayList<PlayerModel> playerModelList) {
+		this.playerModelList = playerModelList;
+	}
 	/**
 	 * getArmiesToAssign Method Getter Function to get armies to assign
 	 *
@@ -257,14 +266,22 @@ public class PlayerOperations {
 		 */
 		
 		public String fortifyCountry(String fromCountry,String toCountry, String num) {
-			if(fromCountry.equalsIgnoreCase("none")) {
-				System.out.println("No countries chosen for fortification");
-				return "";
-			}
-		
-			fortifyCountryCounter++;
+			String message="";
 			int playerIndex = 0;
 			int playerPosition = 0;
+			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			CountryModel tempFromCountryModel = tempPlayerModel.searchCountry(fromCountry);
+			CountryModel tempToCountryModel = tempPlayerModel.searchCountry(toCountry);
+			if(fromCountry.equalsIgnoreCase("none")) {
+				return "No countries chosen for fortification";
+				
+			}
+			if(Integer.parseInt(num)>tempFromCountryModel.getNoOfArmiesCountry() || Integer.parseInt(num)<=0) {
+				message="Not possible";
+				return message;
+			}
+			fortifyCountryCounter++;
+			
 			playerPosition = fortifyCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
 			
 			if(playerPosition == 0) {
@@ -274,20 +291,19 @@ public class PlayerOperations {
 				playerIndex = playerPosition-1;
 			}
 	
-			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-			CountryModel tempFromCountryModel = tempPlayerModel.searchCountry(fromCountry);
-			CountryModel tempToCountryModel = tempPlayerModel.searchCountry(toCountry);
+			
 			if(tempFromCountryModel.getNoOfArmiesCountry() > 1 && tempFromCountryModel.getNoOfArmiesCountry() > Integer.parseInt(num)) {
 				tempToCountryModel.setNoOfArmiesCountry((tempToCountryModel.getNoOfArmiesCountry()+Integer.parseInt(num)));
 				tempFromCountryModel.setNoOfArmiesCountry((tempFromCountryModel.getNoOfArmiesCountry()-Integer.parseInt(num)));
-				System.out.println("Fortification Done.");
+				//System.out.println("Fortification Done.");
+				message="Fortification Done.";
 //				System.out.println(tempFromCountryModel);
 //				System.out.println(tempToCountryModel);
 			}
 			else {
-				System.out.println("Fortification Not possible.");
+				message="Fortification Not possible.";
 			}
-			return "";
+			return message;
 		}
 		/**
 		 * reInforce method for player to place all reinforcement armies on the map
@@ -299,6 +315,7 @@ public class PlayerOperations {
 		
 		public String reInforce(String countryName, int num) {
 
+			String message="";
 			int playerIndex = 0;
 			int playerPosition = 0;
 			playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
@@ -338,11 +355,15 @@ public class PlayerOperations {
 				}
 				reinforceFlag = false;
 			}
-			
+            message="Armies got as reinforment "+reInforceNoOfArmy;
 			System.out.println("Armies got as reinforment "+reInforceNoOfArmy);
 			tempPlayerModel.setnoOfArmyInPlayer(reInforceNoOfArmy);
 			
 			while(reInforceNoOfArmy>0) {
+				if(num>reInforceNoOfArmy || num<0) {
+					System.out.println("Not possible");
+					break;
+				}
 				CountryModel countryAssignedArmy = tempPlayerModel.searchCountry(countryName);
 				countryAssignedArmy.setNoOfArmiesCountry(countryAssignedArmy.getNoOfArmiesCountry() + num);
 				tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-num);
@@ -351,11 +372,12 @@ public class PlayerOperations {
 				
 			}
 			System.out.println("No of Armies left to assign "+ reInforceNoOfArmy );
+			message="No of Armies left to assign "+ reInforceNoOfArmy;
 			if(reInforceNoOfArmy == 0) {
 				reInforceCountryCounter++;
 				reinforceFlag = true;
 			}
 			//System.out.println(tempPlayerModel);
-			return "";
+			return message;
 		}
 }
