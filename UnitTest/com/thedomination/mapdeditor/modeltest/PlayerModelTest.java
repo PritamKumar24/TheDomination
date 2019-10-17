@@ -24,13 +24,29 @@ import com.thedomination.model.PlayerModel;
 public class PlayerModelTest {
 	PlayerOperations playerOperations;
 
+	/**
+	 * Sets the up before class.
+	 * 
+	 * @throws Exception the exception
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
+	/**
+	 * Tear down after class.
+	 * 
+	 * @throws Exception the exception
+	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
+	
+	/**
+	 * setting up the values of continent and countries before conducting test.
+	 * setting up the values of players
+	 * @throws Exception the exception
+	 */
 
 	@Before
 	public void beforeTest() throws Exception {
@@ -62,6 +78,10 @@ public class PlayerModelTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	/**
+	 * method used to add the players.
+	 */
 
 	@Test
 	public void addPlayer() {
@@ -86,6 +106,10 @@ public class PlayerModelTest {
 
 	}
 
+	/**
+	 * Method used to remove the player from the list.
+	 *
+	 */
 	@Test
 	public void removePlayertest() {
 
@@ -96,6 +120,12 @@ public class PlayerModelTest {
 		assertNull(playerOperations.searchPlayer("Aditi"));
 	}
 
+	
+	/**
+	 * Method used to add the country.
+	 * Method used to check player name
+	 * Method use to check army assign
+	 */
 	@Test
 	public void overallTest() {
 		PlayerModel playermodel = new PlayerModel("FORD");
@@ -107,6 +137,11 @@ public class PlayerModelTest {
 		assertEquals(4, playerOperations.getArmiesToAssign());
 
 	}
+	
+	/**
+	 * Method used to check the fortification is done when none of the army is assigned.
+	 
+	 */
 
 	@Test
 	public void fortifytestNone() {
@@ -119,6 +154,11 @@ public class PlayerModelTest {
 		Assert.assertEquals(expected, result);
 
 	}
+	
+	/**
+	 * Method used to check the reinforcement is done when when the army is assigned.
+	 
+	 */
 
 	@Test
 	public void reinforceTest() {
@@ -135,6 +175,11 @@ public class PlayerModelTest {
 		Assert.assertNotEquals(expected, result);
 
 	}
+	
+	/**
+	 * Method used to check the fortification is done when  the army is assigned.
+	 
+	 */
 
 	@Test
 	public void fortify() {
