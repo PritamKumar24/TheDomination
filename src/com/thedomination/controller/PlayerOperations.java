@@ -242,6 +242,15 @@ public class PlayerOperations {
 		public void placeAll() {
 			int pickedNumber;
 			Random randomNumber = new Random();
+			
+			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+				for(CountryModel loopCountry: loopPlayer.getPlayerCountryList()) {
+					if(loopCountry.getNoOfArmiesCountry() == 0) {
+						loopCountry.setNoOfArmiesCountry(1);
+						loopPlayer.setnoOfArmyInPlayer(loopPlayer.getnoOfArmyInPlayer()-1);
+					}
+				}
+			}
 			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
 				for(int j=loopPlayer.getnoOfArmyInPlayer();j!=0;j--) {
 					pickedNumber=randomNumber.nextInt(loopPlayer.getPlayerCountryList().size());
@@ -267,41 +276,42 @@ public class PlayerOperations {
 		
 		public String fortifyCountry(String fromCountry,String toCountry, String num) {
 			String message="";
-			int playerIndex = 0;
-			int playerPosition = 0;
-			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-			CountryModel tempFromCountryModel = tempPlayerModel.searchCountry(fromCountry);
-			CountryModel tempToCountryModel = tempPlayerModel.searchCountry(toCountry);
 			if(fromCountry.equalsIgnoreCase("none")) {
-				return "No countries chosen for fortification";
-				
-			}
-			if(Integer.parseInt(num)>tempFromCountryModel.getNoOfArmiesCountry() || Integer.parseInt(num)<=0) {
-				message="Not possible";
+				message="No countries chosen for fortification";
+				fortifyCountryCounter++;
 				return message;
 			}
+
 			fortifyCountryCounter++;
-			
+			int playerIndex = 0;
+			int playerPosition = 0;
 			playerPosition = fortifyCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
-			
+
 			if(playerPosition == 0) {
 				playerIndex =  (fortifyCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
 			}
 			else {
 				playerIndex = playerPosition-1;
 			}
-	
-			
-			if(tempFromCountryModel.getNoOfArmiesCountry() > 1 && tempFromCountryModel.getNoOfArmiesCountry() > Integer.parseInt(num)) {
+
+			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			CountryModel tempFromCountryModel = tempPlayerModel.searchCountry(fromCountry);
+			CountryModel tempToCountryModel = tempPlayerModel.searchCountry(toCountry);
+			if(tempFromCountryModel == null || tempToCountryModel == null) {
+				message = "Fortification Not possible";
+			}
+			else if(MapOperations.getInstance().searchNeighbourCountry(tempFromCountryModel.getCountryName(),tempToCountryModel.getCountryPosition()) == null) {
+				message = "Countries are not neighbors, fortification Not possible";
+			}
+			else if(tempFromCountryModel.getNoOfArmiesCountry() > 1 && tempFromCountryModel.getNoOfArmiesCountry() > Integer.parseInt(num)) {
 				tempToCountryModel.setNoOfArmiesCountry((tempToCountryModel.getNoOfArmiesCountry()+Integer.parseInt(num)));
 				tempFromCountryModel.setNoOfArmiesCountry((tempFromCountryModel.getNoOfArmiesCountry()-Integer.parseInt(num)));
-				//System.out.println("Fortification Done.");
 				message="Fortification Done.";
 //				System.out.println(tempFromCountryModel);
 //				System.out.println(tempToCountryModel);
 			}
 			else {
-				message="Fortification Not possible.";
+				message="Fortification Not possible";
 			}
 			return message;
 		}

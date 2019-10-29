@@ -47,6 +47,7 @@ public class TheDomination {
 		}
 		else {
 			String[] inputCommand = readLine.split("\\s+");
+			try {
 			if((inputCommand[0]).equalsIgnoreCase("editcontinent")) {
 				for(int i=1;i<inputCommand.length;i++) {
 					if((inputCommand[i]).equalsIgnoreCase("-add")) {
@@ -54,7 +55,7 @@ public class TheDomination {
 						i=i+2;
 					}
 					else if((inputCommand[i]).equalsIgnoreCase("-remove")) {
-						MapOperations.getInstance().deleteContinent(inputCommand[i+1]);
+						System.out.println(MapOperations.getInstance().deleteContinent(inputCommand[i+1]));
 						i=i+1;
 					}
 				}
@@ -62,11 +63,11 @@ public class TheDomination {
 			else if((inputCommand[0]).equalsIgnoreCase("editcountry")) {
 				for(int i=1;i<inputCommand.length;i++) {
 					if((inputCommand[i]).equalsIgnoreCase("-add")) {
-						MapOperations.getInstance().addCountry(inputCommand[i+1],inputCommand[i+2]);
+						System.out.println(MapOperations.getInstance().addCountry(inputCommand[i+1],inputCommand[i+2]));
 						i=i+2;
 					}
 					else if((inputCommand[i]).equalsIgnoreCase("-remove")) {
-						MapOperations.getInstance().deleteCountry(inputCommand[i+1]);
+						System.out.println(MapOperations.getInstance().deleteCountry(inputCommand[i+1]));
 						i=i+1;
 					}
 				}
@@ -156,6 +157,10 @@ public class TheDomination {
 			}
 			else if (inputCommand[0].equalsIgnoreCase("reinforce")) {
 				PlayerOperations.getInstance().reInforce(inputCommand[1], Integer.parseInt(inputCommand[2]));
+			}
+			
+			}catch(Exception e) {
+				System.out.println("Invalid Command.");
 			}
 		}
 

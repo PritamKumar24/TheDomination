@@ -193,16 +193,14 @@ public class MapOperations {
 	 * @param continentValue control value for the continent.
 	 */
 	public void  addContinent(String continentName,int continentValue) {
-
-		if (continentName != null && !continentName.trim().isEmpty() && continentValue>0 ) {
+		if (continentName != null && !continentName.trim().isEmpty() && continentValue>0 && searchContinent(continentName)==null) {
 			ContinentModel newContinent = new ContinentModel(continentName,continentValue);
 			getContinentsList().add(newContinent);
-
+			System.out.println("The Continent " + continentName +" has been added");
 		}
-//		for(ContinentModel temp1:continentsList)
-//		{
-//			System.out.println(temp1);}	
-		System.out.println("The Continent " + continentName +" has been added");
+		else {
+			System.out.println("Not allowed");
+		}		
 	}
 /**
  * deleteContinent is Method to delete the Continent.
@@ -215,10 +213,13 @@ public class MapOperations {
 		ContinentModel deleteContinent = searchContinent(continentName);
 		if (deleteContinent != null) {
 			if (deleteContinent.getCountriesList().size() > 0) {
-				return "Continent '" + continentName + "' is not there";
+				return "Continent " + continentName + " contains countries inside it. It cannot be deleted";
 			}
 			getContinentsList().remove(deleteContinent);
 			deleteContinent = null;
+		}
+		else {
+			return "This Continent doesnot exist";
 		}
 //		for(ContinentModel temp1:continentsList) {
 //			System.out.println(temp1);
@@ -235,9 +236,8 @@ public class MapOperations {
 	 * @return tempCountry name of the country if got else null if not found. 
 	 */
 	public CountryModel searchCountry(String countryName) {
-		CountryModel country = null;
-
-		for(CountryModel tempCountry : countryList) {
+		//CountryModel country = null;
+		for(CountryModel tempCountry : getCountryList()) {
 			if (tempCountry.getCountryName().equals(countryName))
 				return tempCountry;
 		}
@@ -300,7 +300,6 @@ public class MapOperations {
 		if (searchCountry(neighbourCountryName) == null || searchCountry(countryName) == null) {
 			System.out.println("Countries |" + neighbourCountryName +" OR "+ countryName + "| Not found");
 		}
-
 		else if (searchCountry(neighbourCountryName) != null && searchCountry(countryName) !=null) {
 			CountryModel neighbourCountry = searchCountry(neighbourCountryName);
 			int neighbourCountryPosition = neighbourCountry.getCountryPosition();
@@ -403,16 +402,19 @@ public class MapOperations {
 	 * @return delete the country if found else print not found message.
 	 */
 	public String deleteCountry(String countryName) {
-		
 		CountryModel deleteCountry = searchCountry(countryName);
-		if (deleteCountry != null) {
+		
+		if(deleteCountry == null) {
+			return "There is no country with this name.";
+		}
+		else if(deleteCountry.getListOfNewNeighbours().size()>0) {
+			return "Please remove the neighbours of this country before you delete it.";
+		}
+		else {
 			deleteCountry.getBelongsTo().deleteCountry(deleteCountry);
 			getCountryList().remove(deleteCountry);
 			deleteCountry = null;
-		} else {
-			return "There is no country with this name";
 		}
-		//System.out.println(countryList.toString());
 		System.out.println("The Country " + countryName +" has been deleted");
 		DeleteConnectedGraphCountry(countryName);
 		return "";

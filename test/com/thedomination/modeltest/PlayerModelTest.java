@@ -1,4 +1,4 @@
-package com.thedomination.mapdeditor.modeltest;
+package com.thedomination.modeltest;
 
 import static org.junit.Assert.*;
 
