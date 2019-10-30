@@ -211,10 +211,4 @@ public class CountryModel {
 	 *
 	 * @return CountryModel countryPosition countryName belongsTo noOfArmiesCountry listOfNewNeighbours.
 	 */
-//	@Override
-//	public String toString() {
-//		return "CountryModel [" + countryPosition + "]" + countryName + ", belongsTo=" + belongsTo + ", noOfArmiesCountry="
-//				+ noOfArmiesCountry + ", listOfNewNeighbours=" + listOfNewNeighbours + "]";
-//	}
-
 }

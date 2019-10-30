@@ -95,15 +95,13 @@ public class PlayerOperations {
 	 * @param playerName name of player to be added.
 	 */
 	public void  addPlayer(String playerName) {
-		if (playerName != null && !playerName.trim().isEmpty() ) {
-			if(searchPlayer(playerName)==null) {
-				PlayerModel newPlayer = new PlayerModel(playerName);
-				getPlayersList().add(newPlayer);
-				System.out.println("Player name "+playerName+" added");
-			}
-			else {
-				System.out.println("Player name "+playerName+"Already exists");
-			}
+		if (playerName != null && !playerName.trim().isEmpty() && searchPlayer(playerName)==null ) {
+			PlayerModel newPlayer = new PlayerModel(playerName);
+			getPlayersList().add(newPlayer);
+			System.out.println("Player name "+playerName+" added");
+		}
+		else {
+			System.out.println("Player name "+playerName+"Already exists");
 		}
 	}
 	
@@ -128,18 +126,15 @@ public class PlayerOperations {
 	 * 
 	 * @param playerName name of player to be removed. 
 	 */
-
-		public void  removePlayer(String playerName) {
-			if (playerName != null && !playerName.trim().isEmpty() ) {
-				if(searchPlayer(playerName)==null){
-					System.out.println("Player name "+playerName+" does not exist");
-				}
-				else{
-					getPlayersList().remove(searchPlayer(playerName));
-					System.out.println("Player name "+playerName+" deleted");
-				}
-			}
+	public void  removePlayer(String playerName) {
+		if (playerName != null && !playerName.trim().isEmpty() && searchPlayer(playerName)==null ) {
+			System.out.println("Player name "+playerName+" does not exist");
 		}
+		else{
+			getPlayersList().remove(searchPlayer(playerName));
+			System.out.println("Player name "+playerName+" deleted");
+		}
+	}
 		/**
 		 * populateCountries method to allocate a number of initial armies, depending on the number of players .
 		 * 

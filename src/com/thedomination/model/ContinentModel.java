@@ -32,12 +32,12 @@ public class ContinentModel {
 		this.setContinentPosition(continentPosition);
 		//this.countriesList = new ArrayList<CountryModel>();
 	}
+	
 	/**
 	 * Constructor for Continent class.
 	 * 
 	 * @param continentName name of the new continent ..
 	 */
-	
 	public ContinentModel(String continentName) {
 		this.continentName = continentName;
 		this.countriesList = new ArrayList<CountryModel>();
@@ -167,13 +167,5 @@ public class ContinentModel {
 	 */
 	public int getControlValue() {
 		return controlValue;
-	}
-
-//	@Override
-//	public String toString() {
-//		return "ContinentModel [continentName=" + continentName + ", countriesList=" + countriesList + ", controlValue="
-//				+ controlValue + "]";
-//	}
-
-	
+	}	
 }
