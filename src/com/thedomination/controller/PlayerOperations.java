@@ -317,22 +317,24 @@ public class PlayerOperations {
 		 * @param num number of armies to be placed.
 		 * @return empty String
 		 */
-		
-		public String reInforce(String countryName, int num) {
-
-			String message="";
+		 
+		public PlayerModel getCurrentReinforcementPlayer() {
 			int playerIndex = 0;
 			int playerPosition = 0;
 			playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
-
 			if(playerPosition == 0) {
 				playerIndex =  (reInforceCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
 			}
 			else {
 				playerIndex = playerPosition-1;
 			}
-			
-			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+		}
+		
+		public String reInforce(String countryName, int num) {
+
+			String message="";
+			PlayerModel tempPlayerModel = getCurrentReinforcementPlayer()
 			System.out.println(tempPlayerModel.getPlayerName()+" is going to reinforce his armies..");
 			System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
 			
