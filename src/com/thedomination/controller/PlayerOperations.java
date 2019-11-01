@@ -14,6 +14,8 @@ import com.thedomination.model.PlayerModel;
  * UniqueInstance object for PlayetrOperations class.
  * 
  * @author Aditi
+ * @author Pritam Kumar
+ * @author Ankur Singla
  * @version 1.0.0
  */
 public class PlayerOperations {
@@ -29,12 +31,16 @@ public class PlayerOperations {
 	
 	/**Initializes the integer fortifyCountryCounter  */
 	private  int fortifyCountryCounter =0;
+	
 	/**Initializes the integer reInforceCountryCounter  */
 	private  int reInforceCountryCounter =1;
+	
 	/**The reinforceFlag  */
 	boolean reinforceFlag = true;
+	
 	/** The reInforceNoOfArmy */
 	private int reInforceNoOfArmy;
+		
 	/** The object for the player operation */
 	private static PlayerOperations UniqueInstance;
 	/**
@@ -90,6 +96,19 @@ public class PlayerOperations {
 		this.armiesToAssign = armiesToAssign;
 	}
 	
+	
+	
+	
+	public boolean isReinforceFlag() {
+		return reinforceFlag;
+	}
+	
+	public int getReInforceNoOfArmy() {
+		return reInforceNoOfArmy;
+	}
+	public void setReInforceNoOfArmy(int reInforceNoOfArmy) {
+		this.reInforceNoOfArmy = reInforceNoOfArmy;
+	}
 	/**
 	 * addPlayer to add players to playerModelList. 
 	 * @param playerName name of player to be added.
@@ -104,7 +123,6 @@ public class PlayerOperations {
 			System.out.println("Player name "+playerName+"Already exists");
 		}
 	}
-	
 	
 	/**
 	 * searchPlayer to search player from playerModelList.
@@ -156,10 +174,7 @@ public class PlayerOperations {
 				}
 			}
 			System.out.println("The countries have been populated");
-//			for(i=0;i<getPlayersList().size();i++) {
-//				System.out.println("Player " + i);
-//				System.out.println("Countries for this player" + playerModelList.get(i).getPlayerCountryList());
-//			}
+
 		      switch (getPlayersList().size()) {
 		          case 2:
 		        	  for(i=0;i<getPlayersList().size();i++) {
@@ -191,13 +206,9 @@ public class PlayerOperations {
 		        	  }
 		              System.out.println("Players have been assigned 20 armies each.");
 		              break;
-		      }
-
-//		      for(PlayerModel tempPlayer : playerModelList) {
-//		  		System.out.println(tempPlayer.toString());	
-//		  		}
-			
+		      }			
 		}
+		
 		/**
 		 * placeArmy method places army by each player until all players have placed all their armies
 		 * @param countryName anme of country for which army has to be placed.
@@ -206,7 +217,6 @@ public class PlayerOperations {
 		public void placeArmy(String countryName) {
 			
 			placeArmyCounter++;
-			//System.out.println(placeArmyCounter);
 		
 			int playerIndex = 0;
 			int playerPosition = 0;
@@ -220,17 +230,14 @@ public class PlayerOperations {
 			}
 	
 			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-			//System.out.println(tempPlayerModel);
 			CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
 			tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
 			tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
 			
-//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
-//			System.out.println(loopPlayer);
-//			}
 			System.out.println("The army has been placed on the country: " + countryName);
 			
 		}
+		
 		/**
 		 * placeAll method to randomly place all remaining unplaced armies for all players.
 		 */
@@ -252,14 +259,11 @@ public class PlayerOperations {
 					CountryModel loopCountry = loopPlayer.getPlayerCountryList().get(pickedNumber);
 					loopCountry.setNoOfArmiesCountry(loopCountry.getNoOfArmiesCountry()+1);
 					loopPlayer.setnoOfArmyInPlayer(loopPlayer.getnoOfArmyInPlayer()-1);
-					//System.out.println("getnoOfArmyInPlayer()" + loopPlayer.getnoOfArmyInPlayer());
 				}
 			}
-//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
-//			System.out.println(loopPlayer);
-//			}
 			System.out.println("The the armies have been assigned randomly");
 		}
+		
 		/**
 		 * fortifyCountry implementation of a valid fortification move from one country to another.
 		 * 
@@ -302,14 +306,13 @@ public class PlayerOperations {
 				tempToCountryModel.setNoOfArmiesCountry((tempToCountryModel.getNoOfArmiesCountry()+Integer.parseInt(num)));
 				tempFromCountryModel.setNoOfArmiesCountry((tempFromCountryModel.getNoOfArmiesCountry()-Integer.parseInt(num)));
 				message="Fortification Done.";
-//				System.out.println(tempFromCountryModel);
-//				System.out.println(tempToCountryModel);
 			}
 			else {
 				message="Fortification Not possible";
 			}
 			return message;
 		}
+		
 		/**
 		 * reInforce method for player to place all reinforcement armies on the map
 		 * 
@@ -317,7 +320,7 @@ public class PlayerOperations {
 		 * @param num number of armies to be placed.
 		 * @return empty String
 		 */
-		 
+		
 		public PlayerModel getCurrentReinforcementPlayer() {
 			int playerIndex = 0;
 			int playerPosition = 0;
@@ -331,60 +334,67 @@ public class PlayerOperations {
 			return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
 		}
 		
-		public String reInforce(String countryName, int num) {
-
-			String message="";
-			PlayerModel tempPlayerModel = getCurrentReinforcementPlayer()
-			System.out.println(tempPlayerModel.getPlayerName()+" is going to reinforce his armies..");
-			System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
-			
-			//Calculate reInforce army
+		public void getReInforcementArmies() {
+			PlayerModel tempPlayerModel = getCurrentReinforcementPlayer();
 			if(reinforceFlag) {
+				System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
 				Double tempReInforceNoOfArmy = (tempPlayerModel.getPlayerCountryList().size())/3.0;
 				reInforceNoOfArmy = (int) Math.floor(tempReInforceNoOfArmy);
+				
 				//check if armies is < 3 if yes assign 3 number of armies else assign based on the calculated one
 				reInforceNoOfArmy = reInforceNoOfArmy<3 ? 3 : reInforceNoOfArmy;
 
 				for(ContinentModel tempContinentModel : MapOperations.getInstance().getContinentsList()) {
-					List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
-					Iterator<CountryModel> iterator = tempCountryModelList.iterator();
-					while(iterator.hasNext()) {
-						CountryModel getCountry = iterator.next();
-						CountryModel tempPlayerCountry = tempPlayerModel.searchCountry(getCountry.getCountryName());
-						if(tempPlayerCountry != null) {
-							iterator.remove();
+					if(tempContinentModel.getCountriesList().size()>0 ) {
+						List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
+						Iterator<CountryModel> iterator = tempCountryModelList.iterator();
+						while(iterator.hasNext()) {
+							CountryModel getCountry = iterator.next();
+							CountryModel tempPlayerCountry = tempPlayerModel.searchCountry(getCountry.getCountryName());
+							if(tempPlayerCountry != null) {
+								iterator.remove();
+							}
+						}
+
+						//This condition means this player owns all the countries of that particular continent
+						if(tempCountryModelList.size()==0) {
+							reInforceNoOfArmy = reInforceNoOfArmy + tempContinentModel.getControlValue();
 						}
 					}
-
-					if(tempCountryModelList.size()==0) {
-						reInforceNoOfArmy = reInforceNoOfArmy + tempContinentModel.getControlValue();
-					}
 				}
+				System.out.println("Armies got as reInforcement "+reInforceNoOfArmy);
+
 				reinforceFlag = false;
 			}
-            message="Armies got as reinforment "+reInforceNoOfArmy;
-			System.out.println("Armies got as reinforment "+reInforceNoOfArmy);
-			tempPlayerModel.setnoOfArmyInPlayer(reInforceNoOfArmy);
+		}
+		
+		public String reInforce(String countryName, int num) {
+			String message="";
+			
+			PlayerModel currentPlayer = getCurrentReinforcementPlayer();
+			System.out.println(currentPlayer.getPlayerName()+" is going to reinforce his armies..");
+			
+			getReInforcementArmies();
+			currentPlayer.setnoOfArmyInPlayer(reInforceNoOfArmy);
 			
 			while(reInforceNoOfArmy>0) {
 				if(num>reInforceNoOfArmy || num<0) {
-					System.out.println("Not possible");
+					System.out.println("!!!!Reinforcement Not Possible!!!!");
 					break;
 				}
-				CountryModel countryAssignedArmy = tempPlayerModel.searchCountry(countryName);
+				CountryModel countryAssignedArmy = currentPlayer.searchCountry(countryName);
 				countryAssignedArmy.setNoOfArmiesCountry(countryAssignedArmy.getNoOfArmiesCountry() + num);
-				tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-num);
+				currentPlayer.setnoOfArmyInPlayer(currentPlayer.getnoOfArmyInPlayer()-num);
 				reInforceNoOfArmy = reInforceNoOfArmy - num;
 				break;
 				
 			}
-			System.out.println("No of Armies left to assign "+ reInforceNoOfArmy );
+			System.out.println("No of armies left to assign "+ reInforceNoOfArmy );
 			message="No of Armies left to assign "+ reInforceNoOfArmy;
 			if(reInforceNoOfArmy == 0) {
 				reInforceCountryCounter++;
 				reinforceFlag = true;
 			}
-			//System.out.println(tempPlayerModel);
 			return message;
 		}
 }
