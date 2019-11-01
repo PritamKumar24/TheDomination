@@ -37,10 +37,60 @@ public class PlayerOperations {
 	
 	/**The reinforceFlag  */
 	boolean reinforceFlag = true;
+
+	boolean moveArmyFlag =false;
 	
 	/** The reInforceNoOfArmy */
 	private int reInforceNoOfArmy;
-		
+	
+	private  int attackCountryCounter = 1;
+
+	private  int defendCountryCounter = 1;
+
+	private boolean attackFlag = true;
+
+	private boolean defendFlag = true;
+
+	private String countrynamefrom;
+
+	private int[] diceAttackArray;
+
+	public int[] getDiceAttackArray() {
+		return diceAttackArray;
+	}
+
+	public void setDiceAttackArray(int[] diceAttackArray) {
+		this.diceAttackArray = diceAttackArray;
+	}
+
+	public int[] getDiceDefendArray() {
+		return diceDefendArray;
+	}
+
+	public void setDiceDefendArray(int[] diceDefendArray) {
+		this.diceDefendArray = diceDefendArray;
+	}
+
+	private int[] diceDefendArray;
+	
+	public String getCountrynamefrom() {
+		return countrynamefrom;
+	}
+
+	public void setCountrynamefrom(String countrynamefrom) {
+		this.countrynamefrom = countrynamefrom;
+	}
+
+	private String countrynameto;
+	
+	public String getCountrynameto() {
+		return countrynameto;
+	}
+
+	public void setCountrynameto(String countrynameto) {
+		this.countrynameto = countrynameto;
+	}
+	
 	/** The object for the player operation */
 	private static PlayerOperations UniqueInstance;
 	/**
@@ -68,11 +118,11 @@ public class PlayerOperations {
 	public ArrayList<PlayerModel> getPlayersList() {
 		return playerModelList;
 	}
-	
-	/** getPlayerModelList returns playerModelList */
-	public ArrayList<PlayerModel> getPlayerModelList() {
-		return playerModelList;
-	}
+
+	//	/** getPlayerModelList returns playerModelList */
+	//	public ArrayList<PlayerModel> getPlayerModelList() {
+	//		return playerModelList;
+	//	}
 
 	/** setPlayerModelList sets playerModelList */
 	public void setPlayerModelList(ArrayList<PlayerModel> playerModelList) {
@@ -218,23 +268,28 @@ public class PlayerOperations {
 			
 			placeArmyCounter++;
 		
-			int playerIndex = 0;
-			int playerPosition = 0;
-			playerPosition = placeArmyCounter % PlayerOperations.getInstance().getPlayersList().size();
-			
-			if(playerPosition == 0) {
-				playerIndex =  (placeArmyCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
-			}
-			else {
-				playerIndex = playerPosition-1;
-			}
-	
-			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-			CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
-			tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
-			tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
-			
-			System.out.println("The army has been placed on the country: " + countryName);
+//		int playerIndex = 0;
+//		int playerPosition = 0;
+//		playerPosition = placeArmyCounter % PlayerOperations.getInstance().getPlayersList().size();
+//
+//		if(playerPosition == 0) {
+//			playerIndex =  (placeArmyCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+//		}
+//		else {
+//			playerIndex = playerPosition-1;
+//		}
+
+		//PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+		PlayerModel tempPlayerModel = currentPlayer(placeArmyCounter);
+		//System.out.println(tempPlayerModel);
+		CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
+		tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
+		tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
+
+		//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+		//			System.out.println(loopPlayer);
+		//			}
+		System.out.println("The army has been placed on the country: " + countryName);
 			
 		}
 		
@@ -275,25 +330,26 @@ public class PlayerOperations {
 		
 		public String fortifyCountry(String fromCountry,String toCountry, String num) {
 			String message="";
-			if(fromCountry.equalsIgnoreCase("none")) {
+		if(fromCountry.equalsIgnoreCase("-none")) {
 				message="No countries chosen for fortification";
 				fortifyCountryCounter++;
 				return message;
 			}
 
-			fortifyCountryCounter++;
-			int playerIndex = 0;
-			int playerPosition = 0;
-			playerPosition = fortifyCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
+		fortifyCountryCounter++;
+//		int playerIndex = 0;
+//		int playerPosition = 0;
+//		playerPosition = fortifyCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
+//
+//		if(playerPosition == 0) {
+//			playerIndex =  (fortifyCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+//		}
+//		else {
+//			playerIndex = playerPosition-1;
+//		}
 
-			if(playerPosition == 0) {
-				playerIndex =  (fortifyCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
-			}
-			else {
-				playerIndex = playerPosition-1;
-			}
-
-			PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+		//PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+		PlayerModel tempPlayerModel = currentPlayer(fortifyCountryCounter);
 			CountryModel tempFromCountryModel = tempPlayerModel.searchCountry(fromCountry);
 			CountryModel tempToCountryModel = tempPlayerModel.searchCountry(toCountry);
 			if(tempFromCountryModel == null || tempToCountryModel == null) {
@@ -321,21 +377,92 @@ public class PlayerOperations {
 		 * @return empty String
 		 */
 		
-		public PlayerModel getCurrentReinforcementPlayer() {
-			int playerIndex = 0;
-			int playerPosition = 0;
-			playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
-			if(playerPosition == 0) {
-				playerIndex =  (reInforceCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
-			}
-			else {
-				playerIndex = playerPosition-1;
-			}
-			return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-		}
+//	public PlayerModel getCurrentReinforcementPlayer() {
+//		int playerIndex = 0;
+//		int playerPosition = 0;
+//		playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
+//		if(playerPosition == 0) {
+//			playerIndex =  (reInforceCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+//		}
+//		else {
+//			playerIndex = playerPosition-1;
+//		}
+//		return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+//	}
 		
+//	public String reInforce(String countryName, int num) {
+//
+//		String message="";
+////		int playerIndex = 0;
+////		int playerPosition = 0;
+////		playerPosition = reInforceCountryCounter % PlayerOperations.getInstance().getPlayersList().size();
+////
+////		if(playerPosition == 0) {
+////			playerIndex =  (reInforceCountryCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+////		}
+////		else {
+////			playerIndex = playerPosition-1;
+////		}
+//
+//		//PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+//		
+//		PlayerModel tempPlayerModel = playerIndex(reInforceCountryCounter);
+//		System.out.println(tempPlayerModel.getPlayerName()+" is going to reinforce his armies..");
+//		System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
+//
+//		//Calculate reInforce army
+//		if(reinforceFlag) {
+//			Double tempReInforceNoOfArmy = (tempPlayerModel.getPlayerCountryList().size())/3.0;
+//			reInforceNoOfArmy = (int) Math.floor(tempReInforceNoOfArmy);
+//			//check if armies is < 3 if yes assign 3 number of armies else assign based on the calculated one
+//			reInforceNoOfArmy = reInforceNoOfArmy<3 ? 3 : reInforceNoOfArmy;
+//
+//			for(ContinentModel tempContinentModel : MapOperations.getInstance().getContinentsList()) {
+//				if(tempContinentModel.getCountriesList().size() >0) {
+//					List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
+//					Iterator<CountryModel> iterator = tempCountryModelList.iterator();
+//					while(iterator.hasNext()) {
+//						CountryModel getCountry = iterator.next();
+//						CountryModel tempPlayerCountry = tempPlayerModel.searchCountry(getCountry.getCountryName());
+//						if(tempPlayerCountry != null) {
+//							iterator.remove();
+//						}
+//					}
+//
+//					if(tempCountryModelList.size()==0) {
+//						reInforceNoOfArmy = reInforceNoOfArmy + tempContinentModel.getControlValue();
+//					}
+//				}
+//			}
+//			reinforceFlag = false;
+//		}
+//		message="Armies got as reinforment "+reInforceNoOfArmy;
+//		System.out.println("Armies got as reinforment "+reInforceNoOfArmy);
+//		tempPlayerModel.setnoOfArmyInPlayer(reInforceNoOfArmy);
+//
+//		while(reInforceNoOfArmy>0) {
+//			if(num>reInforceNoOfArmy || num<0) {
+//				System.out.println("Not possible");
+//				break;
+//			}
+//			CountryModel countryAssignedArmy = tempPlayerModel.searchCountry(countryName);
+//			countryAssignedArmy.setNoOfArmiesCountry(countryAssignedArmy.getNoOfArmiesCountry() + num);
+//			tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-num);
+//			reInforceNoOfArmy = reInforceNoOfArmy - num;
+//			break;
+//
+//		}
+//		System.out.println("No of Armies left to assign "+ reInforceNoOfArmy );
+//		message="No of Armies left to assign "+ reInforceNoOfArmy;
+//		if(reInforceNoOfArmy == 0) {
+//			reInforceCountryCounter++;
+//			reinforceFlag = true;
+//		}
+//		//System.out.println(tempPlayerModel);
+//		return message;
+//	}
 		public void getReInforcementArmies() {
-			PlayerModel tempPlayerModel = getCurrentReinforcementPlayer();
+		PlayerModel tempPlayerModel = currentPlayer(reInforceCountryCounter);
 			if(reinforceFlag) {
 				System.out.println("Total number of countries "+tempPlayerModel.getPlayerName()+" player owns is "+ tempPlayerModel.getPlayerCountryList().size());
 				Double tempReInforceNoOfArmy = (tempPlayerModel.getPlayerCountryList().size())/3.0;
@@ -371,7 +498,7 @@ public class PlayerOperations {
 		public String reInforce(String countryName, int num) {
 			String message="";
 			
-			PlayerModel currentPlayer = getCurrentReinforcementPlayer();
+		PlayerModel currentPlayer = currentPlayer(reInforceCountryCounter);
 			System.out.println(currentPlayer.getPlayerName()+" is going to reinforce his armies..");
 			
 			getReInforcementArmies();
@@ -397,4 +524,82 @@ public class PlayerOperations {
 			}
 			return message;
 		}
+	public void attackCountry(String countrynamefrom, String countrynameto, int numdice) {
+		
+		if (attackFlag == false) {
+			System.out.println("Invalid move");
+		}
+		else if(countrynamefrom.equalsIgnoreCase("-noattack")) {
+			defendCountryCounter++;
+			attackCountryCounter++;
+			System.out.println("No attack chosen");
+		}
+		else {
+			defendFlag = false;
+			moveArmyFlag = false;
+			PlayerOperations.getInstance().setCountrynamefrom(countrynamefrom);
+			PlayerOperations.getInstance().setCountrynameto(countrynameto);		
+//		}
+//		if(attackFlag) {
+			int diceAttack[] = new int[numdice];
+			
+			//int playerIndex = playerIndex(attackCountryCounter);
+
+			//PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			
+			PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().currentPlayer(attackCountryCounter);
+			CountryModel loopCountryFrom = tempPlayerModelAttackCountry.searchCountry(countrynamefrom);
+			
+			//PlayerModel tempPlayerModelDefendCountry = modelOfDefender(PlayerOperations.getInstance().getCountrynameto());
+			
+			//CountryModel loopCountryTo = tempPlayerModelDefendCountry.searchCountry(PlayerOperations.getInstance().getCountrynameto());
+			CountryModel loopCountryTo = modelOfDefender(countrynameto);
+			int count=0;
+			for(CountryModel loopCountry : tempPlayerModelAttackCountry.getPlayerCountryList()) {
+				if(loopCountry.getNoOfArmiesCountry()<=1) {
+					count++;
+				}
+			}
+			if(count == tempPlayerModelAttackCountry.getPlayerCountryList().size()) {
+				attackCountryCounter++;
+				System.out.println("Player doesnot have enough armies to attack any other territory.");
+				System.out.println("Skipping turn of attack for Player " + tempPlayerModelAttackCountry.getPlayerName());
+			}
+			else if(loopCountryFrom == null) {
+				System.out.println("Attacking country doesnot belong to the player");
+			}
+			else if(tempPlayerModelAttackCountry.searchCountry(countrynameto) != null){
+				System.out.println("Defending country cannot belong to the same player");
+			}
+//			else if(MapOperations.getInstance().searchNeighbourCountry(countrynamefrom, modelOfDefender(getCountrynameto()).searchCountry(countrynameto).getCountryPosition()) == null) {
+//				System.out.println("Both of the countries should be neighbors");
+//			}
+			else if(MapOperations.getInstance().searchNeighbourCountry(countrynamefrom, modelOfDefender(countrynameto).getCountryPosition()) == null) {
+				System.out.println("Both of the countries should be neighbors");
+			}
+			else if(loopCountryFrom.getNoOfArmiesCountry()<2) {
+				System.out.println("Armies of attacking country should be more than 1");
+			}
+			else if(loopCountryTo.getNoOfArmiesCountry()<1) {
+				System.out.println("Defending country doesnot have any army");
+			}
+			else if(numdice>3 || numdice>loopCountryFrom.getNoOfArmiesCountry()-1 || numdice<=0) {
+				System.out.println("Invalid number of dice");
+			}
+			else {
+				System.out.print("Dice roll value ");
+				System.out.println();
+				for(int i=0; i<numdice; i++) {
+					diceAttack[i]=rollDice();
+					System.out.print(diceAttack[i] + " ");
+				}
+				System.out.println();
+				PlayerOperations.getInstance().setDiceAttackArray(sortArray(diceAttack));
+				System.out.println("Player " + tempPlayerModelAttackCountry.getPlayerName() + " is ready to attack");
+				defendFlag=true;
+				attackFlag = false;
+			}		
+		}
+		
+	}
 }

@@ -112,8 +112,9 @@ public class PlayerModel {
 	/**
 	 * Removes the country.
 	 */
-	public void RemoveCountry() {
-		playerCountryList.removeAll(playerCountryList);
+	public CountryModel RemoveCountry(CountryModel countryName) {
+		playerCountryList.remove(countryName);
+		return countryName;
 	}
 
 	/**
