@@ -602,4 +602,109 @@ public class PlayerOperations {
 		}
 		
 	}
+	public void allOutAttack(String countrynamefrom, String countrynameto) {
+		
+		if(attackFlag == false) {
+			System.out.println("Invalid move");
+		}
+		else {
+			defendFlag=false;
+			moveArmyFlag = false;
+			PlayerOperations.getInstance().setCountrynamefrom(countrynamefrom);
+			PlayerOperations.getInstance().setCountrynameto(countrynameto);
+
+			//int playerIndex=playerIndex(attackCountryCounter);
+			PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().currentPlayer(attackCountryCounter);
+			CountryModel loopCountryFrom = tempPlayerModelAttackCountry.searchCountry(countrynamefrom);
+			attackFlag=true;
+
+			//PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			//PlayerModel tempPlayerModelDefendCountry = modelOfDefender(AttackOperations.getInstance().getCountrynameto());
+
+			CountryModel loopCountryTo = modelOfDefender(countrynameto);
+			int count=0;
+
+			for(CountryModel loopCountry : tempPlayerModelAttackCountry.getPlayerCountryList()) {
+				if(loopCountry.getNoOfArmiesCountry()<=1) {
+					count++;
+				}
+			}
+			if(count == tempPlayerModelAttackCountry.getPlayerCountryList().size()) {
+				attackCountryCounter++;
+				System.out.println("Player doesnot have enough armies to attack any other territory.");
+				System.out.println("Skipping turn of attack for Player " + tempPlayerModelAttackCountry.getPlayerName());
+				defendCountryCounter++;
+			}
+			else if(loopCountryFrom == null) {
+				System.out.println("Attacking country doesnot belong to the player");
+			}
+			else if(tempPlayerModelAttackCountry.searchCountry(countrynameto) != null){
+				System.out.println("Defending country cannot belong to the same player");
+			}
+			else if(MapOperations.getInstance().searchNeighbourCountry(countrynamefrom, modelOfDefender(countrynameto).getCountryPosition()) == null) {
+				System.out.println("Both of the countries should be neighbors");
+			}	
+			else if(loopCountryFrom.getNoOfArmiesCountry()<2) {
+				System.out.println("Armies of attacking country should be more than 1");
+			}
+			else if(loopCountryTo.getNoOfArmiesCountry()<1) {
+				System.out.println("Defending country doesnot have any army");
+			}
+			else {
+				while(attackFlag) {
+					int diceAttack[] = new int[tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry() > 3 ? 3 : tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry()-1];
+					for(int i=0; i<(diceAttack.length);i++) {
+						diceAttack[i]=rollDice();
+						System.out.print(diceAttack[i] + " ");
+					}
+					System.out.println();
+					PlayerOperations.getInstance().setDiceAttackArray(sortArray(diceAttack));
+
+					//CountryModel loopCountryTo = tempPlayerModelDefendCountry.searchCountry(AttackOperations.getInstance().getCountrynameto());
+					int diceDefend[]=new int[loopCountryTo.getNoOfArmiesCountry() > 2 ? 2 : loopCountryTo.getNoOfArmiesCountry()];
+					for(int i=0; i<(diceDefend.length);i++) {
+						diceDefend[i]=rollDice();
+						System.out.print(diceDefend[i] + " ");
+					}
+					System.out.println();
+					PlayerOperations.getInstance().setDiceDefendArray(sortArray(diceDefend));
+
+					for(int i = 0;i<(PlayerOperations.getInstance().getDiceDefendArray().length > PlayerOperations.getInstance().getDiceAttackArray().length ? PlayerOperations.getInstance().getDiceAttackArray().length : PlayerOperations.getInstance().getDiceDefendArray().length);i++) {
+						if((PlayerOperations.getInstance().getDiceAttackArray()[i] < PlayerOperations.getInstance().getDiceDefendArray()[i])) {
+							//tempPlayerModelAttackCountry.searchCountry(countrynamefrom).setNoOfArmiesCountry(tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry()-1);
+							loopCountryFrom.setNoOfArmiesCountry(loopCountryFrom.getNoOfArmiesCountry()-1);
+							System.out.println("Attacker looses one army");
+							//System.out.println(tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getCountryName() + " has armies " + tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry());
+							System.out.println(loopCountryFrom.getCountryName() + " has armies " + loopCountryFrom.getNoOfArmiesCountry());
+						}
+						else {
+							//tempPlayerModelDefendCountry.searchCountry(countrynameto).setNoOfArmiesCountry(tempPlayerModelDefendCountry.searchCountry(countrynameto).getNoOfArmiesCountry()-1);
+							loopCountryTo.setNoOfArmiesCountry(loopCountryTo.getNoOfArmiesCountry()-1);
+							System.out.println("Defender looses one army");
+							//System.out.println(tempPlayerModelDefendCountry.searchCountry(countrynameto).getCountryName() + " has armies " + tempPlayerModelDefendCountry.searchCountry(countrynameto).getNoOfArmiesCountry());
+							System.out.println(loopCountryTo.getCountryName() + " has armies " + loopCountryTo.getNoOfArmiesCountry());
+						}
+						attackFlag = false;
+					}
+
+					//if(tempPlayerModelDefendCountry.searchCountry(countrynameto).getNoOfArmiesCountry() == 0) {
+					if(loopCountryTo.getNoOfArmiesCountry() == 0) {
+						System.out.println("Attacker has won " + countrynameto);
+						//System.out.println("Armies on " + countrynamefrom + " " + tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry());
+						System.out.println("Armies on " + countrynamefrom + " " + loopCountryTo.getNoOfArmiesCountry());
+						//attackFlag = false;
+						moveArmyFlag=true;
+						System.out.println("Now move the armies from " + countrynamefrom + " " + countrynameto);
+					}
+					else if(loopCountryFrom.getNoOfArmiesCountry() == 1) {
+						System.out.println("Defender has won " + countrynamefrom);
+						System.out.println("Player cannot attack more. 1 army left on attacking country");
+						//System.out.println("Armies on " + countrynameto + " " + tempPlayerModelDefendCountry.searchCountry(countrynameto).getNoOfArmiesCountry());
+						System.out.println("Armies on " + countrynameto + " " + loopCountryFrom.getNoOfArmiesCountry());
+						//attackFlag = false;
+					}
+				}
+			}
+		}
+	}
 }
