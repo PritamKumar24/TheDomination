@@ -707,4 +707,73 @@ public class PlayerOperations {
 			}
 		}
 	}
+	public void defendCountry(int numdice) {
+		
+		if(defendFlag == false) {
+			System.out.println("Invalid move");
+		}
+		//int playerIndex=playerIndex(defendCountryCounter);
+
+		//PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+		else {
+			moveArmyFlag = false;
+			attackFlag = false; 
+			PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().currentPlayer(attackCountryCounter);
+			CountryModel loopCountryFrom = tempPlayerModelAttackCountry.searchCountry(countrynamefrom);
+
+			//PlayerModel tempPlayerModelDefendCountry = modelOfDefender(AttackOperations.getInstance().getCountrynameto());
+
+			//CountryModel loopCountryTo = tempPlayerModelDefendCountry.searchCountry(AttackOperations.getInstance().getCountrynameto());
+
+			CountryModel loopCountryTo = modelOfDefender(countrynameto);
+
+			if(numdice>2 || numdice>loopCountryTo.getNoOfArmiesCountry() || numdice<=0) {
+				System.out.println("Invalid number of dice");
+			}
+			else {
+				int diceDefend[] = new int[numdice];
+				System.out.print("Dice roll value ");
+				for(int i=0; i<numdice; i++) {
+					diceDefend[i]=rollDice();
+					System.out.print(diceDefend[i] + " ");
+				}
+				System.out.println();
+
+				PlayerOperations.getInstance().setDiceDefendArray(sortArray(diceDefend));
+
+
+				for(int i = 0;i<(PlayerOperations.getInstance().getDiceDefendArray().length > PlayerOperations.getInstance().getDiceAttackArray().length ? PlayerOperations.getInstance().getDiceAttackArray().length : PlayerOperations.getInstance().getDiceDefendArray().length);i++) {
+					if((PlayerOperations.getInstance().getDiceAttackArray()[i] < PlayerOperations.getInstance().getDiceDefendArray()[i])) {
+						//					for(CountryModel loopCountry : tempPlayerModelAttackCountry.getPlayerCountryList()) {
+						//						if(loopCountry.getCountryName().equalsIgnoreCase(AttackOperations.getInstance().getCountrynamefrom())) {
+						loopCountryFrom.setNoOfArmiesCountry(loopCountryFrom.getNoOfArmiesCountry()-1);
+						System.out.println("Attacker looses one army");
+						System.out.println(loopCountryFrom.getCountryName() + " has armies " + loopCountryFrom.getNoOfArmiesCountry());
+						//						}
+						//					}
+					}
+					else {
+						//					for(CountryModel loopCountry : tempPlayerModelDefendCountry.getPlayerCountryList()) {
+						//						if(loopCountry.getCountryName().equalsIgnoreCase(AttackOperations.getInstance().getCountrynameto())) {
+						loopCountryTo.setNoOfArmiesCountry(loopCountryTo.getNoOfArmiesCountry()-1);
+						System.out.println("Defender looses one army");
+						System.out.println(loopCountryTo.getCountryName() + " has armies " + loopCountryTo.getNoOfArmiesCountry());
+					}
+					defendFlag = false;
+					attackFlag = true;
+				}
+				
+				if(loopCountryTo.getNoOfArmiesCountry() == 0) {
+					System.out.println("Attacker has won " + countrynameto);
+					//System.out.println("Armies on " + countrynamefrom + " " + tempPlayerModelAttackCountry.searchCountry(countrynamefrom).getNoOfArmiesCountry());
+					System.out.println("Armies on " + countrynamefrom + " " + loopCountryFrom.getNoOfArmiesCountry());
+					//attackFlag = false;
+					moveArmyFlag=true;
+					attackFlag = false;
+					defendFlag = false;
+					System.out.println("Now move the armies from " + countrynamefrom + " " + countrynameto);
+				}
+			}
+		}
+	}
 }
