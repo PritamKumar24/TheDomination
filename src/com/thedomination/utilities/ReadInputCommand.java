@@ -99,7 +99,7 @@ public class ReadInputCommand {
 			}
 			
 			else if(inputCommand[0].equalsIgnoreCase("fortify")) {
-				if(inputCommand[1].equalsIgnoreCase("none")) {
+				if(inputCommand[1].equalsIgnoreCase("-none")) {
 					System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1],"",""));
 				}
 				else {
@@ -138,6 +138,24 @@ public class ReadInputCommand {
 			}
 			else if (inputCommand[0].equalsIgnoreCase("reinforce")) {
 				PlayerOperations.getInstance().reInforce(inputCommand[1], Integer.parseInt(inputCommand[2]));
+			}
+			else if (inputCommand[0].equalsIgnoreCase("attack")) {
+				if (inputCommand[1].equalsIgnoreCase("-noattack")) {
+					PlayerOperations.getInstance().attackCountry(inputCommand[1] , "", 0);
+					//System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]));
+				}
+				else if(inputCommand[3].equalsIgnoreCase("-allout")) {
+					PlayerOperations.getInstance().allOutAttack(inputCommand[1] , inputCommand[2]);	
+				}
+				else {
+					PlayerOperations.getInstance().attackCountry(inputCommand[1] , inputCommand[2], Integer.parseInt(inputCommand[3]));
+				}
+			}
+			else if(inputCommand[0].equalsIgnoreCase("attackmove")) {
+				PlayerOperations.getInstance().attackMove(Integer.parseInt(inputCommand[1]));
+			}
+			else if (inputCommand[0].equalsIgnoreCase("defend")) {
+				PlayerOperations.getInstance().defendCountry(Integer.parseInt(inputCommand[1]));
 			}
 			
 			}catch(Exception e) {

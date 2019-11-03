@@ -815,5 +815,46 @@ public class PlayerOperations {
 		return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
 	}
 	
-
+	public CountryModel modelOfDefender(String countrynameto) {
+		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
+			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
+				if(loopCountry.getCountryName().equalsIgnoreCase(countrynameto)) {
+					return loopCountry;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public PlayerModel returnDefendModel (String countrynameto) {
+		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
+			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
+				if(loopCountry.getCountryName().equalsIgnoreCase(countrynameto)) {
+					return loopPlayer;
+				}
+			}
+		}
+		return null;
+	}
+	public int[] sortArray(int array[]) {
+		for (int i = 0; i < array.length-1; i++) {
+			for (int j = 0; j < array.length-i-1; j++) {
+				if (array[j] < array[j+1]) 
+				{ 
+					int temp = array[j]; 
+					array[j] = array[j+1]; 
+					array[j+1] = temp; 
+				} 
+			}
+		}
+		return array;
+	}
+	
+	public int rollDice() {
+		int pickedNumber;
+		Random number = new Random();
+		pickedNumber = number.nextInt(6);
+		//System.out.println("Roll Dice Value: " + pickedNumber);
+		return pickedNumber + 1;
+	}
 }
