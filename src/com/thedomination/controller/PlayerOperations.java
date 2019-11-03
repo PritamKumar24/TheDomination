@@ -776,4 +776,44 @@ public class PlayerOperations {
 			}
 		}
 	}
+	
+	public void attackMove(int num) {
+		if(moveArmyFlag) {
+			if(num>modelOfDefender(countrynamefrom).getNoOfArmiesCountry()-1) {
+				System.out.println("You can move upto " + (modelOfDefender(countrynamefrom).getNoOfArmiesCountry()-1) + " army");
+			}
+			else {
+				modelOfDefender(countrynameto).setNoOfArmiesCountry(num);
+				modelOfDefender(countrynamefrom).setNoOfArmiesCountry(modelOfDefender(countrynamefrom).getNoOfArmiesCountry()-num);
+				System.out.println("Armies have been moved");
+				System.out.println("Armies on " + countrynameto + " " + modelOfDefender(countrynameto).getNoOfArmiesCountry());
+				System.out.println("Armies on " + countrynamefrom + " " + modelOfDefender(countrynamefrom).getNoOfArmiesCountry());
+				moveArmyFlag = false;
+				attackFlag = true;
+				CountryModel removeCountry = returnDefendModel(countrynameto).RemoveCountry(modelOfDefender(countrynameto));
+				PlayerOperations.getInstance().currentPlayer(attackCountryCounter).getPlayerCountryList().add(removeCountry);
+				
+				
+			}
+			
+		}
+		else {
+			System.out.println("Illegal move");
+		}
+	}
+	public PlayerModel currentPlayer(int counter) {
+		int playerIndex = 0;
+		int playerPosition = 0;
+		playerPosition = counter % PlayerOperations.getInstance().getPlayersList().size();
+
+		if(playerPosition == 0) {
+			playerIndex =  (counter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+		}
+		else {
+			playerIndex = playerPosition-1;
+		}
+		return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+	}
+	
+
 }
