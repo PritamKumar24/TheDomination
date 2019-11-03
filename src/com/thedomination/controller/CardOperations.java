@@ -75,4 +75,154 @@ public class CardOperations {
 	}
 
 	
+	
+	
+
+	public boolean checkSameCards(String firstCard, String secondCard, String thirdCard) {
+		System.out.println("In the same check");
+		if(firstCard.equalsIgnoreCase("Infantry") && secondCard.equalsIgnoreCase("Infantry") && thirdCard.equalsIgnoreCase("Infantry") ) {
+			System.out.println("Infantry true");
+			return true;
+		}
+		else if (firstCard.equalsIgnoreCase("Cavalry") && secondCard.equalsIgnoreCase("Cavalry") && thirdCard.equalsIgnoreCase("Cavalry")) {
+			System.out.println("Cavalry true");
+			return true;
+		}
+		else if(firstCard.equalsIgnoreCase("Artillery") && secondCard.equalsIgnoreCase("Artillery") && thirdCard.equalsIgnoreCase("Artillery")) {
+			System.out.println("Artillery true");
+			return true;
+		}
+
+		return false;
+	}
+
+
+
+	public boolean checkDifferentCards(String firstCard, String secondCard, String thirdCard) {
+		ArrayList<String> checkList = new ArrayList<String>();
+		checkList.add("Infantry");
+		checkList.add("Cavalry");
+		checkList.add("Artillery");
+
+		String[] checkArray = {firstCard,secondCard,thirdCard};
+
+		for(int i=0; i<3;i++) {
+			if(checkList.contains(checkArray[i])) {
+				checkList.remove(checkArray[i]);
+			}
+		}
+
+		if(checkList.size()==0) {
+			return true;
+		}
+		return false;
+	}
+
+
+	public CardsModel searchCard(int cardType) {
+		for (CardsModel tempCard : cardDeck) {
+			if (tempCard.getType() == cardType) {
+				return tempCard;
+			}
+		}
+		return null;
+	}
+
+	public void showPlayerCards() {
+		//PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getReInforceCountryCounter());
+		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getAttackCountryCounter());
+
+		currentPlayer.showCards();
+
+	}
+
+	public void cardDisplay() {
+		for(CardsModel tempCard : cardDeck) {
+			System.out.println(tempCard);
+		}
+		System.out.println("Totol no of cards "+cardDeck.size());
+	}
+
+	//Code for last loosing player
+	public String transferAllCards(PlayerModel attacker, PlayerModel defender) {
+		ArrayList<CardsModel> defenderCardList = defender.getCardList();
+		attacker.setCardList(defenderCardList);
+		defender.setCardList(null);
+		return "Defender's all cards has been transferred";
+	}
+
+	//not in use now
+	//	public void deleteCards(int firstType, int secondType, int thirdType) {
+	//		int[] removeTypes = {firstType, secondType, thirdType}; 
+	//		int j=0;
+	//		for(int i=0; i<3;i++) {
+	//			CardsModel card = searchCard(removeTypes[j]);
+	//			cardDeck.remove(card);
+	//			j++;
+	//		}
+	//	}
+
+	// I have to delete this method as this is for testing purpose because i can simply use cardDeck.remove(card) to remove from deck
+	public CardsModel deleteCard(int type) {
+		CardsModel card = searchCard(type);
+		if (cardDeck.remove(card)) {
+			return card;
+		}
+		return null;
+	}
+
+	//	public void addCards(int firstType, int secondType, int thirdType) {
+	//		int[] addTypes = {firstType, secondType, thirdType}; 
+	//		int j=0;
+	//		for(int i=0; i<3;i++) {
+	//			CardsModel card = searchCard(addTypes[j]);
+	//			cardDeck.add(card);
+	//			j++;
+	//		}
+	//	}
+
+	public void addCards(CardsModel firstCard, CardsModel secondCard, CardsModel thirdCard) {
+		cardDeck.add(firstCard);
+		cardDeck.add(secondCard);
+		cardDeck.add(thirdCard);
+	}
+
+	public int getCardNoOfArmy() {
+		return cardNoOfArmy;
+	}
+
+	public void setCardNoOfArmy(int cardNoOfArmy) {
+		this.cardNoOfArmy = cardNoOfArmy;
+	}
+
+	public boolean isCardExchangeFlag() {
+		return cardExchangeFlag;
+	}
+	
+	
+
+	//	public void testingAddCards() {
+	//		PlayerModel tempPlayerModel = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getReInforceCountryCounter());
+	//
+	//		CardsModel c1 = new CardsModel("Infantry", 1);
+	//		tempPlayerModel.addCard(c1);
+	//		System.out.println("Card added in player and removed from deck "+ deleteCard(c1.getType()));
+	//
+	//		CardsModel c2 = new CardsModel("Cavalry", 2);
+	//		tempPlayerModel.addCard(c2);
+	//		System.out.println("Card added in player and removed from deck "+ deleteCard(c2.getType()));
+	//
+	//		CardsModel c3 = new CardsModel("Artillery", 3);
+	//		tempPlayerModel.addCard(c3);
+	//		System.out.println("Card added in player and removed from deck "+ deleteCard(c3.getType()));
+	//
+	//		CardsModel c4 = new CardsModel("Artillery", 3);
+	//		tempPlayerModel.addCard(c4);
+	//		System.out.println("Card added in player and removed from deck "+ deleteCard(c4.getType()));
+	//
+	//		CardsModel c5 = new CardsModel("Infantry", 1);
+	//		tempPlayerModel.addCard(c5);
+	//		System.out.println("Card added in player and removed from deck "+ deleteCard(c5.getType()));
+	//
+	//	}
 }
