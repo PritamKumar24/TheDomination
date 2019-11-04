@@ -137,7 +137,7 @@ public class ReadInputCommand {
 	
 			}
 			else if (inputCommand[0].equalsIgnoreCase("reinforce")) {
-				PlayerOperations.getInstance().reInforce(inputCommand[1], Integer.parseInt(inputCommand[2]));
+				System.out.println(PlayerOperations.getInstance().reInforce(inputCommand[1], Integer.parseInt(inputCommand[2])));
 			}
 			else if (inputCommand[0].equalsIgnoreCase("attack")) {
 				if (inputCommand[1].equalsIgnoreCase("-noattack")) {
