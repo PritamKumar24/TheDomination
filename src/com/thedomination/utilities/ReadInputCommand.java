@@ -2,6 +2,7 @@ package com.thedomination.utilities;
 
 import java.util.Scanner;
 
+import com.thedomination.controller.CardOperations;
 import com.thedomination.controller.MapOperations;
 import com.thedomination.controller.PlayerOperations;
 import com.thedomination.controller.SaveMapFile;
@@ -157,7 +158,18 @@ public class ReadInputCommand {
 			else if (inputCommand[0].equalsIgnoreCase("defend")) {
 				PlayerOperations.getInstance().defendCountry(Integer.parseInt(inputCommand[1]));
 			}
-			
+			 else if(inputCommand[0].equalsIgnoreCase("exchangecards")) {
+				 if(inputCommand[1].equalsIgnoreCase("-none")) {
+				 //System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1],"",""));
+				 System.out.println(CardOperations.getInstance().exchangeCards(inputCommand[1], 0, 0));
+				 }
+				 else {
+
+				 //System.out.println(PlayerOperations.getInstance().fortifyCountry(inputCommand[1] , inputCommand[2], inputCommand[3]));
+				 System.out.println(CardOperations.getInstance().exchangeCards(inputCommand[1], Integer.parseInt(inputCommand[2]), Integer.parseInt(inputCommand[3])));
+				 }
+
+				 }
 			}catch(Exception e) {
 				System.out.println("Invalid Command.");
 			}
