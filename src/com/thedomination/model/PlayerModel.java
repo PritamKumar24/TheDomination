@@ -1,16 +1,16 @@
-package com.thedomination.model;
+	package com.thedomination.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
+	import java.util.ArrayList;
+	import java.util.List;
 
-/**
- * The Class PlayerModel.
- *
- * @author Aditi
- * @version 1.0.0
- */
-public class PlayerModel {
+	/**
+	 * The Class PlayerModel.
+	 *
+	 * @author Aditi
+	 * @version 1.0.0
+	 */
+	public class PlayerModel {
 
 	/** The player country list. */
 	private List<CountryModel> playerCountryList;
@@ -21,6 +21,7 @@ public class PlayerModel {
 	/** The no of army for player. */
 	private int noOfArmyInPlayer;
 	
+	/** The hasWonTerritory */
 	private boolean hasWonTerritory;
 	
 	private ArrayList<CardsModel> cardList;
@@ -42,7 +43,6 @@ public class PlayerModel {
 	 * @param playerName            the player name
 	 * @param countryModelArrayList array list of coutries of the player.
 	 */
-
 	public PlayerModel(String playerName, ArrayList<CountryModel> countryModelArrayList) {
 		this.playerName = playerName;
 		this.playerCountryList = new ArrayList<>();
@@ -54,7 +54,6 @@ public class PlayerModel {
 	 *
 	 * @param number the number
 	 */
-
 	public void setnoOfArmyInPlayer(int number) {
 		this.noOfArmyInPlayer = number;
 	}
@@ -72,7 +71,10 @@ public class PlayerModel {
 	public void addArmyInPlayer() {
 		this.noOfArmyInPlayer++;
 	}
-
+    /**
+	* addControlValueToNoOfArmy method to add controlValue to army.
+	* @param controlValue Integer controlValue to be added.
+	*/
 	public void addControlValueToNoOfArmy(int controlValue) {
 		this.noOfArmyInPlayer = this.noOfArmyInPlayer + controlValue;
 	}
@@ -103,19 +105,31 @@ public class PlayerModel {
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
-
+	/**
+	*isHasWonTerritory method to check the winning territory.
+	*/
 	public boolean isHasWonTerritory() {
 		return hasWonTerritory;
 	}
 
+	/*
+	*setHasWonTerritory method to set if any player won territory.
+	* @param hasWonTerritory boolean either true or false.
+	*/
 	public void setHasWonTerritory(boolean hasWonTerritory) {
 		this.hasWonTerritory = hasWonTerritory;
 	}
-
+	/**
+	*getCardList method to get cardList of card Model type.
+	*@return cardList ArrayList of CardList.
+	*/
 	public ArrayList<CardsModel> getCardList() {
 		return cardList;
 	}
-
+	/**
+	*setCardList setter method to set the parameterized cardList.
+	*@param cardList ArrayList of cardList of cardModel type.
+	*/
 	public void setCardList(ArrayList<CardsModel> cardList) {
 		this.cardList = cardList;
 	}
@@ -162,7 +176,12 @@ public class PlayerModel {
 		}
 		return null;
 	}
-	
+	/**
+	* searchCard method to search a card.
+	*@param cardName card name to be searched.
+	*@return CardsModel type object of card found.
+	*
+	*/
 	public CardsModel searchCard(String cardName) {
 		for (CardsModel card : cardList) {
 			if (card.getCardName().trim().equalsIgnoreCase(cardName.trim())) {
@@ -172,7 +191,12 @@ public class PlayerModel {
 		return null;
 	}
 	
-	//method returns the card at given position
+	//method returns 
+	/**
+	* getInHandCard method to get a card a player owns.
+	* @param cardPosition Position of card.
+	* @return the card at given position.
+	*/
 	public CardsModel getInHandCard(int cardPosition) {
 		if(cardPosition>0 && cardPosition<=cardList.size()) {
 			int j = cardPosition-1;
@@ -183,7 +207,10 @@ public class PlayerModel {
 		}
 		return null;
 	}
-	
+	/**
+	* addCard method to add cards.
+	*@param card card to be added.
+	*/
 	public void addCard(CardsModel card) {
 			cardList.add(card);
 	}
@@ -201,7 +228,12 @@ public class PlayerModel {
 //			System.out.println("value of j "+j);
 //		}
 //	}
-	
+	/**
+	*removeCards method to remove cards.
+	* @param firstCard card at first position.
+	* @param secondCard card at second position.
+	* @param thirdCard card at third position.
+	*/
 	public void removeCards(CardsModel firstCard, CardsModel secondCard, CardsModel thirdCard) {
 		CardsModel[] removeCards = {firstCard, secondCard, thirdCard}; 
 		int j=0;
@@ -211,16 +243,19 @@ public class PlayerModel {
 			j++;
 		}
 	}
-
-  public void showCards() {
-	  int i = 1;
-	  for(CardsModel tempCard: cardList) {
-		  System.out.print("At position "+i+" "+tempCard.getCardName());
-		  System.out.println();
-		  i++;
+	
+	/**
+	*showCards method to show cards.
+	*/
+	  public void showCards() {
+		  int i = 1;
+		  for(CardsModel tempCard: cardList) {
+			  System.out.print("At position "+i+" "+tempCard.getCardName());
+			  System.out.println();
+			  i++;
+		  }
+		  
 	  }
-	  
-  }
   
 	
 //	@Override
