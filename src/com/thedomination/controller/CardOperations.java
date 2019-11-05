@@ -15,18 +15,25 @@ import com.thedomination.model.PlayerModel;
  * @author Pritam Kumar
  */
 public class CardOperations {
+	
 	/**CardDeck ArrayList*/
 	ArrayList<CardsModel> cardDeck;
+	
 /**The randomCard */
 	private Random randomCard;
+	
 	/**The cardNoOfArmy */
 	private int cardNoOfArmy;
+	
 	/**The cardCounter */
 	private int cardCounter;
+	
 	/**The cardExchangeFlag */
 	private boolean cardExchangeFlag = true;
+	
 	/**The object of CardOperations */
 	private static CardOperations UniqueInstance;
+	
 /**
  * getInstance method to make object of cardOperations Class.
  * 
@@ -38,6 +45,7 @@ public class CardOperations {
 		}
 		return CardOperations.UniqueInstance;
 	}
+	
 /**
  * CardOperations constructor of cardOperations class.
  */
@@ -63,6 +71,7 @@ public class CardOperations {
 			}
 		}
 	}
+	
 /**
  * generateRandomCard method to generate the random cards.
  * @return object of the cardsModel the random card generated.
@@ -76,6 +85,7 @@ public class CardOperations {
 		} else
 			return null;
 	}
+	
 /**
  * assignCard method to assign cards to players.
  * 
@@ -202,7 +212,7 @@ public class CardOperations {
 		return message;
 	}
 
-/**
+ /**
  * checkSameCards method to check if player has same cards.
  * 
  * @param firstCard of player
@@ -227,7 +237,6 @@ public class CardOperations {
 
 		return false;
 	}
-
 
 /**
  * checkDifferentCards checks the different cards.
@@ -272,6 +281,7 @@ public class CardOperations {
 		}
 		return null;
 	}
+	
 /**
  * showPlayerCards method to show players cards.
  */
@@ -282,6 +292,7 @@ public class CardOperations {
 		currentPlayer.showCards();
 
 	}
+	
 /**
  * cardDisplay method to display players cards.
  */
@@ -292,7 +303,6 @@ public class CardOperations {
 		System.out.println("Totol no of cards "+cardDeck.size());
 	}
 
-	//Code for last loosing player
 	/**
 	 * transferAllCards method to transfer the cards between attacker and defender.
 	 * 
@@ -336,6 +346,7 @@ public class CardOperations {
 	//			j++;
 	//		}
 	//	}
+	
 	/**
 	 * addCards method to add the cards.
 	 * @param firstCard first card of player to be added
@@ -347,6 +358,7 @@ public class CardOperations {
 		cardDeck.add(secondCard);
 		cardDeck.add(thirdCard);
 	}
+	
 /**
  * getCardNoOfArmy getter method to get the card number of army.
  * 
@@ -355,6 +367,7 @@ public class CardOperations {
 	public int getCardNoOfArmy() {
 		return cardNoOfArmy;
 	}
+	
 /**
  * setCardNoOfArmy setter Method to set the card number of army.
  * 
@@ -363,6 +376,7 @@ public class CardOperations {
 	public void setCardNoOfArmy(int cardNoOfArmy) {
 		this.cardNoOfArmy = cardNoOfArmy;
 	}
+	
 /**
  * isCardExchangeFlag method to check whether the card is exchanged or not.
  * @return true or false.
