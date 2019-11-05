@@ -46,6 +46,7 @@ public class CountryModel {
 	public CountryModel(int countryPosition, String countryName) {
 		this.countryPosition = countryPosition;
 		this.countryName = countryName;
+		this.listOfNewNeighbours = new ArrayList<>();
 	}
 	
 	/**

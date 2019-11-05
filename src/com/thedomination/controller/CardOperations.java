@@ -11,36 +11,45 @@ import com.thedomination.model.PlayerModel;
 
 /**
  * The Class CardOperations.
+ * CardOperation class to manage the card Operations.
  * @author Pritam Kumar
  */
 public class CardOperations {
-
+	/**CardDeck ArrayList*/
 	ArrayList<CardsModel> cardDeck;
-
+/**The randomCard */
 	private Random randomCard;
-
+	/**The cardNoOfArmy */
 	private int cardNoOfArmy;
-
+	/**The cardCounter */
 	private int cardCounter;
-
+	/**The cardExchangeFlag */
 	private boolean cardExchangeFlag = true;
-
+	/**The object of CardOperations */
 	private static CardOperations UniqueInstance;
-
+/**
+ * getInstance method to make object of cardOperations Class.
+ * 
+ * @return object of cardOpeartion.
+ */
 	public static CardOperations getInstance() {
 		if(CardOperations.UniqueInstance == null) {
 			CardOperations.UniqueInstance = new CardOperations();
 		}
 		return CardOperations.UniqueInstance;
 	}
-
+/**
+ * CardOperations constructor of cardOperations class.
+ */
 	private CardOperations() {
 		randomCard = new Random();
 		cardDeck = new ArrayList<CardsModel>();
 		cardCreation();
 	}
 
-
+/**
+ * cardCreation method to create new cards.
+ */
 	private void cardCreation() {
 		String[] names = { "Infantry", "Cavalry", "Artillery" };
 		int[] types = { 1, 2, 3 };
@@ -54,7 +63,10 @@ public class CardOperations {
 			}
 		}
 	}
-
+/**
+ * generateRandomCard method to generate the random cards.
+ * @return object of the cardsModel the random card generated.
+ */
 	public CardsModel generateRandomCard() {
 		if (cardDeck.size() > 0) {
 			int index = randomCard.nextInt(cardDeck.size());
@@ -64,7 +76,12 @@ public class CardOperations {
 		} else
 			return null;
 	}
-
+/**
+ * assignCard method to assign cards to players.
+ * 
+ * @param hasWonTerritory boolean either true or false.
+ * @param player object of playerModel to which card is to be assigned.
+ */
 	public void assignCard(boolean hasWonTerritory, PlayerModel player) {
 		if(hasWonTerritory) {
 			CardsModel randomCard = generateRandomCard();
@@ -103,10 +120,17 @@ public class CardOperations {
 	//		return "";
 	//	}
 
+	/**
+	 * exchangeCards method to exchange the cards between the players. 
+	 * @param firstPosition first card of player
+	 * @param secondPosition second card of player
+	 * @param thirdPosition third card of player
+	 * @return appropriate message.
+	 */
 	public String exchangeCards(String firstPosition, int secondPosition, int thirdPosition) {
 		String message="";
 		if(cardExchangeFlag) {
-			PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getReInforceCountryCounter());
+			PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getAttackCountryCounter());
 		if(firstPosition.equalsIgnoreCase("-none")) {
 			if(currentPlayer.getCardList().size()>=5) {
 				message="Number of cards is 5 or more, You must exchange your cards";
@@ -178,8 +202,14 @@ public class CardOperations {
 		return message;
 	}
 
-
-
+/**
+ * checkSameCards method to check if player has same cards.
+ * 
+ * @param firstCard of player
+ * @param secondCard secondCard of player.
+ * @param thirdCard thirdCard of player.
+ * @return true or false accordingly.
+ */
 	public boolean checkSameCards(String firstCard, String secondCard, String thirdCard) {
 		System.out.println("In the same check");
 		if(firstCard.equalsIgnoreCase("Infantry") && secondCard.equalsIgnoreCase("Infantry") && thirdCard.equalsIgnoreCase("Infantry") ) {
@@ -199,7 +229,15 @@ public class CardOperations {
 	}
 
 
-
+/**
+ * checkDifferentCards checks the different cards.
+ * 
+ * @param firstCard of player
+ * @param secondCard secondCard of player.
+ * @param thirdCard thirdCard of player.
+ * @return true or false accordingly.
+ * @return
+ */
 	public boolean checkDifferentCards(String firstCard, String secondCard, String thirdCard) {
 		ArrayList<String> checkList = new ArrayList<String>();
 		checkList.add("Infantry");
@@ -220,7 +258,12 @@ public class CardOperations {
 		return false;
 	}
 
-
+/**
+ * searchCard method to search cards.
+ * 
+ * @param cardType cardtype to be searched.
+ * @return object of card if found.
+ */
 	public CardsModel searchCard(int cardType) {
 		for (CardsModel tempCard : cardDeck) {
 			if (tempCard.getType() == cardType) {
@@ -229,7 +272,9 @@ public class CardOperations {
 		}
 		return null;
 	}
-
+/**
+ * showPlayerCards method to show players cards.
+ */
 	public void showPlayerCards() {
 		//PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getReInforceCountryCounter());
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getAttackCountryCounter());
@@ -237,7 +282,9 @@ public class CardOperations {
 		currentPlayer.showCards();
 
 	}
-
+/**
+ * cardDisplay method to display players cards.
+ */
 	public void cardDisplay() {
 		for(CardsModel tempCard : cardDeck) {
 			System.out.println(tempCard);
@@ -246,6 +293,13 @@ public class CardOperations {
 	}
 
 	//Code for last loosing player
+	/**
+	 * transferAllCards method to transfer the cards between attacker and defender.
+	 * 
+	 * @param attacker object of playerModel.
+	 * @param defender object of PlayerModel.
+	 * @return appropriate message.
+	 */
 	public String transferAllCards(PlayerModel attacker, PlayerModel defender) {
 		ArrayList<CardsModel> defenderCardList = defender.getCardList();
 		attacker.setCardList(defenderCardList);
@@ -282,21 +336,37 @@ public class CardOperations {
 	//			j++;
 	//		}
 	//	}
-
+	/**
+	 * addCards method to add the cards.
+	 * @param firstCard first card of player to be added
+	 * @param secondCard secondCard of player to be added
+	 * @param thirdCard thirdCard of player to be added
+	 */
 	public void addCards(CardsModel firstCard, CardsModel secondCard, CardsModel thirdCard) {
 		cardDeck.add(firstCard);
 		cardDeck.add(secondCard);
 		cardDeck.add(thirdCard);
 	}
-
+/**
+ * getCardNoOfArmy getter method to get the card number of army.
+ * 
+ * @return card number.
+ */
 	public int getCardNoOfArmy() {
 		return cardNoOfArmy;
 	}
-
+/**
+ * setCardNoOfArmy setter Method to set the card number of army.
+ * 
+ * @param cardNoOfArmy Integer value of the card number to be set.
+ */
 	public void setCardNoOfArmy(int cardNoOfArmy) {
 		this.cardNoOfArmy = cardNoOfArmy;
 	}
-
+/**
+ * isCardExchangeFlag method to check whether the card is exchanged or not.
+ * @return true or false.
+ */
 	public boolean isCardExchangeFlag() {
 		return cardExchangeFlag;
 	}

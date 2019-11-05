@@ -37,63 +37,107 @@ public class PlayerOperations {
 	
 	/**The reinforceFlag  */
 	boolean reinforceFlag = true;
-
-	boolean moveArmyFlag =false;
 	
+	/**The moveArmyFlag */
+	boolean moveArmyFlag =false;
+	/**The placeArmyFlag*/
 	boolean placeArmyFlag = false;
 	
+	/**The attackFlag */
 	private boolean attackFlag = false;
 
+	/**The defendFlag*/
 	private boolean defendFlag = false;
 	
+	/**The reinforceArmyFlag */
 	private boolean reinforceArmyFlag = false;
-	
+	/**The  fortifyArmyFlag */
 	private boolean fortifyArmyFlag = false;
 	
+	/**The countrynamefrom */
 	private String countrynamefrom;
 	
 	/** The reInforceNoOfArmy */
 	private int reInforceNoOfArmy;
 
+	/**The attackCountryCounter */
 	private  int attackCountryCounter = 1;
+	
+	
 
 
 
-
+	/**The diceAttackArray Array */
 	private int[] diceAttackArray;
 
+	/**
+	 * getDiceAttackArray Method Getter Function to get Array of Attack dice.
+	 * 
+	 * @return array diceAttackArray.
+	 */
 	public int[] getDiceAttackArray() {
 		return diceAttackArray;
 	}
-
+	/**
+	 * setDiceAttackArray Method setter Function to set Array of Attack dice.
+	 * 
+	 * @param diceAttackArray Array of attacking dice.
+	 */
 	public void setDiceAttackArray(int[] diceAttackArray) {
 		this.diceAttackArray = diceAttackArray;
 	}
+	/**
+	 * getDiceDefendArray Method Getter Function to get Array of defend dice.
+	 * 
+	 * @return array diceDefendArray.
+	 */
 
 	public int[] getDiceDefendArray() {
 		return diceDefendArray;
 	}
-
+	/**
+	 * setDiceDefendArray Method setter Function to set Array of Defender dice.
+	 * 
+	 * @param diceAttackArray Array of Defender dice.
+	 */
 	public void setDiceDefendArray(int[] diceDefendArray) {
 		this.diceDefendArray = diceDefendArray;
 	}
-
+	/**The diceDefendArray Array */
 	private int[] diceDefendArray;
 
+	/**
+	 *  getCountrynamefrom Method Getter Function to get Country Name.
+	 * 
+	 * @return countrynamefrom String Country Name .
+	 */
 	public String getCountrynamefrom() {
 		return countrynamefrom;
 	}
-
+	/**
+	 * setCountrynamefrom Method setter Function to set name of country.
+	 * 
+	 * @param String countrynamefrom name of Country. 
+	 */
 	public void setCountrynamefrom(String countrynamefrom) {
 		this.countrynamefrom = countrynamefrom;
 	}
-
+	/** The countrynameto */
 	private String countrynameto;
 
+	/**
+	 * getCountrynameto Method Getter Function to get Country Name.
+	 * 
+	 * @return countrynameto Name of Country.
+	 */
 	public String getCountrynameto() {
 		return countrynameto;
 	}
-
+	/**
+	 * setCountrynameto Method setter Function to set name of country.
+	 * 
+	 * @param countrynameto name of Country.
+	 */
 	public void setCountrynameto(String countrynameto) {
 		this.countrynameto = countrynameto;
 	}
@@ -155,22 +199,36 @@ public class PlayerOperations {
 
 
 
-
+	/**
+	 * getAttackCountryCounter Method Getter Function to get Attack Country Counter.
+	 * 
+	 * @return attackCountryCounter Integer Counter value.
+	 */
 	public int getAttackCountryCounter() {
 		return attackCountryCounter;
 	}
 
-	public int getReInforceCountryCounter() {
-		return reInforceCountryCounter;
-	}
-
+	/**
+	 * isReinforceFlag Method to check the State of flag.
+	 * 
+	 * @return reinforceFlag boolen true or false.
+	 */
 	public boolean isReinforceFlag() {
 		return reinforceFlag;
 	}
-
+	/**
+	 * getReInforceNoOfArmy Method Getter Function to get Reinforce number of Army.
+	 * 
+	 * @return reInforceNoOfArmy Integer number of Armies.
+	 */
 	public int getReInforceNoOfArmy() {
 		return reInforceNoOfArmy;
 	}
+	/**
+	* setReInforceNoOfArmy Method Setter Function to set Reinforcing armies.
+	 *
+	 * @param reInforceNoOfArmy the total number of armies .
+	 */
 	public void setReInforceNoOfArmy(int reInforceNoOfArmy) {
 		this.reInforceNoOfArmy = reInforceNoOfArmy;
 	}
@@ -281,39 +339,41 @@ public class PlayerOperations {
 
 	public void placeArmy(String countryName) {
 
-			if(placeArmyFlag == false) {
-				System.out.println("Illegal Command");
+		if(placeArmyFlag == false) {
+			System.out.println("Illegal Command");
+		}
+		else {
+
+			//		int playerIndex = 0;
+			//		int playerPosition = 0;
+			//		playerPosition = placeArmyCounter % PlayerOperations.getInstance().getPlayersList().size();
+			//
+			//		if(playerPosition == 0) {
+			//			playerIndex =  (placeArmyCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
+			//		}
+			//		else {
+			//			playerIndex = playerPosition-1;
+			//		}
+
+			//PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
+			PlayerModel tempPlayerModel = currentPlayer(placeArmyCounter);
+			//System.out.println(tempPlayerModel);
+			CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
+			if(tempCountryModel == null) {
+				System.out.println("Country doesnot belong to the player");
 			}
 			else {
+				tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
+				tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
 
-		//		int playerIndex = 0;
-		//		int playerPosition = 0;
-		//		playerPosition = placeArmyCounter % PlayerOperations.getInstance().getPlayersList().size();
-		//
-		//		if(playerPosition == 0) {
-		//			playerIndex =  (placeArmyCounter-1)%(PlayerOperations.getInstance().getPlayersList().size());
-		//		}
-		//		else {
-		//			playerIndex = playerPosition-1;
-		//		}
-
-		//PlayerModel tempPlayerModel = PlayerOperations.getInstance().getPlayersList().get(playerIndex);
-		PlayerModel tempPlayerModel = currentPlayer(placeArmyCounter);
-		//System.out.println(tempPlayerModel);
-		CountryModel tempCountryModel = tempPlayerModel.searchCountry(countryName);
-				if(tempCountryModel == null) {
-					System.out.println("Country doesnot belong to the player");
-				}
-				else {
-		tempCountryModel.setNoOfArmiesCountry(tempCountryModel.getNoOfArmiesCountry()+1);
-		tempPlayerModel.setnoOfArmyInPlayer(tempPlayerModel.getnoOfArmyInPlayer()-1);
-
-		//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
-		//			System.out.println(loopPlayer);
-		//			}
-		System.out.println("The army has been placed on the country: " + countryName);
-					placeArmyFlag = true;
-					placeArmyCounter++;
+				//			for(PlayerModel loopPlayer: PlayerOperations.getInstance().getPlayersList()) {
+				//			System.out.println(loopPlayer);
+				//			}
+				System.out.println("The army has been placed on the country: " + countryName);
+				placeArmyFlag = true;
+				placeArmyCounter++;
+			}
+		}
 	}
 
 	/**
@@ -503,6 +563,11 @@ public class PlayerOperations {
 	//		//System.out.println(tempPlayerModel);
 	//		return message;
 	//	}
+	
+	
+	/**
+	 * getReInforcementArmies the Method to get the number of reinforcing Armies.
+	 */
 	public void getReInforcementArmies() {
 		PlayerModel tempPlayerModel = currentPlayer(attackCountryCounter);
 		if(reinforceFlag) {
@@ -542,6 +607,14 @@ public class PlayerOperations {
 		}
 	}
 
+	/**
+	 * reInforce method to reinforce the country with armies.
+	 * 
+	 * @param countryName name of the country to be reinforced.
+	 * @param num number of armies to be reinforced with.
+	 * @return message 
+	 */
+
 	public String reInforce(String countryName, int num) {
 		String message="";
 			if(reinforceArmyFlag == false) {
@@ -579,6 +652,21 @@ public class PlayerOperations {
 			return message;
 		}
 		
+	public boolean isAttackFlag() {
+		return attackFlag;
+	}
+
+	public void setAttackFlag(boolean attackFlag) {
+		this.attackFlag = attackFlag;
+	}
+
+	/**
+	 * attackCountry method for the attacking phase.
+	 * 
+	 * @param countrynamefrom name of the country of attacker.
+	 * @param countrynameto name of country to be targeted.
+	 * @param numdice number of dice to roll.
+	 */
 	public void attackCountry(String countrynamefrom, String countrynameto, int numdice) {
 
 		if (attackFlag == false) {
@@ -660,6 +748,12 @@ public class PlayerOperations {
 		}
 
 	}
+	/**
+	 * allOutAttack method to is attack until no attack is possible using maximum number of
+dice to attack/defend
+	 * @param countrynamefrom name of the attacking country.
+	 * @param countrynameto name of the defending country.
+	 */
 	public void allOutAttack(String countrynamefrom, String countrynameto) {
 
 		if(attackFlag == false) {
@@ -766,6 +860,11 @@ public class PlayerOperations {
 			}
 		}
 	}
+	/**
+	 * defendCoubtry method to 
+	 * 
+	 * @param numdice number of dice
+	 */
 	public void defendCountry(int numdice) {
 
 		if(defendFlag == false) {
@@ -836,6 +935,10 @@ public class PlayerOperations {
 		}
 	}
 
+	/**
+	 * attackMove method to make a moving attack.
+	 * @param num number of attacking armies.
+	 */
 	public void attackMove(int num) {
 		if(moveArmyFlag) {
 			if(num>modelOfDefender(countrynamefrom).getNoOfArmiesCountry()-1) {
@@ -861,6 +964,12 @@ public class PlayerOperations {
 			System.out.println("Illegal move");
 		}
 	}
+	/**
+	 * currentPlayer method to show the current player making the moves.
+	 * 
+	 * @param counter player index
+	 * @return PlayerModel Index of the player.
+	 */
 	public PlayerModel currentPlayer(int counter) {
 		int playerIndex = 0;
 		int playerPosition = 0;
@@ -874,7 +983,12 @@ public class PlayerOperations {
 		}
 		return PlayerOperations.getInstance().getPlayersList().get(playerIndex);
 	}
-
+/**
+ * modelOfDefender method returns country model based on country given.
+ * 
+ * @param countrynameto country name.
+ * @return countryModel based on country.
+ */
 	public CountryModel modelOfDefender(String countrynameto) {
 		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
 			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
@@ -885,7 +999,12 @@ public class PlayerOperations {
 		}
 		return null;
 	}
-
+/**
+ * returnDefenderModel method returns PlayerModel according to country given.
+ * 
+ * @param countrynameto name of the country.
+ * @return PlayerModel.
+ */
 	public PlayerModel returnDefendModel (String countrynameto) {
 		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
 			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
@@ -896,6 +1015,11 @@ public class PlayerOperations {
 		}
 		return null;
 	}
+	/**
+	 * sortArray method to sort an Array given.
+	 * @param array array to be sorted.
+	 * @return Array sorted Array.
+	 */
 	public int[] sortArray(int array[]) {
 		for (int i = 0; i < array.length-1; i++) {
 			for (int j = 0; j < array.length-i-1; j++) {
@@ -909,7 +1033,10 @@ public class PlayerOperations {
 		}
 		return array;
 	}
-
+/**
+ * rollDice method to generate the random number between 1 to 6.
+ * @return random number generated.
+ */
 	public int rollDice() {
 		int pickedNumber;
 		Random number = new Random();
