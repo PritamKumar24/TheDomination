@@ -1,37 +1,33 @@
-package com.thedomination.utilitiesTest;
+package com.thedomination.utilitiestest;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.thedomination.model.CountryModel;
-import com.thedomination.utilities.MapReader;
 import com.thedomination.controller.MapOperations;
-import com.thedomination.controller.SaveMapFile;
+import com.thedomination.utilities.MapReader;
 
 /**
- * The Class UtilityTest.
- * @author Piyush
+ * 
+ * @author Aditi
+ *
  */
 public class MapReaderTest {
+	
+	/** The world map file path. */
+	private static String worldMapFilePath="world.map";
+	private static String invalidworldMapFilePath="Invalid.map";
+	
+	/** The world invalid map file path. */
+	private static String worldInvalidMapFilePath;
+	
 
-	/** The utility. */
-	private MapReader utility = new MapReader();
-
-	/** The asia map file path. */
-	private static String ASIA_MAP_FILE_PATH;
-
-	/** The asia invalid map file path. */
-	private static String ASIA_INVALID_MAP_FILE_PATH;
-
+	
+	MapOperations mapOperations1= new MapOperations();
+	
+	MapReader mapReader= new MapReader();
+	
 	/**
 	 * Sets the up before class.
 	 *
@@ -39,9 +35,8 @@ public class MapReaderTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ASIA_MAP_FILE_PATH = System.getProperty("user.dir") + "/resources/Asia.map" ;
-	//System.getProperty("user.dir") + "\\resources\\testresource\\Asia.map";
-		ASIA_INVALID_MAP_FILE_PATH = System.getProperty("user.dir") + "\\resources\\testresource\\Asiainvalid.map";
+		worldMapFilePath =System.getProperty("user.dir") + "/resources/" + worldMapFilePath;
+		worldInvalidMapFilePath = System.getProperty("user.dir") + "\\resources\\"+ invalidworldMapFilePath;
 	}
 
 	/**
@@ -52,65 +47,77 @@ public class MapReaderTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
-
+    
+	
+	
 	/**
-	 * Sets the up.
+	 * Test Method for Invalid Map Operation
 	 *
-	 * @throws Exception the exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-
-	}
-
-	/**
-	 * Tear down.
 	 *
-	 * @throws Exception the exception
 	 */
-	@After
-	public void tearDown() throws Exception {
+	
+	@Test
+	public void inValidMapTest() {
+		
+		String expected="Map is invalid";
+		String result="";
+		
+		mapReader.parseAndValidateMap(worldInvalidMapFilePath);
+		
+		result=mapOperations1.getErrorMsg();
+		
+		System.out.println(result);
+		
+		Assert.assertEquals(expected, result);
 	}
-
-	/**
-	 * First it parses the map and then extracts the list of countries from it and
-	 * after that it compares with the list of counties that we have passed. Note:
-	 * At least 5 countries should be there in order to be a valid map.
+        /**
+	 * Method to check whether the map is valid or not.
 	 */
 	@Test
-	public void parseAndValidateMapTest() {
-		ArrayList<CountryModel> parsedCountryList = utility.parseAndValidateMap(ASIA_MAP_FILE_PATH).getCountryList();
-
-		System.out.println(parsedCountryList.size());
-
-		ArrayList<String> countryNames = new ArrayList<String>();
-		ArrayList<String> countryList = new ArrayList<String>();
-
-		for (CountryModel loopCountry : parsedCountryList) {
-			countryNames.add(loopCountry.getCountryName());
-		}
-		countryList.add("Boston");
-		countryList.add("California");
-		countryList.add("New York");
-		countryList.add("Nepal");
-		countryList.add("India");
-		countryList.add("Bhutan");
-		System.out.println(countryList);
-		assertFalse(countryList.equals(countryNames));
+	public void validMapTest() {
+		
+		boolean result= false;
+		
+		mapReader.parseAndValidateMap(worldMapFilePath);
+		boolean expected=mapOperations1.isValErrorFlag();		
+	   Assert.assertEquals(expected, result);
 	}
-
-	/**
-	 * Function to check whether the function is reading the file and returning the
-	 * data without returning null.
+	 /**
+	 * Method to check whether the map is connected or not.
 	 */
 	@Test
-	public void convertMapDataToStringTest() {
-		MapOperations save = utility.parseAndValidateMap(ASIA_MAP_FILE_PATH);
-		SaveMapFile save1= new SaveMapFile();
-		assertNotNull((save1.getMapOperationConcateString(save,ASIA_MAP_FILE_PATH )));
-
+	public void loadAndValidateConnectedMap() {
+		mapOperations1.loadMap("world.map");
+		
+		String expected="This is a valid Graph.";
+		
+		String result=mapOperations1.validateMap();
+		   Assert.assertEquals(expected, result);
 	}
-
-
+	 /**
+	 * Method to check whether the map is unconnected or not.
+	 */
+	@Test
+	public void loadAndValidateUnConnectedMap() {
+		mapOperations1.loadMap("UnconnectedGraph.map");
+		
+		String expected="Invalid Graph - Disconnected Graph";
+		
+		String result=mapOperations1.validateMap();
+		   Assert.assertEquals(expected, result);
+	}
+	 /**
+	 * Method to check whether the continent is connected or not.
+	 */
+	@Test
+	public void loadAndValidateUnConnectedContinentMap() {
+		mapOperations1.loadMap("UnconnectedGraph.map");
+		
+		String expected="Invalid Graph - Disconnected Graph";
+		
+		String result=mapOperations1.validateMap();
+		   Assert.assertEquals(expected, result);
+	}
+	
 
 }

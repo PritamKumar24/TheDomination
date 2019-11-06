@@ -62,6 +62,20 @@ public class PlayerOperations {
 
 	/**The attackCountryCounter */
 	private  int attackCountryCounter = 1;
+	private static String startup_phaseFlag="false";
+
+public String isStartup_phaseFlag() {
+	return startup_phaseFlag;
+	}
+public void setStartup_phaseFlag(String startup_phaseFlag) {
+	PlayerOperations.startup_phaseFlag = startup_phaseFlag;
+}
+public boolean isAttackFlag() {
+		return attackFlag;
+	}
+	public void setAttackFlag(boolean attackFlag) {
+		this.attackFlag = attackFlag;
+	}
 	
 	
 

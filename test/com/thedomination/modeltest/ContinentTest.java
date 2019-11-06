@@ -1,4 +1,4 @@
-package com.thedomination.modelTest;
+package com.thedomination.modeltest;
 
 import static org.junit.Assert.*;
 
