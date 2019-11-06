@@ -22,6 +22,10 @@ public class ContinentModel {
 
 	/** The control value. */
 	private int controlValue;
+	
+	boolean hasWonContinent = false;
+	
+	
 
 	/**
 	 * Constructor for Continent class.
@@ -115,6 +119,16 @@ public class ContinentModel {
 	 */
 	public void setCountriesList(ArrayList<CountryModel> countriesList) {
 		this.countriesList = countriesList;
+	}
+	
+	
+
+	public boolean isHasWonContinent() {
+		return hasWonContinent;
+	}
+
+	public void setHasWonContinent(boolean hasWonContinent) {
+		this.hasWonContinent = hasWonContinent;
 	}
 
 	/**

@@ -8,6 +8,13 @@ import java.util.Random;
 
 import com.thedomination.model.CardsModel;
 import com.thedomination.model.PlayerModel;
+import com.thedomination.model.DominationCards;
+import com.thedomination.model.WorldDomination;
+import com.thedomination.model.DominationPhase;
+import com.thedomination.model.DominationPhaseType;
+import com.thedomination.view.DominationCardView;
+import com.thedomination.view.WorldDominationView;
+import com.thedomination.view.DominationPhaseView;
 
 /**
  * The Class CardOperations.
@@ -27,11 +34,21 @@ public class CardOperations {
 	
 	/**The cardCounter */
 	private int cardCounter;
+
+	private boolean cardExchangeFlag = false;
 	
-	/**The cardExchangeFlag */
-	private boolean cardExchangeFlag = true;
+	DominationPhase dominationPhase;
 	
-	/**The object of CardOperations */
+	WorldDomination worldDomination;
+	
+	WorldDominationView worldDominationView;
+	
+	DominationPhaseView dominationPhaseView;
+	
+	DominationCards dominationCards;
+	
+	DominationCardView dominationCardView;
+
 	private static CardOperations UniqueInstance;
 	
 /**
@@ -53,6 +70,13 @@ public class CardOperations {
 		randomCard = new Random();
 		cardDeck = new ArrayList<CardsModel>();
 		cardCreation();
+		
+		dominationPhase=new DominationPhase();
+		worldDomination=new WorldDomination();
+		worldDominationView=new WorldDominationView(worldDomination);
+		dominationPhaseView=new DominationPhaseView(dominationPhase);
+		dominationCards = new DominationCards();
+		dominationCardView = new DominationCardView(dominationCards);
 	}
 
 /**
@@ -141,19 +165,30 @@ public class CardOperations {
 		String message="";
 		if(cardExchangeFlag) {
 			PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getAttackCountryCounter());
-		if(firstPosition.equalsIgnoreCase("-none")) {
-			if(currentPlayer.getCardList().size()>=5) {
-				message="Number of cards is 5 or more, You must exchange your cards";
+						
+			if(firstPosition.equalsIgnoreCase("-none")) {
+				if(currentPlayer.getCardList().size()>=5) {
+					message="Number of cards is 5 or more, You must exchange your cards";
+					return message;
+				}
+				else {
+					System.out.println("Player choose not to exchange cards");
+					cardExchangeFlag = false;
+					PlayerOperations.getInstance().setReinforceArmyFlag(true);
+					PlayerOperations.getInstance().setReinforceFlag(true);
+					//code to exit the card exchange view using observer pattern
+					//write code to check if more the 5 cards then can't simple use -none he must exchange cards
+					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
+					dominationPhase.setCurrentPlayerName(currentPlayer.getPlayerName());
+					dominationPhase.setCurrentAction("Starting Reinforcement");
+					return message;
+				}
+			}
+			
+			 if (currentPlayer.getCardList().size()<3) {
+				message="You don't have enough cards to exchange. Please use the >>exchangecards -none<< command";
 				return message;
 			}
-			else {
-				message="Player choose not to exchange cards";
-				cardExchangeFlag = false;
-				//code to exit the card exchange view using observer pattern
-				//write code to check if more the 5 cards then can't simple use -none he must exchange cards
-				return message;
-			}
-		}
 
 		CardsModel firstCard  = currentPlayer.getInHandCard(Integer.parseInt(firstPosition.trim()));
 		CardsModel secondCard = currentPlayer.getInHandCard(secondPosition);
@@ -182,15 +217,15 @@ public class CardOperations {
 				//		PlayerOperations.getInstance().setReInforceNoOfArmy(reinforceArmies+cardNoOfArmy);
 				//	}
 				//	System.out.println("Reforcement armies after card exchange "+ PlayerOperations.getInstance().getReInforceNoOfArmy());
-				System.out.println(">>> Before card exchange cards were ");
-				currentPlayer.showCards();
+				//System.out.println(">>> Before card exchange cards were ");
+				//currentPlayer.showCards();
 				//remove cards from player's card list
 				//	System.out.println("Cards positions "+ firstPosition +" "+ secondPosition +" "+thirdPosition);
 				currentPlayer.removeCards(firstCard,secondCard, thirdCard);
 				//add the cards in the deck
 				addCards(firstCard, secondCard, thirdCard);
-				System.out.println(">>> After card exchange cards are ");
-				currentPlayer.showCards();
+				//System.out.println(">>> After card exchange cards are ");
+				//currentPlayer.showCards();
 			}
 			else {
 				message = "Cards entered should be all identical or all different, TRY AGAIN!!";
@@ -199,11 +234,16 @@ public class CardOperations {
 			//before moving to reinforcement phase again check if the current player's card list size is more than 5 or not
 			if(currentPlayer.getCardList().size()>=5) {
 				message="Number of cards is 5 or more, You must exchange your cards";
+				//				PlayerOperations.getInstance().setReinforceArmyFlag(true);
+				//				PlayerOperations.getInstance().setReinforceFlag(true);
 				return message;
 			}
-			else if (currentPlayer.getCardList().size()<3) {
-				cardExchangeFlag = false;
-			}
+//			else if (currentPlayer.getCardList().size()<3) {
+//				System.out.println("You don't have enough cards to exchange");
+//				PlayerOperations.getInstance().setReinforceArmyFlag(true);
+//				PlayerOperations.getInstance().setReinforceFlag(true);
+//				cardExchangeFlag = false;
+//			}
 		}
 		else {
 			message = "Illegal Move";
@@ -221,17 +261,16 @@ public class CardOperations {
  * @return true or false accordingly.
  */
 	public boolean checkSameCards(String firstCard, String secondCard, String thirdCard) {
-		System.out.println("In the same check");
 		if(firstCard.equalsIgnoreCase("Infantry") && secondCard.equalsIgnoreCase("Infantry") && thirdCard.equalsIgnoreCase("Infantry") ) {
-			System.out.println("Infantry true");
+			//System.out.println("Infantry true");
 			return true;
 		}
 		else if (firstCard.equalsIgnoreCase("Cavalry") && secondCard.equalsIgnoreCase("Cavalry") && thirdCard.equalsIgnoreCase("Cavalry")) {
-			System.out.println("Cavalry true");
+			//System.out.println("Cavalry true");
 			return true;
 		}
 		else if(firstCard.equalsIgnoreCase("Artillery") && secondCard.equalsIgnoreCase("Artillery") && thirdCard.equalsIgnoreCase("Artillery")) {
-			System.out.println("Artillery true");
+			//System.out.println("Artillery true");
 			return true;
 		}
 
@@ -359,6 +398,15 @@ public class CardOperations {
 		cardDeck.add(thirdCard);
 	}
 	
+	public List<String> cardStrings(List<CardsModel> listCards){
+
+		List<String> stringList = new ArrayList<>();
+
+		for(CardsModel tempCard: listCards) {
+			stringList.add(tempCard.getCardName());
+		}
+		return stringList;
+	}
 /**
  * getCardNoOfArmy getter method to get the card number of army.
  * 
@@ -384,8 +432,12 @@ public class CardOperations {
 	public boolean isCardExchangeFlag() {
 		return cardExchangeFlag;
 	}
-	
-	
+
+	public void setCardExchangeFlag(boolean cardExchangeFlag) {
+		this.cardExchangeFlag = cardExchangeFlag;
+	}
+
+
 
 	//	public void testingAddCards() {
 	//		PlayerModel tempPlayerModel = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getReInforceCountryCounter());

@@ -586,6 +586,19 @@ public class MapOperations {
 		return null;
 	}
 	
+	public ContinentModel searchContinentWithCountryName(String countryName) {
+	
+	for (ContinentModel loopContinent : getContinentsList()) {
+			
+		if (loopContinent.searchCountry(countryName) != null) {
+			
+			return loopContinent;
+		}
+	
+	}
+	return null;
+}
+	
 	/**
 	 * searchOnCountryPosition method to search country according to position.
 	 * 

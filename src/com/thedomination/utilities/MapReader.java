@@ -171,7 +171,7 @@ public class MapReader {
 				MapOperations.getInstance().setCountryList(countryModels);			
 			}	
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("No file found");
 		}
 		return MapOperations.getInstance();
 	}

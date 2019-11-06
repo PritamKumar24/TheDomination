@@ -31,6 +31,16 @@ public class WorldDomination implements WorldDominationObservable {
 	/** The continents contr. */
 	private HashSet<String> continentsContr;
 
+	public HashSet<String> getContinentsContr() {
+		return continentsContr;
+	}
+
+
+
+	public void setContinentsContr(HashSet<String> continentsContr) {
+		this.continentsContr = continentsContr;
+	}
+
 	/** The armies owned. */
 	private int armiesOwned;
 
