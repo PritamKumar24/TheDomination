@@ -215,6 +215,14 @@
 			cardList.add(card);
 	}
 	
+	public int getPlayerArmiesInCountries() {
+		int totalArmies =0;
+		for(CountryModel tempCountry : playerCountryList) {
+			totalArmies = totalArmies + tempCountry.getNoOfArmiesCountry();
+		}
+		return totalArmies;
+	}
+	
 //	public void removeCards(int firstPosition, int secondPosition, int thirdPosition) {
 //		System.out.println("During removal position "+ firstPosition+ " "+secondPosition+" "+thirdPosition);
 //		int[] removePositions = {firstPosition, secondPosition, thirdPosition}; 

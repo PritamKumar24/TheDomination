@@ -79,7 +79,7 @@ public class MapOperations {
 	/**
 	 * Constructor for the MapOperations class
 	 */
-	public MapOperations() {
+	private MapOperations() {
 		this.continentsList = new ArrayList<>();
 		this.countryList = new ArrayList<>();
 	}
@@ -568,6 +568,22 @@ public class MapOperations {
 		}
 		
 		
+	}
+	
+	public String searchContinentbyCountry(String countryName) {
+		
+		for (ContinentModel loopContinent : getContinentsList()) {
+			
+
+			
+			if (loopContinent.searchCountry(countryName) != null) {
+				
+				return loopContinent.getContinentName();
+			}
+		
+		
+		}
+		return null;
 	}
 	
 	/**
