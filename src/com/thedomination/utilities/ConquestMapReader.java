@@ -147,7 +147,31 @@ public class ConquestMapReader {
 		return MapOperations.getInstance();
 	}
 
-			
+	public void validateIfCountryHasNeighbour(String targetCountry, ArrayList<CountryModel> countryModels,
+					MapOperations mapHierarchyModel) {
+				// TODO Auto-generated method stub
+				boolean neighbourFlag = false;
+				if (targetCountry != null) {
+					for (CountryModel loopCountry : countryModels) {
+						ArrayList<String> neighbours = loopCountry.getListOfNeighbours();
+						for (String country : neighbours) {
+							if (country.equalsIgnoreCase(targetCountry)) {
+								neighbourFlag = true;
+							}
+						}
+					}
+					if (neighbourFlag) {
+						System.out.println("Map is valid");
+					}
+					else{
+						String valErrorMessage = "Map is invalid as there is no connectivity from or to country "
+								+ targetCountry;
+						mapHierarchyModel.setValErrorFlag(true);
+						mapHierarchyModel.setErrorMsg(valErrorMessage);
+				}
+
+				}
+			}		
 
 
 }
