@@ -7,6 +7,10 @@ import java.io.PrintWriter;
 import com.thedomination.controller.MapOperations;
 import com.thedomination.model.ContinentModel;
 import com.thedomination.model.CountryModel;
+import com.thedomination.utilities.ConquestMapReader;
+import com.thedomination.utilities.MapAdapter;
+import com.thedomination.utilities.MapReader;
+import com.thedomination.utilities.SaveMapAdapter;
 
 /**
  *saveMapFile class for saving a map to a text file.
