@@ -3,12 +3,14 @@ package com.thedomination.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
 
 import com.thedomination.model.CountryModel;
 import com.thedomination.model.PlayerModel;
 import com.thedomination.model.ContinentModel;
+import com.thedomination.utilities.ConquestMapReader;
 import com.thedomination.utilities.MapLocator;
 import com.thedomination.utilities.MapReader;
 
@@ -24,8 +26,10 @@ import com.thedomination.utilities.MapReader;
  * @author Pritam Kumar
  * @version 1.0.0
  */
-public class MapOperations {
+public class MapOperations implements Serializable {
 
+
+	private static final long serialVersionUID = 1L;
 
 	/**The object for MapReader Class */
 	private MapReader mapReader;
@@ -39,6 +43,8 @@ public class MapOperations {
 	/**The ArrayList of  ConnectedNodes.*/
 	private ArrayList<ArrayList<String> > listOfConnectedNodes;
 	
+	public boolean conquestMap = false;
+
 	/**
 	 * getListOfConnectedNodes method to get all the connected nodes.
 	 * @return listOfConnectedNodes list of connected nodes.
@@ -56,34 +62,35 @@ public class MapOperations {
 	}
 
 	/** The object of MapOperation class.*/
-	private static MapOperations UniqueInstance;
-	
+	private static MapOperations mapOperationInstance;
+
 	/** The value error flag. */
 	private boolean valErrorFlag = false;
-	
+
 	/** The error message. */
 	private String errorMsg = "Map is invalid";
-	
+
 	/**
 	 * getInstance Method to generate the object for the MapOPeration Class. 
 	 * 
 	 * @return object for the MapOperations class.
 	 */
 	public static MapOperations getInstance() {
-		if(MapOperations.UniqueInstance == null) {
-			MapOperations.UniqueInstance = new MapOperations();
+		if(MapOperations.mapOperationInstance == null) {
+			MapOperations.mapOperationInstance = new MapOperations();
 		}
-		return MapOperations.UniqueInstance;
+		return MapOperations.mapOperationInstance;
 	}
 
 	/**
 	 * Constructor for the MapOperations class
 	 */
-	private MapOperations() {
+	public MapOperations() {
 		this.continentsList = new ArrayList<>();
 		this.countryList = new ArrayList<>();
+		this.listOfConnectedNodes = new ArrayList<ArrayList<String>>();
 	}
-	
+
 	/**
 	 * Parameterized Constructor for the MapOperations class
 	 * 
@@ -93,10 +100,11 @@ public class MapOperations {
 	public MapOperations(String conquestMapName, int totalCountries) {
 		this.continentsList = new ArrayList<ContinentModel>();
 		this.countryList = new ArrayList<>();
+		this.listOfConnectedNodes = new ArrayList<ArrayList<String>>();
 	}
 
-    /**
-	 * getContinentList method Gets Continent List. Getter function for
+	/**
+	 * getContinentList method Gets Continent List. Getter function 
 	 * Continent List.
 	 * 
 	 * @return continentsList List of continents.
@@ -134,7 +142,7 @@ public class MapOperations {
 	public void setCountryList(ArrayList<CountryModel> countryModels) {
 		this.countryList = countryModels;
 	}
-	
+
 	/**
 	 * Checks if is value error flag.
 	 * 
@@ -143,7 +151,7 @@ public class MapOperations {
 	public boolean isValErrorFlag() {
 		return valErrorFlag;
 	}
-	
+
 	/**
 	 * Sets the value error flag.
 	 * 
@@ -152,7 +160,7 @@ public class MapOperations {
 	public void setValErrorFlag(boolean valErrorFlag) {
 		this.valErrorFlag = valErrorFlag;
 	}
-	
+
 	/**
 	 * Gets the error message.
 	 * 
@@ -170,7 +178,12 @@ public class MapOperations {
 	public void setErrorMsg(String errorMsg) {
 		this.errorMsg = errorMsg;
 	}
+
 	
+	
+	public static void setMapOperationInstance(MapOperations mapOperationInstance) {
+		MapOperations.mapOperationInstance = mapOperationInstance;
+	}
 	/**
 	 * searchContinent Method to search the Continent.
 	 * 
@@ -186,7 +199,7 @@ public class MapOperations {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * addContinent Method to add the continent
 	 * 
@@ -203,13 +216,13 @@ public class MapOperations {
 			System.out.println("Not allowed");
 		}		
 	}
-	
-/**
- * deleteContinent is Method to delete the Continent.
- * 
- * @param continentName String for the name of Continent.
- * @return delete the continent if the continent is found else print not found statement.
- */
+
+	/**
+	 * deleteContinent is Method to delete the Continent.
+	 * 
+	 * @param continentName String for the name of Continent.
+	 * @return delete the continent if the continent is found else print not found statement.
+	 */
 	public String deleteContinent(String continentName) {
 		ContinentModel deleteContinent = searchContinent(continentName);
 		if (deleteContinent != null) {
@@ -240,7 +253,7 @@ public class MapOperations {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * addCountry Method to add the country
 	 * 
@@ -264,7 +277,7 @@ public class MapOperations {
 		System.out.println("The Country " + countryName +" has been added");
 		return "";
 	}
-	
+
 	/**
 	 * addConnectedGraphCountry method adds country to the connected graph.
 	 * 
@@ -273,15 +286,15 @@ public class MapOperations {
 	public void addConnectedGraphCountry(String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
 		listOfConnectedNodes.get(0).add(countryName);
-		
+
 		ArrayList<String> list =new ArrayList<String>();
 		list.add(countryName);
 		listOfConnectedNodes.add(list);
-		
+
 		for (int i = 1; i < listOfConnectedNodes.size(); i++) { 
 			listOfConnectedNodes.get(i).add("0");
 			listOfConnectedNodes.get(listOfConnectedNodes.size()-1).add("0");
-        }
+		}
 	}
 
 	/**
@@ -308,7 +321,7 @@ public class MapOperations {
 			}
 		}
 	}
-	
+
 	/**
 	 * addConnectedGraphNeighbour method to add neighboour to the connected graph.
 	 * 
@@ -320,11 +333,11 @@ public class MapOperations {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
 		int indexCountry = listOfConnectedNodes.get(0).indexOf(countryName);
 		int indexNeighbourCountry=listOfConnectedNodes.get(0).indexOf(neighbourCountryName);
-		
+
 		listOfConnectedNodes.get(indexCountry).set(indexNeighbourCountry,"1");
 		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"1");
 	}
-	
+
 	/**
 	 * searchNeighbourCountry method to search the neighbour country.
 	 * 
@@ -345,7 +358,7 @@ public class MapOperations {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * deleteNeighbourCountry Method to delete the Neighbouring country.
 	 * 
@@ -354,10 +367,10 @@ public class MapOperations {
 	 * @param neighbourCountryName Neighbouring country to be deleted.
 	 */
 	public void deleteNeighbourCountry(String countryName, String neighbourCountryName) {
-		
+
 		CountryModel neighbourCountry = searchCountry(neighbourCountryName);
 		CountryModel countryFound = searchCountry(countryName);
-		
+
 		if (neighbourCountry == null || countryFound == null) {
 			System.out.println("Countries |" + neighbourCountryName +" OR "+ countryName + "| Not found"); 
 		}
@@ -371,7 +384,7 @@ public class MapOperations {
 			}
 		}
 	}
-	
+
 	/**
 	 * deleteConnectedGraphNeighbour method to delete the neighbour from connected graph.
 	 * 
@@ -383,11 +396,11 @@ public class MapOperations {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
 		int indexCountry = listOfConnectedNodes.get(0).indexOf(countryName);
 		int indexNeighbourCountry=listOfConnectedNodes.get(0).indexOf(neighbourCountryName);
-		
+
 		listOfConnectedNodes.get(indexCountry).set(indexNeighbourCountry,"0");
 		listOfConnectedNodes.get(indexNeighbourCountry).set(indexCountry,"0");
 	}
-	
+
 	/**deleteCountry Method to delete the Country.
 	 * 
 	 * @param countryName Name of the country to be deleted.
@@ -403,7 +416,7 @@ public class MapOperations {
 		else if(deleteCountry.getListOfNewNeighbours().size()>0) {
 			return "Please remove the neighbours of this country before you delete it.";
 		}
-		
+
 		deleteCountry.getBelongsTo().deleteCountry(deleteCountry);
 		getCountryList().remove(deleteCountry);
 		deleteCountry = null;
@@ -416,33 +429,33 @@ public class MapOperations {
 	 * 
 	 * @param countryName name of the country to be deleted.
 	 */
-	
+
 	public void deleteConnectedGraphCountry(String countryName) {
 		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
 		int index=listOfConnectedNodes.get(0).indexOf(countryName);
-		
+
 		for (int i = 0; i < listOfConnectedNodes.size(); i++) { 
 			listOfConnectedNodes.get(i).remove(index);
-        }
-		
+		}
+
 		listOfConnectedNodes.remove(index);
 	}
 
-     /**
+	/**
 	 * load the map from existing file if there is any
 	 * if not then it will create a new file from scratch
 	 * @param fileName
 	 */
 	public void editMap(String fileName) {
-		
+
 		File tempFile = new File(System.getProperty("user.dir")+ "/resources/" + fileName);
 		boolean exists = tempFile.exists();
-		
+
 		listOfConnectedNodes =  new ArrayList<ArrayList<String>>();
 		ArrayList<String> insideList =  new ArrayList<String>();
 		insideList.add("C/C");
 		listOfConnectedNodes.add(insideList);
-		
+
 		if(exists) {
 			System.out.println("There is a map file "+fileName);
 			//MapLocator.mapLocation(fileName);
@@ -460,49 +473,92 @@ public class MapOperations {
 			} 
 		}	
 	}
-	
+
 	/**
 	 * loadMap method to load a user-saved map file
 	 * 
 	 * @param fileName name of file.
 	 */
 	public void loadMap(String fileName) {
-		
+
+		MapOperations.getInstance().clear();
+		PlayerOperations.getInstance().clear();
+		CardOperations.getInstance().clear();
 		MapLocator.mapLocation(fileName);
-		listOfConnectedNodes =  new ArrayList<ArrayList<String>>();
-		ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
-		ArrayList<String> insideList =  new ArrayList<String>();
-		insideList.add("C/C");
-		for (CountryModel loop : loopCountryList) {
-			insideList.add(loop.getCountryName());
-		}
-		listOfConnectedNodes.add(insideList);
-		
-		for (CountryModel loop : loopCountryList) {
-			ArrayList<String> insideList1 =  new ArrayList<String>();
-			insideList1.add(loop.getCountryName());
-			listOfConnectedNodes.add(insideList1);
-		}
-		
-		for (int i = 1; i < listOfConnectedNodes.size(); i++) { 
-            for (int j = 1; j < listOfConnectedNodes.size(); j++) { 
-            	listOfConnectedNodes.get(i).add("0");
-            }
-        }
-		
-		int i = 1;
-		for (CountryModel loop : loopCountryList) {
-			for (Integer j : loop.getListOfNewNeighbours()) {
-				listOfConnectedNodes.get(i).set(j, "1");
-				listOfConnectedNodes.get(j).set(i, "1");
+		if(MapOperations.getInstance().conquestMap == false) {
+
+			//listOfConnectedNodes =  new ArrayList<ArrayList<String>>();
+			ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
+			ArrayList<String> insideList =  new ArrayList<String>();
+			insideList.add("C/C");
+			for (CountryModel loop : loopCountryList) {
+				insideList.add(loop.getCountryName());
 			}
-			i++;
+			listOfConnectedNodes.add(insideList);
+
+			for (CountryModel loop : loopCountryList) {
+				ArrayList<String> insideList1 =  new ArrayList<String>();
+				insideList1.add(loop.getCountryName());
+				listOfConnectedNodes.add(insideList1);
+			}
+
+			for (int i = 1; i < listOfConnectedNodes.size(); i++) { 
+				for (int j = 1; j < listOfConnectedNodes.size(); j++) { 
+					listOfConnectedNodes.get(i).add("0");
+				}
+			}
+
+			int i = 1;
+			for (CountryModel loop : loopCountryList) {
+				for (Integer j : loop.getListOfNewNeighbours()) {
+					listOfConnectedNodes.get(i).set(j, "1");
+					listOfConnectedNodes.get(j).set(i, "1");
+				}
+				i++;
+			}
+
+			MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);
+			System.out.println(MapOperations.getInstance().validateMap());
 		}
+		else {
+
+			listOfConnectedNodes = new ArrayList<ArrayList<String>>();
+
+			ArrayList<CountryModel> loopCountryList = MapOperations.getInstance().getCountryList();
+			ArrayList<String> insideList = new ArrayList<String>();
+			insideList.add("C/C");
+			for (CountryModel loop : loopCountryList) {
+				insideList.add(loop.getCountryName());
+			}
+			listOfConnectedNodes.add(insideList);
+
+			for (CountryModel loop : loopCountryList) {
+				ArrayList<String> insideList1 = new ArrayList<String>();
+				insideList1.add(loop.getCountryName());
+				listOfConnectedNodes.add(insideList1);
+			}
+
+			for (int i = 1; i < listOfConnectedNodes.size(); i++) {
+				for (int j = 1; j < listOfConnectedNodes.size(); j++) {
+					listOfConnectedNodes.get(i).add("0");
+				}
+			}
+
+			int i = 1;
+			for (CountryModel loop : loopCountryList) {
+				for (Integer j : loop.getListOfNewNeighbours()) {
+					listOfConnectedNodes.get(i).set(j, "1");
+					listOfConnectedNodes.get(j).set(i, "1");
+				}
+				i++;
+			}
+
+			MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);
+			System.out.println(MapOperations.getInstance().validateMap());
 		
-		MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);
-		System.out.println(MapOperations.getInstance().validateMap());
+		}
 	}
-	
+
 	/**
 	 * validateMap method for Verification of map correctness. 
 	 * 
@@ -512,27 +568,26 @@ public class MapOperations {
 		String message="";
 		Stack<Integer> stack = new Stack<Integer>();
 		int source = 1;
-		ArrayList<ArrayList<String> > listOfConnectedNodes = MapOperations.getInstance().getListOfConnectedNodes();
-		//int number_of_nodes = connectedGraph[source].length - 1;
-		int number_of_nodes = listOfConnectedNodes.size() - 1;
-		//System.out.println(number_of_nodes);
+		ArrayList<ArrayList<String> > listOfConnectedNodes1 = MapOperations.getInstance().getListOfConnectedNodes();
+		
+		int number_of_nodes = listOfConnectedNodes1.size() - 1;
 		int[] visited = new int[number_of_nodes + 1];
+
 		int i, element;
 		visited[source] = 1;
 		stack.push(source);
-		
+
 		while (!stack.isEmpty()) {
 			element = stack.pop();
 			i = 1;
 			while (i <= number_of_nodes) {
-				if (listOfConnectedNodes.get(element).get(i) == "1" && visited[i] == 0) {
+				if (listOfConnectedNodes1.get(element).get(i) == "1" && visited[i] == 0) {
 					stack.push(i);
 					visited[i] = 1;
 				}
 				i++;
 			}
 		}
-
 		int count = 0;
 		for (int v = 1; v <= number_of_nodes; v++) {
 			if (visited[v] == 1)
@@ -548,7 +603,7 @@ public class MapOperations {
 		}
 		return message;
 	}
-	
+
 	/**
 	 * showMapEditor method to  show all continents and countries and their neighbors.
 	 */
@@ -556,49 +611,49 @@ public class MapOperations {
 		System.out.println("*****List of Continents*****");
 		for(ContinentModel loopContinent : continentsList) {
 			System.out.println("Continent Name: " +loopContinent.getContinentName() +" Continent Value: " + loopContinent.getControlValue());
-			
+
 			for(CountryModel loopCountry: loopContinent.getCountriesList()) {
 				System.out.println("     Country Name: " + loopCountry.getCountryName());
-				
+
 				for(Integer loopNeighbour : loopCountry.getListOfNewNeighbours()) {
 					System.out.println("          Neighbours: " + MapOperations.getInstance().searchOnCountryPosition(loopNeighbour));
 				}
 			}
 			System.out.println();
 		}
-		
-		
-	}
-	
-	public String searchContinentbyCountry(String countryName) {
-		
-		for (ContinentModel loopContinent : getContinentsList()) {
-			
 
-			
+
+	}
+
+	public String searchContinentbyCountry(String countryName) {
+
+		for (ContinentModel loopContinent : getContinentsList()) {
+
+
+
 			if (loopContinent.searchCountry(countryName) != null) {
-				
+
 				return loopContinent.getContinentName();
 			}
-		
-		
+
+
 		}
 		return null;
 	}
-	
+
 	public ContinentModel searchContinentWithCountryName(String countryName) {
-	
-	for (ContinentModel loopContinent : getContinentsList()) {
-			
-		if (loopContinent.searchCountry(countryName) != null) {
-			
-			return loopContinent;
+
+		for (ContinentModel loopContinent : getContinentsList()) {
+
+			if (loopContinent.searchCountry(countryName) != null) {
+
+				return loopContinent;
+			}
+
 		}
-	
+		return null;
 	}
-	return null;
-}
-	
+
 	/**
 	 * searchOnCountryPosition method to search country according to position.
 	 * 
@@ -614,13 +669,13 @@ public class MapOperations {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * showMapGamePlay method to show all countries and continents, armies on each country, ownership, and connectivity.
 	 */
 	public void showMapGamePlay() {
 		showMapEditor();
-		
+
 		for(PlayerModel loopPlayer : PlayerOperations.getInstance().getPlayersList()) {
 			System.out.println("Player Name: " +loopPlayer.getPlayerName());
 			for(CountryModel loopCountry : loopPlayer.getPlayerCountryList()) {
@@ -629,4 +684,15 @@ public class MapOperations {
 			}
 		}
 	}
+
+	public void clear() {
+		this.continentsList.clear();
+		this.countryList.clear();
+		this.listOfConnectedNodes.clear();
+		this.valErrorFlag = false;
+		this.errorMsg = "Map is invalid";
+		
+	}
+	
+	
 }
