@@ -3,7 +3,7 @@ package com.thedomination.utilities;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 
 import com.thedomination.controller.MapOperations;
 import com.thedomination.model.ContinentModel;
@@ -13,7 +13,13 @@ import com.thedomination.model.CountryModel;
 
 public class ConquestMapReader {
 
+	ArrayList<ContinentModel> continentModels = new ArrayList<>();
+	ArrayList<CountryModel> countryModels = new ArrayList<>();
+
 	public boolean riskmap=false;
+
+	int countryPosition=0;
+
 	public boolean isRiskmap() {
 		return riskmap;
 	}
@@ -22,18 +28,16 @@ public class ConquestMapReader {
 		this.riskmap = riskmap;
 	}
 
-	public boolean isConquestmap() {
-		return MapLocator.conquestmap;
-	}
-
-	public void setConquestmap(boolean conquestmap) {
-		MapLocator.conquestmap = conquestmap;
-	}
+//	public boolean isConquestmap() {
+//		return MapLocator.conquestmap;
+//	}
+//
+//	public void setConquestmap(boolean conquestmap) {
+//		MapLocator.conquestmap = conquestmap;
+//	}
 
 	public MapOperations parseAndValidateConuestMap(String filePath) {
 
-		ArrayList<ContinentModel> continentModels = new ArrayList<>();
-		ArrayList<CountryModel> countryModels = new ArrayList<>();
 		boolean isContinent = false;
 		boolean isCountry = false;
 		String[] neighbourCountries = null;
@@ -57,7 +61,8 @@ public class ConquestMapReader {
 				}
 				if (currentLine.equalsIgnoreCase("[Territories]")) {
 					isCountry = true;
-					setConquestmap(true);
+					//setConquestmap(true);
+					MapOperations.getInstance().conquestMap = true;
 					isContinent = false;
 					if (!isContinent && continentModels.size() == 0) {
 						String valErrorMessage = "Map is invalid as there are no continents defined";
@@ -96,6 +101,7 @@ public class ConquestMapReader {
 					for (int i = 0; i < countryValues.length; i++) {
 						if (i == 0) {
 							countryModel.setCountryName(countryValues[i]);
+							countryModel.setCountryPosition(++countryPosition);
 						} else if (i == 1 || i == 2) {
 							// do nothing as we have skipped the coordinates
 						} else if (i == 3) {
@@ -121,7 +127,7 @@ public class ConquestMapReader {
 
 
 			}
-			if(isConquestmap()==false)
+			if(MapOperations.getInstance().conquestMap==false)
 			return null;
 
 			MapOperations.getInstance().setContinentsList(continentModels);
@@ -139,6 +145,7 @@ public class ConquestMapReader {
 				MapOperations.getInstance().setCountryList(countryModels);
 
 			}
+			fillNeighboursList();
 			validateIfCountryHasNeighbour(targetCountry, countryModels, MapOperations.getInstance());
 
 		} catch (Exception e) {
@@ -147,7 +154,7 @@ public class ConquestMapReader {
 		return MapOperations.getInstance();
 	}
 
-	public void validateIfCountryHasNeighbour(String targetCountry, ArrayList<CountryModel> countryModels,
+			public void validateIfCountryHasNeighbour(String targetCountry, ArrayList<CountryModel> countryModels,
 					MapOperations mapHierarchyModel) {
 				// TODO Auto-generated method stub
 				boolean neighbourFlag = false;
@@ -171,7 +178,16 @@ public class ConquestMapReader {
 				}
 
 				}
-			}		
+			}
 
+	public void fillNeighboursList() {
+		for(CountryModel sourceCountry : countryModels) {
+			for(CountryModel neighbourCountry : countryModels) {
+				if(sourceCountry.searchNeighboursCountry(neighbourCountry.getCountryName()) !=null) {
+					sourceCountry.getListOfNewNeighbours().add(countryModels.indexOf(neighbourCountry)+1);
+				}
+			}
+		}
+	}
 
 }
