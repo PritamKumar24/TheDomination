@@ -83,7 +83,136 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		dominationPhase.setCurrentAction("Starting Fortify");
 	}
 
+	@Override
+	public String fortificationPhase(String fromCountry, String toCountry, String num) {
 
+		String message ="";
+		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
+		System.out.println("Benevolent Fortification Phase Starts - player name " + currentPlayer.getPlayerName());
+		System.out.println();
+		if(currentPlayer.getPlayerCountryList().size() < 2) {
+			System.out.println("Fortification Not possible"); 
+			System.out.println();
+			System.out.println("Benevolent Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
+
+			PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
+			CardOperations.getInstance().setCardExchangeFlag(true);
+
+			//save to the file
+			System.out.println();
+			GameDirector gameDirector = new GameDirector();
+			GameBuilder gameBuilder = new ConcreteGameBuilder();
+			gameDirector.setGameBuilder(gameBuilder);
+			gameDirector.buildGame();
+			gameDirector.saveGame("AutoSavedGame");
+
+			//Call to Card Exchange View
+			//Triggering phase view observer		
+			dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
+			dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+			dominationPhase.setCurrentAction("Starting Card Exchange");
+
+			dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+			dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
+
+			return message;
+		}
+
+		for(int i=0; i<currentPlayer.getPlayerCountryList().size(); i++) {
+			CountryModel tempCountry = currentPlayer.getPlayerCountryList().get(i);
+			if(tempCountry.getNoOfArmiesCountry()>1) {
+				break;
+			}
+			else if(i == currentPlayer.getPlayerCountryList().size()-1) {
+				System.out.println("Not enough armies for fortification ");
+				System.out.println();
+				System.out.println("Benevolent Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
+
+				PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
+				CardOperations.getInstance().setCardExchangeFlag(true);
+
+				System.out.println();
+				GameDirector gameDirector = new GameDirector();
+				GameBuilder gameBuilder = new ConcreteGameBuilder();
+				gameDirector.setGameBuilder(gameBuilder);
+				gameDirector.buildGame();
+				gameDirector.saveGame("AutoSavedGame");
+
+
+				//Call to Card Exchange View
+				//Triggering phase view observer		
+				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
+				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+				dominationPhase.setCurrentAction("Starting Card Exchange");
+				dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+				dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
+
+				return message;
+			}
+		}
+
+		List <CountryModel> sortedList= sortCountries();
+
+		for(CountryModel loopSortedList : sortedList) {
+			for(CountryModel neighbourCountry : currentPlayer.getPlayerCountryList()) {
+				if(!(neighbourCountry.getCountryName().equalsIgnoreCase(loopSortedList.getCountryName())) 
+						&& neighbourCountry.getNoOfArmiesCountry()>1
+						&& MapOperations.getInstance().searchNeighbourCountry(loopSortedList.getCountryName(), neighbourCountry.getCountryPosition())!=null) {
+
+					loopSortedList.setNoOfArmiesCountry(loopSortedList.getNoOfArmiesCountry()+(neighbourCountry.getNoOfArmiesCountry()-1));
+					neighbourCountry.setNoOfArmiesCountry(1);
+					System.out.println("Fortification Done from " + loopSortedList.getCountryName() + " to " + neighbourCountry.getCountryName());
+					System.out.println();
+					System.out.println("Benevolent Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
+
+					PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
+					CardOperations.getInstance().setCardExchangeFlag(true);
+
+					System.out.println();
+					GameDirector gameDirector = new GameDirector();
+					GameBuilder gameBuilder = new ConcreteGameBuilder();
+					gameDirector.setGameBuilder(gameBuilder);
+					gameDirector.buildGame();
+					gameDirector.saveGame("AutoSavedGame");
+
+					//Call to Card Exchange View
+					//Triggering phase view observer		
+					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
+					dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+					dominationPhase.setCurrentAction("Starting Card Exchange");
+
+					dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+					dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
+
+					return message;
+				}	
+			}
+		}
+
+		System.out.println("No country found for fortification");
+		System.out.println();
+		System.out.println("Benevolent Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
+
+		PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
+		CardOperations.getInstance().setCardExchangeFlag(true);
+
+		GameDirector gameDirector = new GameDirector();
+		GameBuilder gameBuilder = new ConcreteGameBuilder();
+		gameDirector.setGameBuilder(gameBuilder);
+		gameDirector.buildGame();
+		gameDirector.saveGame("AutoSavedGame");
+
+		//Phase View
+		dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
+		dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+		dominationPhase.setCurrentAction("Starting Card Exchange");
+
+		//Card View
+		dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+		dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
+
+		return "";
+	}
 
 	@Override
 	public void allOutAttack(String countrynamefrom, String countrynameto) {
@@ -115,6 +244,7 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		Collections.sort(sortedList, new SortCountriesWithArmies());
 		return sortedList;
 	}
+	
 }
 
 class SortCountriesWithArmies implements Comparator<CountryModel>{
