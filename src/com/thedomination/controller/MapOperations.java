@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import com.thedomination.model.CountryModel;
@@ -625,7 +627,7 @@ public class MapOperations implements Serializable {
 
 	}
 
-	public String searchContinentbyCountry(String countryName) {
+	public ContinentModel searchContinentbyCountry(String countryName) {
 
 		for (ContinentModel loopContinent : getContinentsList()) {
 
@@ -633,13 +635,46 @@ public class MapOperations implements Serializable {
 
 			if (loopContinent.searchCountry(countryName) != null) {
 
-				return loopContinent.getContinentName();
+				//return loopContinent.getContinentName();
+				return loopContinent;
 			}
 
 
 		}
 		return null;
 	}
+	
+	public ContinentModel continentConquered(PlayerModel tempPlayerModel) {
+		for(ContinentModel tempContinentModel : MapOperations.getInstance().getContinentsList()) {
+			if(tempContinentModel.getCountriesList().size()>0 ) {
+				List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
+				Iterator<CountryModel> iterator = tempCountryModelList.iterator();
+				while(iterator.hasNext()) {
+					CountryModel getCountry = iterator.next();
+					CountryModel tempPlayerCountry = tempPlayerModel.searchCountry(getCountry.getCountryName());
+					if(tempPlayerCountry != null) {
+						iterator.remove();
+					}
+				}
+
+				//This condition means this player owns all the countries of that particular continent
+				if(tempCountryModelList.size()==0) {
+					return tempContinentModel;
+				}
+			}
+
+		}
+		return null;
+	}
+	
+//	public String returnContinentname() {
+//		for (ContinentModel loopContinent : getContinentsList()) {
+//			for(CountryModel country:loopContinent.getCountriesList() ) {
+//				if(PlayerOperations.getInstance().currentPlayer(counter))
+//			}
+//		}
+//		return String
+//	}
 
 	public ContinentModel searchContinentWithCountryName(String countryName) {
 
