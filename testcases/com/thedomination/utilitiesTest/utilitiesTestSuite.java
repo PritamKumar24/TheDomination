@@ -1,4 +1,4 @@
-package com.thedomination.utilitiestest;
+package com.thedomination.utilitiesTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

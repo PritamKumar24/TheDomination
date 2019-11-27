@@ -1,4 +1,4 @@
-package com.thedomination.utilitiestest;
+package com.thedomination.utilitiesTest;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
