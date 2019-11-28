@@ -15,20 +15,37 @@ import com.thedomination.view.DominationCardView;
 import com.thedomination.view.DominationPhaseView;
 import com.thedomination.view.WorldDominationView;
 import com.thedomination.controller.TournamentController;
+
+
+/**
+ *The AggressivePlayer Class.
+ * implements Strategy and Serailizable Class,
+ * Initializes ReinforcementPhase Attack Phase and Fortification Phase.
+ *
+ * @author Pritam Kumar
+ */
 public class AggressivePlayer implements Strategy, Serializable{
 
-	/**
-	 * 
-	 */
+	/** Generated Serilaized Id */
 	private static final long serialVersionUID = 1L;
-
+	/**DominationPhase Object */
 	private DominationPhase dominationPhase;
+	/**WorldDomination Object */
 	private WorldDomination worldDomination;
+	/**WorldDominationView Object */
 	private WorldDominationView worldDominationView;
+	/**DominationPhaseView Object */
 	private DominationPhaseView dominationPhaseView;
+	/**DominationCards Object */
 	private DominationCards dominationCard;
+	/**DominationCardView Object */
 	private DominationCardView dominationCardView;
 
+
+	/**
+	 * Constructor for AggressivePlayer class.
+	 * 
+	 */
 	public AggressivePlayer() {
 		dominationPhase=new DominationPhase();
 		worldDomination=new WorldDomination();
@@ -37,7 +54,12 @@ public class AggressivePlayer implements Strategy, Serializable{
 		dominationCard = new DominationCards();
 		dominationCardView = new DominationCardView(dominationCard);
 	}
-
+	/**
+	 * Method for reinforcementPhase.
+	 * @param countryName name of the new country.
+	 * @param num number of Player.
+	 * @return Desired Message
+	 * 	 */
 	@Override
 	public String reinforcementPhase(String countryName, int num) {
 
@@ -45,7 +67,6 @@ public class AggressivePlayer implements Strategy, Serializable{
 
 		//exchange cards
 		System.out.println(CardOperations.getInstance().selfCardExchange(currentPlayer.getCardList()));
-
 
 		//get & set the reinforcement armies to player
 		PlayerOperations.getInstance().getReInforcementArmies();
@@ -70,12 +91,16 @@ public class AggressivePlayer implements Strategy, Serializable{
 		dominationPhase.setCurrentGamePhase(DominationPhaseType.ATTACK);
 		dominationPhase.setCurrentPlayerName(currentPlayer.getPlayerName());
 		dominationPhase.setCurrentAction("Starting Attack");
-
 		return ""; 
 	}
 
-
-
+	/**
+	 * Method for attackPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * */
 	@Override
 	public void attackPhase(String countrynamefrom, String countrynameto, int numdice) {
 		String message = "";
@@ -93,10 +118,13 @@ public class AggressivePlayer implements Strategy, Serializable{
 				diceAttack[i]=PlayerOperations.getInstance().rollDice();
 				System.out.print(diceAttack[i] + " ");
 			}
+
 			CountryModel neighbourCountry=null;
 			System.out.println();
 
+
 			diceAttack = PlayerOperations.getInstance().sortArray(diceAttack);
+
 
 			for(Integer neighbourPosition: attackCountry.getListOfNewNeighbours()) {
 				neighbourCountry = MapOperations.getInstance().getCountryList().get(neighbourPosition-1);
@@ -113,7 +141,6 @@ public class AggressivePlayer implements Strategy, Serializable{
 				System.out.print(diceDefend[i] + " ");
 			}
 			System.out.println();
-			
 			diceDefend = PlayerOperations.getInstance().sortArray(diceDefend);
 
 			for(int i = 0;i<(diceDefend.length > diceAttack.length ? diceAttack.length : diceDefend.length);i++) {
@@ -173,7 +200,6 @@ public class AggressivePlayer implements Strategy, Serializable{
 						tempPlayerModelAttackCountry.getCardList().add(tempCard);
 					}
 					defender.setCardList(null);
-					//remove from game
 
 					PlayerOperations.getInstance().setLostPlayers(defender.getPlayerName());
 					if(PlayerOperations.getInstance().getPlayerCounter() > PlayerOperations.getInstance().getPlayersList().indexOf(defender)+1) {
@@ -197,14 +223,21 @@ public class AggressivePlayer implements Strategy, Serializable{
 		System.out.println("Aggresive Attack Phase Ends - player name " + tempPlayerModelAttackCountry.getPlayerName());
 
 		if(PlayerOperations.getInstance().getPlayersList().size()!=1) {
-		//Triggering Fortify Phase
-		dominationPhase.setCurrentGamePhase(DominationPhaseType.FORTIFY);
-		dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
-		dominationPhase.setCurrentAction("Starting Fortify");
-		}
 
+			//Triggering Fortify Phase
+			dominationPhase.setCurrentGamePhase(DominationPhaseType.FORTIFY);
+			dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
+			dominationPhase.setCurrentAction("Starting Fortify");
+		}
 	}
 
+	/**
+	 * Method for FortificationPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * */
 	@Override
 	public String fortificationPhase(String fromCountry, String toCountry, String num) {
 
@@ -226,17 +259,16 @@ public class AggressivePlayer implements Strategy, Serializable{
 			gameDirector.setGameBuilder(gameBuilder);
 			gameDirector.buildGame();
 			gameDirector.saveGame("AutoSavedGame");
-			
-			//Call to Card Exchange View
-			//Triggering phase view observer		
+
+			//Observer call
 			dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 			dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 			dominationPhase.setCurrentAction("Starting Card Exchange");
 
+			//domination view call
 			dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 			dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
 
-			
 			return message;
 		}
 
@@ -249,7 +281,7 @@ public class AggressivePlayer implements Strategy, Serializable{
 				System.out.println("Not enough armies for fortification ");
 				System.out.println();
 				System.out.println("Aggresive Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
-
+				//PlayerOperations.getInstance().moveToNextPLayer();
 				PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
 				CardOperations.getInstance().setCardExchangeFlag(true);
 
@@ -259,25 +291,24 @@ public class AggressivePlayer implements Strategy, Serializable{
 				gameDirector.setGameBuilder(gameBuilder);
 				gameDirector.buildGame();
 				gameDirector.saveGame("AutoSavedGame");
-				
-				//Call to Card Exchange View
+
+
 				//Triggering phase view observer		
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationPhase.setCurrentAction("Starting Card Exchange");
-
+				//Call to Card Exchange View
 				dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
-
 
 				return message;
 			}
 		}
+
 		CountryModel maxArmyCountry = getCountryWithMaxArmies(currentPlayer);
 
 		for(CountryModel neighbourCountry : currentPlayer.getPlayerCountryList()) {
 			if(!(neighbourCountry.getCountryName().equalsIgnoreCase(maxArmyCountry.getCountryName())) 
-					
 					&& MapOperations.getInstance().searchNeighbourCountry(maxArmyCountry.getCountryName(), neighbourCountry.getCountryPosition())!=null) {
 
 				maxArmyCountry.setNoOfArmiesCountry(maxArmyCountry.getNoOfArmiesCountry()+(neighbourCountry.getNoOfArmiesCountry()-1));
@@ -285,7 +316,6 @@ public class AggressivePlayer implements Strategy, Serializable{
 				System.out.println("Fortification Done from " + maxArmyCountry.getCountryName() + " to " + neighbourCountry.getCountryName()); 
 				System.out.println();
 				System.out.println("Aggresive Fortification Phase Ends - player name " + currentPlayer.getPlayerName());
-				
 				PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
 				CardOperations.getInstance().setCardExchangeFlag(true);
 
@@ -295,16 +325,15 @@ public class AggressivePlayer implements Strategy, Serializable{
 				gameDirector.setGameBuilder(gameBuilder);
 				gameDirector.buildGame();
 				gameDirector.saveGame("AutoSavedGame");
-				
-				//Call to Card Exchange View
+
+
 				//Triggering phase view observer		
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationPhase.setCurrentAction("Starting Card Exchange");
-
+				//Call to Card Exchange View
 				dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
-
 
 				return message;
 			}	
@@ -315,42 +344,59 @@ public class AggressivePlayer implements Strategy, Serializable{
 
 		PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
 		CardOperations.getInstance().setCardExchangeFlag(true);
-		
+
 		System.out.println();
 		GameDirector gameDirector = new GameDirector();
 		GameBuilder gameBuilder = new ConcreteGameBuilder();
 		gameDirector.setGameBuilder(gameBuilder);
 		gameDirector.buildGame();
 		gameDirector.saveGame("AutoSavedGame");
-		
-		//Call to Card Exchange View
+
+
 		//Triggering phase view observer
-		
 		dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 		dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 		dominationPhase.setCurrentAction("Starting Card Exchange");
-
+		//Call to Card Exchange View
 		dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 		dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
 
-		
 		return "";
 	}
 
 
-
+	/**
+	 * Method for allOutAttack.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * 
+	 * */
 	@Override
 	public void allOutAttack(String countrynamefrom, String countrynameto) {
 	}
-
+	/**
+	 * Method for attackMove.
+	 * @param num number of army.
+	 * 
+	 * */
 	@Override
 	public void attackMove(int num) {
 	}
-
+	/**
+	 * Method for defendCountry.
+	 * @param numdice number of dice.
+	 * 
+	 * */
 	@Override
 	public void defendCountry(int numdice) {
 	}
 
+	/**
+	 * Method for getCountryWithMaxArmies.
+	 * @param PlayerModel PlayerModel Class.
+	 * @return CountryModel 
+	 * 
+	 * */
 	private CountryModel getCountryWithMaxArmies(PlayerModel playerModel) {
 		CountryModel countryModel = playerModel.getPlayerCountryList().get(0);
 		int noOfArmies = countryModel.getNoOfArmiesCountry();
@@ -363,6 +409,12 @@ public class AggressivePlayer implements Strategy, Serializable{
 		return countryModel;
 	}
 
+	/**
+	 * Method for checkNeighboursContainCount.
+	 * @param CountryModel CountryModel Class.
+	 * @return Integer Count of the Neighbors 
+	 * 
+	 * */
 	public int checkNeighboursContainCount(CountryModel attackCountry) {
 		PlayerModel tempPlayerModelAttackCountry = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
 		int count=0;

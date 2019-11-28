@@ -1,8 +1,14 @@
+
 package com.thedomination.controllerTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
+
+
+import com.thedomination.controllerTest.PlayerOperationTest;
+
+
 
 /**
  * controllerTestSuite main test suite for controllerTestSuite.

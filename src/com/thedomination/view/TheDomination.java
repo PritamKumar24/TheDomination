@@ -3,7 +3,6 @@ package com.thedomination.view;
 import java.util.Scanner;
 import com.thedomination.controller.MapOperations;
 import com.thedomination.controller.PlayerOperations;
-import com.thedomination.controller.SaveMapFile;
 import com.thedomination.utilities.ReadInputCommand;
 
 /**
@@ -16,8 +15,9 @@ import com.thedomination.utilities.ReadInputCommand;
 public class TheDomination {
 
 	/**
-	 * The Main method calls the commandReader method. 
+	 * The main method that calls commandReader.
 	 * 
+	 * @param args command line arguments.
 	 */
 	public static void main(String args[]) {
 		System.out.println("Welcome to Domination GAME!!!");

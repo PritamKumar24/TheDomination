@@ -3,6 +3,7 @@
  */
 package com.thedomination.view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +20,12 @@ import com.thedomination.model.WorldDominationObservable;
  * @author Manpreet Singh
  * @version 2.0
  */
-public class WorldDominationView implements WorldDominationObserver {
+public class WorldDominationView implements WorldDominationObserver, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The percent map contr. */
 	private String percentMapContr;
@@ -46,7 +52,7 @@ public class WorldDominationView implements WorldDominationObserver {
 	}
 
 	/**
-	 * printing phase view.
+	 * printing phase view prints Player's Name ,percentage of map controlled by player, The continents controlled by player, The total number of armies owned by player .
 	 */
 	private void showPhaseView() {
 		System.out.println();
@@ -60,17 +66,21 @@ public class WorldDominationView implements WorldDominationObserver {
 		System.out.println("*************************************************************");
 	}
 
+	/**
+	 * The update method sets the  playerName,percentMapContr,continentsContr,armiesOwned.
+	 * 
+	 * @param playerName name of player.
+	 * @param percentMapContr percentage of map controlled.
+	 *  @param continentsContr continents controlled.
+	 *  @param armiesOwned armies owned.
+	 */
 	@Override
 	public void update(String playerName, String percentMapContr, HashSet<String> continentsContr, int armiesOwned) {
 		        this.playerName = playerName;
 				this.percentMapContr = percentMapContr;
 				this.continentsContr = continentsContr;
 				this.armiesOwned = armiesOwned;
-
 				showPhaseView();
 		
 	}
-
-
-
 }

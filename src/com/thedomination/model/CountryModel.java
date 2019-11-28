@@ -1,5 +1,6 @@
 package com.thedomination.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,12 @@ import java.util.ArrayList;
  *
  * @author Pritam Kumar
  */
-public class CountryModel {
+public class CountryModel implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The country name. */
 	private String countryName;
@@ -28,15 +34,27 @@ public class CountryModel {
 	/**The list of Neighbours */
 	private ArrayList<Integer> listOfNewNeighbours;
 
+	/** The list of ConquestNeighbours */
+	private ArrayList<String> listOfNeighbours;
+
 	/**
 	 * ContryModel Constructor Create a new empty ArrayList.
 	 */
 	public CountryModel() {
 		
 		this.listOfNewNeighbours = new ArrayList<>();
+		this.listOfNeighbours = new ArrayList<>();
 	}
-	
-	/**   
+
+	public ArrayList<String> getListOfNeighbours() {
+		return listOfNeighbours;
+	}
+
+	public void setListOfNeighbours(ArrayList<String> listOfNeighbours) {
+		this.listOfNeighbours = listOfNeighbours;
+	}
+
+	/**
 	 * CountryModel Parameterized Constructor.
 	 *
 	 * @param countryName      Name of country
@@ -141,8 +159,21 @@ public class CountryModel {
 	
 		return this.listOfNewNeighbours.add(neighbourCountryPosition);
 	}
-	
-	
+
+	/**
+	 * addNeighbour Method Adds a new neighbour to a country countryModel a
+	 * CountryModel{@link CountryModel} object.
+	 *
+	 * @param countryName adds a neighbour country
+	 * @return isAdded
+	 */
+
+	public void ConquestaddNeighbour(String countryName) {
+
+		listOfNeighbours.add(countryName);
+
+	}
+
 	/**
 	 * deleteNeighbour method delete the Neighbour.
 	 * 
@@ -207,9 +238,15 @@ public class CountryModel {
 		return this.countryPosition == ((CountryModel) obj).getCountryPosition();
 	}
 
-	/**
-	 *toString Method to print the object in String form.
-	 *
-	 * @return CountryModel countryPosition countryName belongsTo noOfArmiesCountry listOfNewNeighbours.
-	 */
+
+	public String searchNeighboursCountry(String countryName) {
+		countryName = countryName.toLowerCase();
+		for (String country : listOfNeighbours) {
+			if (country.equalsIgnoreCase(countryName)) {
+				return country;
+			}
+		}
+		return null;
+	}
+	
 }

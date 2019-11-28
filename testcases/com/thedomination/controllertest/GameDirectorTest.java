@@ -27,8 +27,8 @@ import com.thedomination.controller.PlayerOperations;
 public class GameDirectorTest {
 
 
-	
-	
+
+
 	/**
 	 * Sets the up before class.
 	 * 
@@ -57,29 +57,29 @@ public class GameDirectorTest {
 	 *  Unit Test SaveGame used to check the saving of the Game
 	 * 
 	 */
-@Test
-public void saveGameTest() {
-MapOperations.getInstance().loadMap("Asia.map");
+	@Test
+	public void saveGameTest() {
+		MapOperations.getInstance().loadMap("Asia.map");
 
-GameDirector gameDirector = new GameDirector();
-GameBuilder gameBuilder = new ConcreteGameBuilder();
-gameDirector.setGameBuilder(gameBuilder);
-assertNotNull(gameDirector.saveGame("new12"));
+		GameDirector gameDirector = new GameDirector();
+		GameBuilder gameBuilder = new ConcreteGameBuilder();
+		gameDirector.setGameBuilder(gameBuilder);
+		assertNotNull(gameDirector.saveGame("new12"));
 
-}
+	}
 
-/**
- *  Unit Test to LoadGame  used to check the loading  of the Game
- * 
- */
-@Test
-public void loadGameTest() {
-//LoadGameFile loadGame = new LoadGameFile();
-GameDirector gameDirector = new GameDirector();
-GameBuilder gameBuilder = new ConcreteGameBuilder();
-gameDirector.setGameBuilder(gameBuilder);
-String File = gameDirector.loadGameModel("");
-assertNotNull(File);
-}
+	/**
+	 *  Unit Test to LoadGame  used to check the loading  of the Game
+	 * 
+	 */
+	@Test
+	public void loadGameTest() {
+		//LoadGameFile loadGame = new LoadGameFile();
+		GameDirector gameDirector = new GameDirector();
+		GameBuilder gameBuilder = new ConcreteGameBuilder();
+		gameDirector.setGameBuilder(gameBuilder);
+		String File = gameDirector.loadGameModel("");
+		assertNotNull(File);
+	}
 
 }

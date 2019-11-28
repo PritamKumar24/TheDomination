@@ -12,19 +12,34 @@ import com.thedomination.view.DominationCardView;
 import com.thedomination.view.DominationPhaseView;
 import com.thedomination.view.WorldDominationView;
 
+/**
+ *The HumanPlayer Class.
+ * implements Strategy and Serailizable Class,
+ * Initializes ReinforcementPhase Attack Phase and Fortification Phase.
+ *
+ * @author Ankur Singla
+ */
 public class HumanPlayer implements Strategy, Serializable{
 
+	/** Generated Serilaized Id */
+	private static final long serialVersionUID = 1L;
+	/** DominationPhase Object */
+	private DominationPhase dominationPhase;
+	/** WorldDomination Object */
+	private WorldDomination worldDomination;
+	/** WorldDominationView Object */
+	private WorldDominationView worldDominationView;
+	/** DominationPhaseView Object */
+	private DominationPhaseView dominationPhaseView;
+	/** DominationCards Object */
+	private DominationCards dominationCard;
+	/** DominationCardView Object */
+	private DominationCardView dominationCardView;
+
 	/**
+	 * Constructor for HumanPlayer class.
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-
-	private DominationPhase dominationPhase;
-	private WorldDomination worldDomination;
-	private WorldDominationView worldDominationView;
-	private DominationPhaseView dominationPhaseView;
-	private DominationCards dominationCard;
-	private DominationCardView dominationCardView;
 
 	public HumanPlayer() {
 		
@@ -36,7 +51,14 @@ public class HumanPlayer implements Strategy, Serializable{
 		dominationCardView = new DominationCardView(dominationCard);
 
 	}
-	
+
+	/**
+	 * Method for reinforcementPhase.
+	 * 
+	 * @param countryName name of the new country.
+	 * @param num         number of Player.
+	 * @return Desired Message
+	 */
 	@Override
 	public String reinforcementPhase(String countryName, int num) {
 		String message="";
@@ -82,6 +104,15 @@ public class HumanPlayer implements Strategy, Serializable{
 		return message;
 	}
 
+	/**
+	 * Method for attackPhase.
+	 * 
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto   name of the country.
+	 * @param numdice         dice number
+	 * 
+	 */
+
 	public void attackPhase(String countrynamefrom, String countrynameto, int numdice) {
 
 		if (PlayerOperations.getInstance().attackFlag == false) {
@@ -101,8 +132,8 @@ public class HumanPlayer implements Strategy, Serializable{
 		}
 		else {
 			PlayerOperations.getInstance().defendFlag = false;
-			PlayerOperations.getInstance().moveArmyFlag = false;	
-			
+			PlayerOperations.getInstance().moveArmyFlag = false;
+				
 			PlayerOperations.getInstance().countrynamefrom = countrynamefrom;
 			PlayerOperations.getInstance().countrynameto = countrynameto;
 			
@@ -149,7 +180,6 @@ public class HumanPlayer implements Strategy, Serializable{
 					System.out.print(diceAttack[i] + " ");
 				}
 				System.out.println();
-
 				PlayerOperations.getInstance().setDiceAttackArray(PlayerOperations.getInstance().sortArray(diceAttack));
 				System.out.println("Player " + tempPlayerModelAttackCountry.getPlayerName() + " is ready to attack");
 				PlayerOperations.getInstance().defendFlag=true;
@@ -159,6 +189,13 @@ public class HumanPlayer implements Strategy, Serializable{
 
 	}
 
+	/**
+	 * Method for allOutAttack.
+	 * 
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto   name of the country.
+	 * 
+	 */
 	@Override
 	public void allOutAttack(String countrynamefrom, String countrynameto) {
 
@@ -168,6 +205,7 @@ public class HumanPlayer implements Strategy, Serializable{
 		else {
 			PlayerOperations.getInstance().defendFlag=false;
 			PlayerOperations.getInstance().moveArmyFlag = false;
+
 
 			PlayerOperations.getInstance().countrynamefrom = countrynamefrom;
 			PlayerOperations.getInstance().countrynameto = countrynameto;
@@ -214,6 +252,7 @@ public class HumanPlayer implements Strategy, Serializable{
 						System.out.print(diceAttack[i] + " ");
 					}
 					System.out.println();
+					//PlayerOperations.getInstance().setDiceAttackArray(PlayerOperations.getInstance().sortArray(diceAttack));
 					PlayerOperations.getInstance().setDiceAttackArray(PlayerOperations.getInstance().sortArray(diceAttack));
 					int diceDefend[]=new int[loopCountryTo.getNoOfArmiesCountry() > 2 ? 2 : loopCountryTo.getNoOfArmiesCountry()];
 					System.out.println("Defender dice roll");
@@ -222,6 +261,7 @@ public class HumanPlayer implements Strategy, Serializable{
 						System.out.print(diceDefend[i] + " ");
 					}
 					System.out.println();
+
 					PlayerOperations.getInstance().setDiceDefendArray(PlayerOperations.getInstance().sortArray(diceDefend));
 					
 					for(int i = 0;i<(PlayerOperations.getInstance().getDiceDefendArray().length > PlayerOperations.getInstance().getDiceAttackArray().length ? PlayerOperations.getInstance().getDiceAttackArray().length : PlayerOperations.getInstance().getDiceDefendArray().length);i++) {
@@ -248,7 +288,6 @@ public class HumanPlayer implements Strategy, Serializable{
 						System.out.println("Attacker has won " + countrynameto);
 						
 						System.out.println("Now move armies from " + loopCountryFrom.getCountryName() + " to " + loopCountryTo.getCountryName());
-
 					}
 					else if(loopCountryFrom.getNoOfArmiesCountry() == 1){
 						PlayerOperations.getInstance().attackFlag = true;
@@ -377,7 +416,7 @@ public class HumanPlayer implements Strategy, Serializable{
 						PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList().add(tempCard);
 					}
 					defender.setCardList(null);
-					//remove from game
+					
 					PlayerOperations.getInstance().setLostPlayers(defender.getPlayerName());
 					if(PlayerOperations.getInstance().getPlayerCounter() > PlayerOperations.getInstance().getPlayersList().indexOf(defender)+1) {
 						PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() -1);
@@ -401,7 +440,15 @@ public class HumanPlayer implements Strategy, Serializable{
 			System.out.println("Illegal move");
 		}
 	}
-	
+
+	/**
+	 * Method for FortificationPhase.
+	 * 
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto   name of the country.
+	 * @param numdice         dice number
+	 * 
+	 */
 	@Override
 	public String fortificationPhase(String fromCountry,String toCountry, String num) {
 		String message="";
@@ -412,9 +459,10 @@ public class HumanPlayer implements Strategy, Serializable{
 				
 				PlayerOperations.getInstance().fortifyArmyFlag = false;
 				PlayerOperations.getInstance().reinforceArmyFlag = false;
-
 				CardOperations.getInstance().setCardExchangeFlag(true);
-						
+
+				
+				
 				//Triggering Reinforcement phase
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
@@ -423,7 +471,7 @@ public class HumanPlayer implements Strategy, Serializable{
 				// Triggering Card exchange view 
 				dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
-				
+							
 				return message;
 			}
 
@@ -450,8 +498,6 @@ public class HumanPlayer implements Strategy, Serializable{
 				//reinforceFlag = false;
 				CardOperations.getInstance().setCardExchangeFlag(true);
 				
-
-
 				//Call to Card Exchange View
 				//Triggering phase view observer		
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);

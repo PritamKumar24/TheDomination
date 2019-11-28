@@ -30,10 +30,10 @@ public class GameDirector implements Serializable{
 	 * The constant serialVersionUID for serialization.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The gameBuilder */
 	private GameBuilder gameBuilder;
-	
+
 	/**
 	 * setGameBuilder setter method to set Game Builder.
 	 * 
@@ -52,7 +52,7 @@ public class GameDirector implements Serializable{
 		gameBuilder.buildPlayerOperations();
 		//gameBuilder.reStartGame(gameBuilder);
 	}
-	
+
 	/**
 	 * The getGameBuilder getter method to get gameBuilder.
 	 * 
@@ -61,8 +61,8 @@ public class GameDirector implements Serializable{
 	public GameBuilder getGameBuilder() {
 		return gameBuilder;
 	}
-	
-	
+
+
 	/**
 	 * The saveGame method to save game.
 	 * 
@@ -98,85 +98,74 @@ public class GameDirector implements Serializable{
 		}
 		return isGameSaved;
 	}
-	
+
 	/**
 	 * The loadGameModel to load the game.
 	 * 
 	 * @param inputFile file to be loaded.
 	 * @return GameBuilder.
 	 */
-	public GameBuilder loadGameModel(String inputFile) {
+	public String loadGameModel(String inputFile) {
+		String message = "";
 		ConcreteGameBuilder concreteGameBuilder = null;
 		ObjectInputStream input = null;
 
-	
+
 		try {
 			if (inputFile.trim().isEmpty()) {
-				System.out.println("File name invalid");
+				message= "Invalid File Name";
+				return message;
 			} else {
 
 				input = new ObjectInputStream(
 						new FileInputStream(System.getProperty("user.dir") + "/save/" + inputFile));
-				
+
 				concreteGameBuilder = (ConcreteGameBuilder) input.readObject();
-				
+
 				MapOperations mapOperations = concreteGameBuilder.getMapOperations();
 				PlayerOperations playerOperations = concreteGameBuilder.getPlayerOperations();
 				CardOperations cardOperations = concreteGameBuilder.getCardOperations();
-//		
-//				MapOperations.setMapOperationInstance(mapOperations);
-//				PlayerOperations.setPlayerOperationInstance(playerOperations);
-//				CardOperations.setCardOperationInstance(cardOperations);
-//				
 
-				
-//				//get the data
+				//get the data
 				ArrayList<CountryModel> countries = mapOperations.getCountryList();
 				ArrayList<ContinentModel> countinents = mapOperations.getContinentsList();
 				ArrayList<ArrayList<String>> listOfConnectedNodes = mapOperations.getListOfConnectedNodes();
 				ArrayList<PlayerModel> players = playerOperations.getPlayersList();
 				ArrayList<String> lostPlayers = playerOperations.getLostPlayers();
 				ArrayList<CardsModel> cardDeck = cardOperations.getCardDeck();
-			
-//				//set the data
+
+				//set the data
 				MapOperations.getInstance().setCountryList(countries);
 				MapOperations.getInstance().setContinentsList(countinents);
-				MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);
-								
+				MapOperations.getInstance().setListOfConnectedNodes(listOfConnectedNodes);					
 				PlayerOperations.getInstance().setPlayerModelList(players);
 				PlayerOperations.getInstance().setLostPlayersList(lostPlayers);
 				PlayerOperations.getInstance().setPlayerCounter(playerOperations.getPlayerCounter());
 				PlayerModel currentPlayer = playerOperations.getInstance().currentPlayer(playerOperations.getPlayerCounter());
-							
+
 				CardOperations.getInstance().setCardDeck(cardDeck);
 				CardOperations.getInstance().setCardCounter(cardOperations.getCardCounter());
-				
-//				//All flags
+
+				//All flags
 				CardOperations.getInstance().setCardExchangeFlag(cardOperations.cardExchangeFlag);
 				PlayerOperations.getInstance().setReinforceFlag(playerOperations.reinforceArmyFlag);
 				PlayerOperations.getInstance().setReinforceArmyFlag(playerOperations.reinforceArmyFlag);
 				PlayerOperations.getInstance().setAttackFlag(playerOperations.attackFlag);
 				PlayerOperations.getInstance().setFortifyArmyFlag(playerOperations.fortifyArmyFlag);
-
-					
 				PlayerOperations.getInstance().setReinforceArmyFlag(playerOperations.reinforceArmyFlag);
 				PlayerOperations.getInstance().setAttackFlag(playerOperations.attackFlag);
 				PlayerOperations.getInstance().setFortifyArmyFlag(playerOperations.fortifyArmyFlag);
-				
+
 				System.out.println("File has been loaded");
-				
+
 				gameBuilder.reStartGame((ConcreteGameBuilder) concreteGameBuilder);
 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				input.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return gameBuilder;
+		} 
+
+		//return gameBuilder;
+		return "";
 	}
 }

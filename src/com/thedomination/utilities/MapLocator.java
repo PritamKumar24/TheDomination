@@ -9,13 +9,12 @@ import com.thedomination.controller.MapOperations;
  * @version 1.0.0
  */
 public class MapLocator {
+	
 	/**
 	 * mapLocation method to fetch the map from given loaction.
 	 *
 	 * @param mapName name of the map ile.
 	 */
-	//public static boolean conquestmap = false;
-
 	public static void mapLocation(String mapName) {
 
 		MapReader mapReader = new MapReader();

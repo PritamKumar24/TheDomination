@@ -15,18 +15,34 @@ import com.thedomination.controller.PlayerOperations;
 import com.thedomination.view.DominationCardView;
 import com.thedomination.view.DominationPhaseView;
 import com.thedomination.view.WorldDominationView;
-
+/**
+ *The BenevolentPlayer Class.
+ * implements Strategy and Serailizable Class,
+ * Initializes ReinforcementPhase Attack Phase and Fortification Phase.
+ *
+ * @author Pritam Kumar
+ */
 public class BenevolentPlayer implements Strategy, Serializable{
 
+	/** Generated Serilaized Id */
 	private static final long serialVersionUID = 1L;
-
+	/** DominationPhase  Object*/
 	private DominationPhase dominationPhase;
+	/** WorldDomination  Object*/
 	private WorldDomination worldDomination;
+	/** WorldDominationView  Object*/
 	private WorldDominationView worldDominationView;
+	/** DominationPhaseView  Object*/
 	private DominationPhaseView dominationPhaseView;
+	/** DominationCards  Object*/
 	private DominationCards dominationCard;
+	/** DominationCardView  Object*/
 	private DominationCardView dominationCardView;
 
+	/**
+	 * Constructor for BenevolentPlayer class.
+	 * 
+	 */
 	public BenevolentPlayer() {
 		dominationPhase=new DominationPhase();
 		worldDomination=new WorldDomination();
@@ -35,7 +51,12 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		dominationCard = new DominationCards();
 		dominationCardView = new DominationCardView(dominationCard);
 	}
-
+	/**
+	 * Method for reinforcementPhase.
+	 * @param countryName name of the new country.
+	 * @param num number of Player.
+	 * @return Desired Message
+	 * 	 */
 	@Override
 	public String reinforcementPhase(String countryName, int num) {
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
@@ -69,6 +90,14 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		return "";
 	}
 
+	/**
+	 * Method for attackPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * 
+	 **/
 	@Override
 	public void attackPhase(String countrynamefrom, String countrynameto, int numdice) {
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
@@ -83,6 +112,13 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		dominationPhase.setCurrentAction("Starting Fortify");
 	}
 
+	/**
+	 * Method for FortificationPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * */
 	@Override
 	public String fortificationPhase(String fromCountry, String toCountry, String num) {
 
@@ -106,12 +142,12 @@ public class BenevolentPlayer implements Strategy, Serializable{
 			gameDirector.buildGame();
 			gameDirector.saveGame("AutoSavedGame");
 
-			//Call to Card Exchange View
+
 			//Triggering phase view observer		
 			dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 			dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 			dominationPhase.setCurrentAction("Starting Card Exchange");
-
+			//Call to Card Exchange View
 			dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 			dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
 
@@ -138,12 +174,11 @@ public class BenevolentPlayer implements Strategy, Serializable{
 				gameDirector.buildGame();
 				gameDirector.saveGame("AutoSavedGame");
 
-
-				//Call to Card Exchange View
 				//Triggering phase view observer		
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationPhase.setCurrentAction("Starting Card Exchange");
+				//Call to Card Exchange View
 				dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
 
@@ -175,12 +210,12 @@ public class BenevolentPlayer implements Strategy, Serializable{
 					gameDirector.buildGame();
 					gameDirector.saveGame("AutoSavedGame");
 
-					//Call to Card Exchange View
+
 					//Triggering phase view observer		
 					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 					dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 					dominationPhase.setCurrentAction("Starting Card Exchange");
-
+					//Call to Card Exchange View
 					dominationCard.setPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 					dominationCard.setListCards(CardOperations.getInstance().cardStrings(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getCardList()));
 
@@ -214,18 +249,38 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		return "";
 	}
 
+	/**
+	 * Method for allOutAttack.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * 
+	 * */
 	@Override
 	public void allOutAttack(String countrynamefrom, String countrynameto) {
 	}
 
+	/**
+	 * method to attack
+	 * @param num of armies
+	 */
 	@Override
 	public void attackMove(int num) {
 	}
 
+	/**
+	 * method to defend
+	 * @param num of dice
+	 */
 	@Override
 	public void defendCountry(int numdice) {
 	}
 
+
+	/**
+	 * get the countries with minimum army
+	 * @param playerModel
+	 * @return
+	 */
 	private CountryModel getCountryWithMinArmies(PlayerModel playerModel) {
 		CountryModel countryModel = playerModel.getPlayerCountryList().get(0);
 		int noOfArmies = countryModel.getNoOfArmiesCountry();
@@ -238,15 +293,24 @@ public class BenevolentPlayer implements Strategy, Serializable{
 		return countryModel;
 	}
 
+	/**
+	 * Method to sort the countries based on armies	
+	 * @return sortedList of countries based on armies
+	 */
+
 	public List<CountryModel> sortCountries() {
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
 		List<CountryModel> sortedList = new ArrayList<CountryModel>(currentPlayer.getPlayerCountryList());
 		Collections.sort(sortedList, new SortCountriesWithArmies());
 		return sortedList;
 	}
-	
 }
 
+/**
+ * sorts the countries according to armies
+ * @author Manpreet Singh
+ *
+ */
 class SortCountriesWithArmies implements Comparator<CountryModel>{
 	@Override
 	public int compare(CountryModel firstCountry, CountryModel secondCountry) {

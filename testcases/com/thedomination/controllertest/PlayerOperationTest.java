@@ -65,7 +65,7 @@ public class PlayerOperationTest {
 	 */
 	@Before
 	public void beforeTest() throws Exception {
-		playerOperations = new PlayerOperations();
+		playerOperations = PlayerOperations.getInstance();
 		ArrayList<PlayerModel> playerModelArrayList = new ArrayList<PlayerModel>();
 		ArrayList<CountryModel> countryModelArrayList = new ArrayList<CountryModel>();
 		CountryModel countryModel = new CountryModel(1, "India");

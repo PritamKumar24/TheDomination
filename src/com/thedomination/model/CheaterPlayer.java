@@ -27,7 +27,6 @@ public class CheaterPlayer implements Strategy, Serializable {
 	/**
 	 * /** Generated Serialized Id
 	 */
-
 	private static final long serialVersionUID = 1L;
 	/** DominationPhase Object */
 	private DominationPhase dominationPhase;
@@ -68,6 +67,7 @@ public class CheaterPlayer implements Strategy, Serializable {
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
 
 		//exchange cards
+		//CardOperations.getInstance().setCardExchangeFlag(false);
 		System.out.println(CardOperations.getInstance().selfCardExchange(currentPlayer.getCardList()));
 
 	
@@ -166,6 +166,7 @@ public class CheaterPlayer implements Strategy, Serializable {
 		System.out.println();
 		List<CountryModel> attackingCountryList = new ArrayList<CountryModel>(currentPlayer.getPlayerCountryList());
 
+
 		for(int i =0; i<attackingCountryList.size(); i++) {
 			CountryModel attackingCountry = attackingCountryList.get(i);
 			for(Integer neighbourPosition: attackingCountry.getListOfNewNeighbours()) {
@@ -211,7 +212,7 @@ public class CheaterPlayer implements Strategy, Serializable {
 								currentPlayer.getCardList().add(tempCard);
 							}
 							defender.setCardList(null);
-							//remove from game
+	
 							PlayerOperations.getInstance().setLostPlayers(defender.getPlayerName());
 							if(PlayerOperations.getInstance().getPlayerCounter() > PlayerOperations.getInstance().getPlayersList().indexOf(defender)+1) {
 								PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() -1);
@@ -242,6 +243,7 @@ public class CheaterPlayer implements Strategy, Serializable {
 				dominationPhase.setCurrentGamePhase(DominationPhaseType.FORTIFY);
 				dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 				dominationPhase.setCurrentAction("Starting Fortify");
+
 	}
 
 	/**

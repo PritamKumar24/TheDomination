@@ -3,6 +3,7 @@
  */
 package com.thedomination.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,8 +22,13 @@ import com.thedomination.view.WorldDominationObserver;
  * @author Manpreet Singh
  * @version 2.0
  */
-public class WorldDomination implements WorldDominationObservable {
+public class WorldDomination implements WorldDominationObservable, Serializable {
 	
+	/**
+	 * generated serial id
+	 */
+	private static final long serialVersionUID = 1L;
+	/** The player Name. */
 	private String playerName;
 
 	/** The percent map contr. */
@@ -30,13 +36,21 @@ public class WorldDomination implements WorldDominationObservable {
 
 	/** The continents contr. */
 	private HashSet<String> continentsContr;
-
+	/**
+	 * Gets the ContinentControlled.
+	 *
+	 *
+	 */
 	public HashSet<String> getContinentsContr() {
 		return continentsContr;
 	}
 
 
-
+	/**
+	 * Sets the ContinentControlled.
+	 *@param  HashSetof continentsContr
+	 *
+	 */
 	public void setContinentsContr(HashSet<String> continentsContr) {
 		this.continentsContr = continentsContr;
 	}
@@ -54,8 +68,12 @@ public class WorldDomination implements WorldDominationObservable {
 		dominationObservers = new ArrayList<WorldDominationObserver>();
 		continentsContr =new HashSet<String>();
 	}
-	
-	
+
+	/**
+	 * Sets the SetPlayerName.
+	 *
+	 * @param listOfContinent the continentsContr to set
+	 */
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
@@ -89,21 +107,31 @@ public class WorldDomination implements WorldDominationObservable {
 		this.armiesOwned = armiesOwned;
 	}
 
+	/**
+	 * Sets the addObserver .
+	 *
+	 * @param WorldDominationObserver
+	 */
 
 	@Override
 	public void addObserver(WorldDominationObserver observer) {
 		dominationObservers.add(observer);
 
 	}
-
+	/**
+	 * Removes  the removeObserver .
+	 *
+	 * @param WorldDominationObserver
+	 */
 	@Override
 	public void removeObserver(WorldDominationObserver observer) {
 		dominationObservers.remove(observer);
 
 	}
-
-	/* (non-Javadoc)
-	 * @see com.thedomination.model.DominationDominationObservable#notifyAllObservers()
+	/**
+	 * Notify all Observers .
+	 *
+	 *
 	 */
 	@Override
 	public void notifyAllObservers() {

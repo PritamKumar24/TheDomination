@@ -44,11 +44,15 @@ import com.thedomination.view.DominationPhaseView;
  */
 public class PlayerOperations implements Serializable{
 
+	/**
+	 * The constant  serialVersionUID value for serialization.
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/** The playerModelList ArrayList of PlayerModel type */
 	private ArrayList<PlayerModel> playerModelList;
 
+	/** The ArrayList of lostPlayers */
 	private ArrayList<String> lostPlayers;
 
 	/**The attackFlag */
@@ -80,6 +84,7 @@ public class PlayerOperations implements Serializable{
 	/**The countrynamefrom */
 	public String countrynamefrom;
 
+	/** The dice for player's no of dices**/
 	public int[] diceAttackArray;
 
 	/**The diceDefendArray Array */
@@ -91,47 +96,87 @@ public class PlayerOperations implements Serializable{
 	/**Initializes the integer placeArmyCounter */
 	public  int placeArmyCounter =1;
 
-
 	/** The reInforceNoOfArmy */
 	private int reInforceNoOfArmy;
 
+	/** The Strategy Object */
 	private Strategy strategy;
 
+	/** The startup phase flag */
 	private static String startup_phaseFlag="false";
 
+	/** no of turns for tournament */
 	public int noOfTurns=1;
 
 	/**The attackCountryCounter */
 	private  int playerCounter = 1;
 
+	/** The variable a for number of armies */
 	private int a=0;
 
+	/** The gameBuilder's reference*/
 	private GameBuilder gameBuilder;
 
+	/** The gameDirector reference */
 	private GameDirector gameDirector;
 
+	/**
+	 * isStartup_phaseFlag returns the value of Startup phase Flag.
+	 * @return String
+	 */
 	public String isStartup_phaseFlag() {
 		return startup_phaseFlag;
 	}
+
+	/**
+	 * setStartup_phaseFlag setter method to set the Startup phase Flag.
+	 * @param startup_phaseFlag of String type.
+	 */
 	public void setStartup_phaseFlag(String startup_phaseFlag) {
 		PlayerOperations.startup_phaseFlag = startup_phaseFlag;
 	}
 
+	/**
+	 * getLostPlayers getter method to get the List of lost players.
+	 * 
+	 * @return ArrayList lostPlayers.
+	 */
 	public ArrayList<String> getLostPlayers() {
 		return lostPlayers;
 	}
 
+	/**
+	 * setLostPlayersList setter method to set the List of lost players.
+	 * 
+	 * @param ArrayList lostPlayers.
+	 */
 	public void setLostPlayersList(ArrayList<String> lostPlayers) {
 		this.lostPlayers = lostPlayers;
 	}
 
+	/**
+	 * setLostPlayers setter method to set single Lost player.
+	 * @param player String foe player's name
+	 */
 	public void setLostPlayers(String player) {
 		this.lostPlayers.add(player);
 	}
 
+
+	/**
+	 * getPlayerCounter getter method to get the counter value of player.
+	 * 
+	 * @return integer value.
+	 */
 	public int getPlayerCounter() {
 		return playerCounter;
 	}
+
+	/**
+	 * setPlayerCounter setter method to set the counter value of player.
+	 * 
+	 * @param integer value.
+	 */
 	public void setPlayerCounter(int playerCounter) {
 		this.playerCounter = playerCounter;
 	}
@@ -172,29 +217,58 @@ public class PlayerOperations implements Serializable{
 		this.diceDefendArray = diceDefendArray;
 	}
 
+	/**
+	 * isReinforceArmyFlag checks flag value of reinforce flag.
+	 * @return boolean
+	 */
 	public boolean isReinforceArmyFlag() {
 		return reinforceArmyFlag;
 	}
 
+	/**
+	 * setReinforceArmyFlag setter method to set the ReinforceArmyFlag.
+	 * 
+	 * @param reinforceArmyFlag boolean
+	 */
 	public void setReinforceArmyFlag(boolean reinforceArmyFlag) {
 		this.reinforceArmyFlag = reinforceArmyFlag;
 	}
 
+	/**
+	 * setAttackFlag setter method to set the ArmyFlag
+	 * @param attackFlag boolean
+	 */
 	public void setAttackFlag(boolean attackFlag) {
 		this.attackFlag = attackFlag;
 	}
 
+	/**
+	 * setDefendFlag setter method to set the DefendFlag
+	 * 
+	 * @param defendFlag boolean.
+	 */
 	public void setDefendFlag(boolean defendFlag) {
 		this.defendFlag = defendFlag;
 	}
 
+	/**
+	 * setFortifyArmyFlag setter method to set the fortifyArmyFlag
+	 * 
+	 * @param fortifyArmyFlag boolean.
+	 */
 	public void setFortifyArmyFlag(boolean fortifyArmyFlag) {
 		this.fortifyArmyFlag = fortifyArmyFlag;
 	}
 
+	/**
+	 * setMoveArmyFlag setter method to set the moveArmyFlag
+	 * 
+	 * @param moveArmyFlag boolean.
+	 */
 	public void setMoveArmyFlag(boolean moveArmyFlag) {
 		this.moveArmyFlag = moveArmyFlag;
 	}
+
 	/**
 	 * getPlayersList to get list of players.
 	 * @return playerModelList players list.
@@ -207,6 +281,7 @@ public class PlayerOperations implements Serializable{
 	public void setPlayerModelList(ArrayList<PlayerModel> playerModelList) {
 		this.playerModelList = playerModelList;
 	}
+
 	/**
 	 * getArmiesToAssign Method Getter Function to get armies to assign
 	 *
@@ -224,6 +299,12 @@ public class PlayerOperations implements Serializable{
 	public void setArmiesToAssign(int armiesToAssign) {
 		this.armiesToAssign = armiesToAssign;
 	}
+
+	/**
+	 * setReinforceFlag setter method to set the reinforceFlag flag
+	 * 
+	 * @param reinforceFlag boolean 
+	 */
 
 	public void setReinforceFlag(boolean reinforceFlag) {
 		this.reinforceFlag = reinforceFlag;
@@ -254,15 +335,22 @@ public class PlayerOperations implements Serializable{
 		this.reInforceNoOfArmy = reInforceNoOfArmy;
 	}
 
+	/** The dominationPhase */
 	private DominationPhase dominationPhase;
+	/** The worldDomination */
 	private WorldDomination worldDomination;
+	/** The worldDominationView */
 	private WorldDominationView worldDominationView;
+	/** The dominationPhaseView */
 	private DominationPhaseView dominationPhaseView;
+	/** The dominationCard */
 	private DominationCards dominationCard;
+	/** The dominationCardView */
 	private DominationCardView dominationCardView;
 
 	/** The object for the player operation */
 	private static PlayerOperations playerOperationInstance;
+
 	/**
 	 * Constructor for the PlayerOperation class.
 	 * 
@@ -290,11 +378,14 @@ public class PlayerOperations implements Serializable{
 
 	}
 
+	/**
+	 * playerWorldDomination method for domination view.
+	 */
 	public void playerWorldDomination() {
 		for(PlayerModel tempPlayer: PlayerOperations.getInstance().getPlayersList()) {
 			HashSet<String> listOfContinent = new HashSet<String>();
 			if(MapOperations.getInstance().continentConquered(tempPlayer)!=null) {
-				listOfContinent.add(MapOperations.getInstance().continentConquered(tempPlayer).getContinentName());
+				listOfContinent.addAll(MapOperations.getInstance().continentConquered(tempPlayer));
 			}
 			worldDomination.setContinentsContr(listOfContinent);
 			worldDomination.setPlayerName(tempPlayer.getPlayerName());
@@ -304,16 +395,18 @@ public class PlayerOperations implements Serializable{
 
 	}
 
+	/**
+	 * playerWorldDominationpopulate method for domination view.
+	 */
 	public void playerWorldDominationpopulate() {
 		for(PlayerModel tempPlayer: PlayerOperations.getInstance().getPlayersList()) {
 			HashSet<String> listOfContinent = new HashSet<String>();
-			if(MapOperations.getInstance().continentConquered(tempPlayer)!=null) {
-				listOfContinent.add(MapOperations.getInstance().continentConquered(tempPlayer).getContinentName());
+			if(MapOperations.getInstance().continentConquered(tempPlayer).size()>0) {
+				listOfContinent.addAll(MapOperations.getInstance().continentConquered(tempPlayer));
 			}
 			worldDomination.setContinentsContr(listOfContinent);
 			worldDomination.setPlayerName(tempPlayer.getPlayerName());
 			for(int i=0;i<getPlayersList().size();i++) {
-
 
 				worldDomination.setArmiesOwned(getPlayersList().get(i).getnoOfArmyInPlayer());
 			}		
@@ -321,11 +414,14 @@ public class PlayerOperations implements Serializable{
 		}
 	}
 
+	/**
+	 * playerWorldDominationplaceArmy method for domination view.
+	 */
 	public void playerWorldDominationplaceArmy() {
 		for(PlayerModel tempPlayer: PlayerOperations.getInstance().getPlayersList()) {
 			HashSet<String> listOfContinent = new HashSet<String>();
-			if(MapOperations.getInstance().continentConquered(tempPlayer)!=null) {
-				listOfContinent.add(MapOperations.getInstance().continentConquered(tempPlayer).getContinentName());
+			if(MapOperations.getInstance().continentConquered(tempPlayer).size()>0) {
+				listOfContinent.addAll(MapOperations.getInstance().continentConquered(tempPlayer));
 			}
 			worldDomination.setContinentsContr(listOfContinent);
 			worldDomination.setPlayerName(tempPlayer.getPlayerName());
@@ -333,10 +429,15 @@ public class PlayerOperations implements Serializable{
 			worldDomination.setPercentMapContr(tempPlayer.getPlayerCountryList().size() * 100.0/MapOperations.getInstance().getCountryList().size());
 		}
 	}
+
+	/**
+	 * playerWorldDominationStateChange method for domination view.
+	 * @param player for which to show world domination view
+	 */
 	public void playerWorldDominationStateChange(PlayerModel player) {
 		HashSet<String> listOfContinent = new HashSet<String>();
-		if(MapOperations.getInstance().continentConquered(player)!=null) {
-			listOfContinent.add(MapOperations.getInstance().continentConquered(player).getContinentName());
+		if(MapOperations.getInstance().continentConquered(player).size()>0) {
+			listOfContinent.addAll(MapOperations.getInstance().continentConquered(player));
 		}
 		worldDomination.setContinentsContr(listOfContinent);
 		worldDomination.setPlayerName(player.getPlayerName());
@@ -359,7 +460,12 @@ public class PlayerOperations implements Serializable{
 		}
 		return PlayerOperations.getInstance().getPlayersList().get(counter-1);
 	}
-	
+
+	/**
+	 * getPlayerStrategy getter method to get the Strategy .
+	 * @param strategy String value.
+	 * @return object of Strategy class.
+	 */
 	public Strategy getPlayerStrategy(String strategy) {
 		if (strategy.equalsIgnoreCase("Human"))
 			return new HumanPlayer();	
@@ -517,12 +623,12 @@ public class PlayerOperations implements Serializable{
 
 
 				if(PlayerOperations.getInstance().getPlayersList().get(PlayerOperations.getInstance().getPlayersList().size()-1).getnoOfArmyInPlayer() == 0 ) {
-					
+
 					playerWorldDomination();
-					
+
 					placeArmyFlag=false;
 					CardOperations.getInstance().setCardExchangeFlag(true);
-					
+
 					//Triggering Reinforcement phase View
 					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 					dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(playerCounter).getPlayerName());
@@ -654,7 +760,7 @@ public class PlayerOperations implements Serializable{
 	 */
 
 	public String reInforce(String countryName, int num) {
-		
+
 		PlayerModel currentPlayer = currentPlayer(playerCounter);
 		strategy = currentPlayer.getStrategy();
 		System.out.println(strategy.reinforcementPhase(countryName, num));
@@ -687,7 +793,7 @@ public class PlayerOperations implements Serializable{
 		strategy.allOutAttack(countrynamefrom, countrynameto);
 
 	}
-	
+
 	/**
 	 * fortifyCountry implementation of a valid fortification move from one country to another.
 	 * 
@@ -703,7 +809,7 @@ public class PlayerOperations implements Serializable{
 
 		return "";
 	}
-	
+
 
 	/**
 	 * attackMove method to make a moving attack.
@@ -777,15 +883,15 @@ public class PlayerOperations implements Serializable{
 		return array;
 	}
 
+	/**
+	 * gameEngine method to start the game whenever strategy is loaded.
+	 */
 	public void gameEngine() {
 
 		while(lostPlayers.size()!=playerModelList.size()-1 || playerModelList.size()!=1) {
 			PlayerModel currentPlayer = currentPlayer(playerCounter);
 			Strategy strategy = currentPlayer.getStrategy();
 			if(strategy instanceof HumanPlayer) {
-				//System.out.println("Human Player "+ currentPlayer.getPlayerName());
-				//CardOperations.getInstance().setCardExchangeFlag(true);
-				//ReadInputCommand readCommand = new ReadInputCommand();
 				ReadInputCommand.commandReader();
 			}
 			else {
@@ -794,11 +900,14 @@ public class PlayerOperations implements Serializable{
 				PlayerOperations.getInstance().fortifyCountry("", "", "");
 
 			}
-			//PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
 		}
 		System.exit(0);	
 	}
-	
+
+	/**
+	 * tournamentGameEngine method for the tournament mode.
+	 * 
+	 */
 	public void tournamentGameEngine () {
 		while(playerModelList.size()!=1 && PlayerOperations.getInstance().noOfTurns<TournamentController.getInstance().getNoOfTurns()) {			
 			PlayerModel currentPlayer = currentPlayer(playerCounter);
@@ -823,7 +932,6 @@ public class PlayerOperations implements Serializable{
 				PlayerOperations.getInstance().fortifyCountry("", "", "");
 
 			}
-			//PlayerOperations.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter() +1);
 		}
 		TournamentController.getInstance().winner="DRAW";
 		return;
@@ -836,10 +944,12 @@ public class PlayerOperations implements Serializable{
 		int pickedNumber;
 		Random number = new Random();
 		pickedNumber = number.nextInt(6);
-		//System.out.println("Roll Dice Value: " + pickedNumber);
 		return pickedNumber + 1;
 	}
 
+	/**
+	 * clear method to clear the values.
+	 */
 	public void clear() {
 		this.playerModelList.clear();
 		this.armiesToAssign = 0;
@@ -855,6 +965,12 @@ public class PlayerOperations implements Serializable{
 		this.lostPlayers.clear();;
 
 	}
+
+	/**
+	 * setPlayerOperationInstance sets the object of PlayerOperations class.
+	 * 
+	 * @param playerOperationInstance object of PlayerOperations type.
+	 */
 	public static void setPlayerOperationInstance(PlayerOperations playerOperationInstance) {
 		PlayerOperations.playerOperationInstance = playerOperationInstance;
 	}

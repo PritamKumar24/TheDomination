@@ -16,14 +16,25 @@ import com.thedomination.controller.TournamentController;
 public class RandomPlayer implements Strategy, Serializable {
 
 
+	/** Generated Serilaized Id */
 	private static final long serialVersionUID = 1L;
-
+	/** DominationPhase  Object*/
 	private DominationPhase dominationPhase;
+	/** WorldDomination  Object*/
 	private WorldDomination worldDomination;
+	/** WorldDominationView  Object*/
 	private WorldDominationView worldDominationView;
+	/** DominationPhaseView  Object*/
 	private DominationPhaseView dominationPhaseView;
+	/** DominationCards  Object*/
 	private DominationCards dominationCard;
+	/** DominationCardView  Object*/
 	private DominationCardView dominationCardView;
+	
+	/**
+	 * Constructor for RandomPlayer class.
+	 * 
+	 */
 
 	public RandomPlayer() {
 		dominationPhase=new DominationPhase();
@@ -34,6 +45,12 @@ public class RandomPlayer implements Strategy, Serializable {
 		dominationCardView = new DominationCardView(dominationCard);
 	}
 
+	/**
+	 * Method for reinforcementPhase.
+	 * @param countryName name of the new country.
+	 * @param num number of Player.
+	 * @return Desired Message
+	 * 	 */
 	@Override
 	public String reinforcementPhase(String countryName, int num) {
 
@@ -72,6 +89,13 @@ public class RandomPlayer implements Strategy, Serializable {
 	}
 
 
+	/**
+	 * Method for attackPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * */
 	@Override
 	public void attackPhase(String countrynamefrom, String countrynameto, int numdice) {
 
@@ -194,7 +218,38 @@ public class RandomPlayer implements Strategy, Serializable {
 		dominationPhase.setCurrentAction("Starting Fortify");
 	}
 	
-		@Override
+	/**
+	 * Method for allOutAttack.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * 
+	 * */
+	@Override
+	public void allOutAttack(String countrynamefrom, String countrynameto) {
+	}
+	/**
+	 * attackMove method to make a moving attack.
+	 * @param num number of attacking armies.
+	 */
+	@Override
+	public void attackMove(int num) {
+	}
+
+	/**
+	 * method to defend
+	 * @param num of dice
+	 */
+	@Override
+	public void defendCountry(int numdice) {
+	}
+	/**
+	 * Method for FortificationPhase.
+	 * @param countrynamefrom name of the country.
+	 * @param countrynameto name of the country.
+	 * @param numdice dice number
+	 * 
+	 * */
+	@Override
 	public String fortificationPhase(String fromCountry, String toCountry, String num) {
 
 		String message ="";
@@ -231,7 +286,6 @@ public class RandomPlayer implements Strategy, Serializable {
 
 			return message;
 		}
-		
 
 		for(int i=0; i<currentPlayer.getPlayerCountryList().size(); i++) {
 			CountryModel tempCountry = currentPlayer.getPlayerCountryList().get(i);
@@ -308,21 +362,11 @@ public class RandomPlayer implements Strategy, Serializable {
 		return message;
 	}
 
-	
-	@Override
-	public void allOutAttack(String countrynamefrom, String countrynameto) {
-	}
-
-	@Override
-	public void attackMove(int num) {
-	}
-
-	@Override
-	public void defendCountry(int numdice) {
-	}
-
-
-
+	/**
+	 * check oif neighbour exist for the country
+	 * @param country
+	 * @return countryModel
+	 */
 	public CountryModel isNeighbourExists(CountryModel country) {
 
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());

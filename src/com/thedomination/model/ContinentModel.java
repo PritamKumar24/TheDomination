@@ -1,5 +1,6 @@
 package com.thedomination.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.thedomination.model.CountryModel;
@@ -9,7 +10,13 @@ import com.thedomination.model.CountryModel;
  *
  * @author Ankur Singla
  */
-public class ContinentModel {
+public class ContinentModel implements Serializable{
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The continent Position. */
 	private int continentPosition;

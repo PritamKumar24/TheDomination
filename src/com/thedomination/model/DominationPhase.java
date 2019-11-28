@@ -1,6 +1,7 @@
 package com.thedomination.model;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,12 @@ import com.thedomination.view.DominationPhaseObserver;
  * @author Manpreet Singh
  * @version 1.0
  */
-public class DominationPhase implements DominationPhaseObservable {
+public class DominationPhase implements DominationPhaseObservable, Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** The current game phase. */
 	private DominationPhaseType currentGamePhase;
@@ -71,20 +77,27 @@ public class DominationPhase implements DominationPhaseObservable {
 		notifyAllObservers();
 	}
 
-
+/**
+ * adding the observer
+ */
 	@Override
 	public void addObserver(DominationPhaseObserver observer) {
 		dominationPhaseObservers.add(observer);
 		
 	}
 	
-
+/**
+ * removing the observer
+ */
 	@Override
 	public void removeObserver(DominationPhaseObserver observer) {
 		dominationPhaseObservers.remove(observer);
 		
 	}
 
+	/**
+	 * notifying all observer
+	 */
 	@Override
 	public void notifyAllObservers() {
 		for (DominationPhaseObserver dominationPhaseObserver : dominationPhaseObservers) {

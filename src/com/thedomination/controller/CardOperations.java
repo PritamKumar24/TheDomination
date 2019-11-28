@@ -29,7 +29,7 @@ import com.thedomination.view.DominationPhaseView;
 public class CardOperations implements Serializable{
 
 	/**
-	 * 
+	 * The constant serialVersionUID for serialixation.
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -45,10 +45,10 @@ public class CardOperations implements Serializable{
 	/**The cardCounter */
 	private int cardCounter;
 
+	/**The cardExchangeFlag */
 	public boolean cardExchangeFlag = false;
 
-	//private HumanPlayer humanPlayer;
-
+	/** The object of CardOperations */
 	private static CardOperations cardOperationInstance;
 
 	/**
@@ -63,16 +63,22 @@ public class CardOperations implements Serializable{
 		return CardOperations.cardOperationInstance;
 	}
 
+	/** The dominationPhase */
 	DominationPhase dominationPhase;
 
+	/** The worldDomination */
 	WorldDomination worldDomination;
 
+	/** The worldDominationView */
 	WorldDominationView worldDominationView;
 
+	/** The dominationPhaseView */
 	DominationPhaseView dominationPhaseView;
 
+	/** The dominationCards */
 	DominationCards dominationCards;
 
+	/** The dominationCardView */
 	DominationCardView dominationCardView;
 	/**
 	 * CardOperations constructor of cardOperations class.
@@ -80,7 +86,6 @@ public class CardOperations implements Serializable{
 	private CardOperations() {
 		randomCard = new Random();
 		cardDeck = new ArrayList<CardsModel>();
-		//humanPlayer = new HumanPlayer();
 		cardCreation();
 
 		dominationPhase=new DominationPhase();
@@ -113,14 +118,10 @@ public class CardOperations implements Serializable{
 	 * @return object of the cardsModel the random card generated.
 	 */
 	public CardsModel generateRandomCard() {
-		//if (cardDeck.size() > 0) {
+		
 		int index = randomCard.nextInt(cardDeck.size());
 		CardsModel randomCard = cardDeck.get(index);
-		//System.out.println(newCard);
 		return randomCard;
-		//		} 
-		//		else
-		//			return null;
 	}
 
 	/**
@@ -135,7 +136,6 @@ public class CardOperations implements Serializable{
 			if(cardDeck.size()>0 ) {
 				CardsModel randomCard = generateRandomCard();
 				player.addCard(randomCard);
-				//remove from the deck code
 				cardDeck.remove(randomCard);
 			}
 
@@ -162,11 +162,6 @@ public class CardOperations implements Serializable{
 				else {
 					System.out.println("Player choose not to exchange cards");
 
-					//PlayerOperations.getInstance().setReinforceArmyFlag(true);
-					//PlayerOperations.getInstance().setReinforceFlag(true);
-
-					//HumanPlayer humanPlayer = (HumanPlayer) currentPlayer.getStrategy();
-
 					//Flags
 					cardNoOfArmy=0;
 					cardExchangeFlag = false;
@@ -178,20 +173,6 @@ public class CardOperations implements Serializable{
 					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 					dominationPhase.setCurrentPlayerName(currentPlayer.getPlayerName());
 					dominationPhase.setCurrentAction("Starting Reinforcement");
-
-//
-//					//Setting the Game Model
-//					System.out.println();
-//					System.out.println("Would you like to save the Game? If Yes, please use the appropriate command");
-//					GameModel.getInstance().setGamePhaseStage(1);
-//					GameModel.getInstance().setCurrentPlayer(currentPlayer);
-//					GameModel.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter());
-//					GameModel.getInstance().setCardCounter(cardCounter);
-//					GameModel.getInstance().setCardDeck(cardDeck);
-//					GameModel.getInstance().reinforceArmyFlag = true;
-//					GameModel.getInstance().reinforceFlag = true;
-//					GameModel.getInstance().cardExchangeFlag = false;
-
 					return message;
 				}
 			}
@@ -228,7 +209,7 @@ public class CardOperations implements Serializable{
 				message = "Cards entered should be all identical or all different, TRY AGAIN!!";
 				return message;
 			}
-			//Before moving to reinforcement phase again check if the current player's card list size is more than 5 or not
+			
 			if(currentPlayer.getCardList().size()>=5) {
 				message="Number of cards is 5 or more, You must exchange your cards";
 				return message;
@@ -241,16 +222,18 @@ public class CardOperations implements Serializable{
 		return message;
 	}
 
+	/**
+	 *  selfCardExchange method to exchange the cards.
+	 *  
+	 * @param cardList List of cards.
+	 * @return String message.
+	 */
 	public String selfCardExchange(ArrayList<CardsModel> cardList) {
 		PlayerModel currentPlayer = PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter());
 
 		String message = "";
-		//List<String> stringList = cardStrings(cardList);
-		//Collections.sort(stringList);
-		//System.out.println(cardList.toString());
-
 		if(cardList.size() > 3) {
-		//	System.out.println("Cards you have "+ CardOperations.getInstance().cardStrings(currentPlayer.getCardList()));
+	
 			Collections.sort(cardList, new SortCards());
 
 			for(int i=0 ; i<cardList.size()-2 ; i++) {
@@ -285,23 +268,11 @@ public class CardOperations implements Serializable{
 					dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 					dominationPhase.setCurrentPlayerName(currentPlayer.getPlayerName());
 					dominationPhase.setCurrentAction("Starting Reinforcement");
-//
-//					//Setting the Game Model, Write code for autosave
-//					System.out.println();
-//					GameModel.getInstance().setGamePhaseStage(1);
-//					GameModel.getInstance().setCurrentPlayer(currentPlayer);
-//					GameModel.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter());
-//					GameModel.getInstance().setCardCounter(cardCounter);
-//					GameModel.getInstance().setCardDeck(cardDeck);
-//					GameModel.getInstance().reinforceArmyFlag = true;
-//					GameModel.getInstance().reinforceFlag = true;
-//					GameModel.getInstance().cardExchangeFlag = false;
 					break;
 				}	
 			}	
 		}
 		else {
-			//System.out.println("Cards you have "+ CardOperations.getInstance().cardStrings(currentPlayer.getCardList()));
 			System.out.println(currentPlayer.getPlayerName()+" player doesn't have enough no of cards to exchange!! ");
 
 			cardNoOfArmy=0;
@@ -312,18 +283,6 @@ public class CardOperations implements Serializable{
 			dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 			dominationPhase.setCurrentPlayerName(currentPlayer.getPlayerName());
 			dominationPhase.setCurrentAction("Starting Reinforcement");
-
-			//Setting the Game Model, Write code for autosave
-//			System.out.println();
-//			GameModel.getInstance().setGamePhaseStage(1);
-//			GameModel.getInstance().setCurrentPlayer(currentPlayer);
-//			GameModel.getInstance().setPlayerCounter(PlayerOperations.getInstance().getPlayerCounter());
-//			GameModel.getInstance().setCardCounter(cardCounter);
-//			GameModel.getInstance().setCardDeck(cardDeck);
-//			GameModel.getInstance().reinforceArmyFlag = true;
-//			GameModel.getInstance().reinforceFlag = true;
-//			GameModel.getInstance().cardExchangeFlag=false;
-
 		}
 		return "";
 	}
@@ -431,6 +390,12 @@ public class CardOperations implements Serializable{
 	}
 
 
+	/**
+	 * deleteCard method to delete the cards.
+	 * 
+	 * @param type type of card to be deleted.
+	 * @return object of CardsModel.
+	 */
 	public CardsModel deleteCard(int type) {
 		CardsModel card = searchCard(type);
 		if (cardDeck.remove(card)) {
@@ -451,6 +416,12 @@ public class CardOperations implements Serializable{
 		cardDeck.add(thirdCard);
 	}
 
+	/**
+	 * cardStrings method adds object listCards and adds to the String model.
+	 * 
+	 * @param listCards
+	 * @return
+	 */
 	public List<String> cardStrings(List<CardsModel> listCards){
 
 		List<String> stringList = new ArrayList<>();
@@ -486,32 +457,65 @@ public class CardOperations implements Serializable{
 		return cardExchangeFlag;
 	}
 
+	/**
+	 * setCardExchangeFlag setter method to set the Card Exchange Flag.
+	 * 
+	 * @param cardExchangeFlag boolean either true or false.
+	 */
 	public void setCardExchangeFlag(boolean cardExchangeFlag) {
 		this.cardExchangeFlag = cardExchangeFlag;
 	}
 
+	/**
+	 * getCardDeck getter method to get the cards deck
+	 * 
+	 * @return ArrayList of cardModel type.
+	 */
 	public ArrayList<CardsModel> getCardDeck() {
 		return cardDeck;
 	}
 
+	/**
+	 * setCardDeck setter method to set the cards deck
+	 * 
+	 * @param cardDeck deck of cards to be set.
+	 */
 	public void setCardDeck(ArrayList<CardsModel> cardDeck) {
 		this.cardDeck = cardDeck;
 	}
 
+	/**
+	 * getCardCounter getter method to get the card counter.
+	 * 
+	 * @return int value.
+	 */
 	public int getCardCounter() {
 		return cardCounter;
 	}
 
+	/**
+	 * setCardCounter setter method to set the card counter.
+	 * 
+	 * @param cardCounter card counter value to be set.
+	 */
 	public void setCardCounter(int cardCounter) {
 		this.cardCounter = cardCounter;
 	}
 
+	/**
+	 * setCardOperationInstance sets the Object of CardOperations class.
+	 * 
+	 * @param cardOperationInstance of CardOperations type.
+	 */
 	public static void setCardOperationInstance(CardOperations cardOperationInstance) {
 		CardOperations.cardOperationInstance = cardOperationInstance;
 	}
 
 	
-
+/**
+ * The clear method clears the values.
+ * 
+ */
 	public void clear() {
 		this.cardCounter=0;
 		this.cardDeck.clear();
@@ -521,7 +525,12 @@ public class CardOperations implements Serializable{
 
 }
 
-
+/**
+ * The SortCards class to sort cards and implements Comparator.
+ * 
+ * @author Pritam Kumar
+ *
+ */
 class SortCards implements Comparator<CardsModel>{
 	@Override
 	public int compare(CardsModel firstCard, CardsModel secondCard) {

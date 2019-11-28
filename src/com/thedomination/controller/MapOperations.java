@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -31,6 +32,9 @@ import com.thedomination.utilities.MapReader;
 public class MapOperations implements Serializable {
 
 
+	/**
+	 * The constant  serialVersionUID value for serialization.
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**The object for MapReader Class */
@@ -44,7 +48,8 @@ public class MapOperations implements Serializable {
 
 	/**The ArrayList of  ConnectedNodes.*/
 	private ArrayList<ArrayList<String> > listOfConnectedNodes;
-	
+
+	/** The conquestMap flag */
 	public boolean conquestMap = false;
 
 	/**
@@ -181,8 +186,12 @@ public class MapOperations implements Serializable {
 		this.errorMsg = errorMsg;
 	}
 
-	
-	
+
+	/**
+	 * setMapOperationInstance setter method to set the object of MapOperations.
+	 * 
+	 * @param mapOperationInstance object of MapOperations.
+	 */
 	public static void setMapOperationInstance(MapOperations mapOperationInstance) {
 		MapOperations.mapOperationInstance = mapOperationInstance;
 	}
@@ -627,24 +636,30 @@ public class MapOperations implements Serializable {
 
 	}
 
+	/**
+	 * searchContinentbyCountry method to search continent using country name.
+	 * 
+	 * @param countryName name of country whose continent is to be searched.
+	 * @return object of ContinentModel.
+	 */
 	public ContinentModel searchContinentbyCountry(String countryName) {
-
 		for (ContinentModel loopContinent : getContinentsList()) {
-
-
-
 			if (loopContinent.searchCountry(countryName) != null) {
-
-				//return loopContinent.getContinentName();
 				return loopContinent;
 			}
-
-
 		}
 		return null;
 	}
+	/**
+	 * continentConquered method check whether the all countries of particular
+	 * continent has been conquered or not
+	 * 
+	 * @param tempPlayerModel is the player 
+	 * @return object of ContinentModel.
+	 */
 	
-	public ContinentModel continentConquered(PlayerModel tempPlayerModel) {
+	public  HashSet<String> continentConquered(PlayerModel tempPlayerModel) {
+		HashSet<String> listOfContinent = new HashSet<String>();
 		for(ContinentModel tempContinentModel : MapOperations.getInstance().getContinentsList()) {
 			if(tempContinentModel.getCountriesList().size()>0 ) {
 				List<CountryModel> tempCountryModelList = new ArrayList<>(tempContinentModel.getCountriesList());
@@ -656,35 +671,26 @@ public class MapOperations implements Serializable {
 						iterator.remove();
 					}
 				}
-
-				//This condition means this player owns all the countries of that particular continent
 				if(tempCountryModelList.size()==0) {
-					return tempContinentModel;
+					listOfContinent.add(tempContinentModel.getContinentName());
 				}
 			}
 
 		}
-		return null;
+		return listOfContinent;
 	}
 	
-//	public String returnContinentname() {
-//		for (ContinentModel loopContinent : getContinentsList()) {
-//			for(CountryModel country:loopContinent.getCountriesList() ) {
-//				if(PlayerOperations.getInstance().currentPlayer(counter))
-//			}
-//		}
-//		return String
-//	}
-
+	/**
+	 * searchContinentbyCountry method to search continent using country name.
+	 * 
+	 * @param countryName name of country whose continent is to be searched.
+	 * @return object of ContinentModel.
+	 */
 	public ContinentModel searchContinentWithCountryName(String countryName) {
-
 		for (ContinentModel loopContinent : getContinentsList()) {
-
 			if (loopContinent.searchCountry(countryName) != null) {
-
 				return loopContinent;
 			}
-
 		}
 		return null;
 	}
@@ -720,6 +726,9 @@ public class MapOperations implements Serializable {
 		}
 	}
 
+	/**
+	 * clear method to clear teh values.
+	 */
 	public void clear() {
 		this.continentsList.clear();
 		this.countryList.clear();

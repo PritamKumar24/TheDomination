@@ -34,7 +34,7 @@ public class ReadInputCommand {
 		}
 		else {
 			String[] inputCommand = readLine.split("\\s+");
-			//try {
+			try {
 				if((inputCommand[0]).equalsIgnoreCase("editcontinent")) {
 					for(int i=1;i<inputCommand.length;i++) {
 						if((inputCommand[i]).equalsIgnoreCase("-add")) {
@@ -238,9 +238,9 @@ public class ReadInputCommand {
 					}
 
 				}
-//			}catch(Exception e) {
-//				System.out.println("Invalid Command.");
-//			}
+			}catch(Exception e) {
+				System.out.println("Invalid Command.");
+			}
 		}
 
 		commandReader();

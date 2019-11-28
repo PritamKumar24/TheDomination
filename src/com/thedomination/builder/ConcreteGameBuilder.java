@@ -42,19 +42,19 @@ public class ConcreteGameBuilder implements GameBuilder, Serializable {
 
 	/** The dominationPhase */
 	private DominationPhase dominationPhase;
-	
+
 	/** The worldDomination */
 	private WorldDomination worldDomination;
-	
+
 	/** The worldDominationView */
 	private WorldDominationView worldDominationView;
-	
+
 	/** The dominationPhaseView */
 	private DominationPhaseView dominationPhaseView;
-	
+
 	/** The dominationCard */
 	private DominationCards dominationCard;
-	
+
 	/** The dominationCardView */
 	private DominationCardView dominationCardView;
 
@@ -111,13 +111,6 @@ public class ConcreteGameBuilder implements GameBuilder, Serializable {
 			return message;
 		}
 
-		// if(this.playerOperations== true) {
-		// dominationPhase.setCurrentGamePhase(DominationPhaseType.STARTUP);
-		// dominationPhase.setCurrentPlayerName("All Players");
-		// dominationPhase.setCurrentAction("Startup Phase");
-		// PlayerOperations.getInstance().GameEngine();
-		// }
-
 		else if (gameBuilderConcrete.cardOperations.isCardExchangeFlag() == true) {
 			dominationPhase.setCurrentGamePhase(DominationPhaseType.REINFORCEMENT);
 			dominationPhase.setCurrentPlayerName(gameBuilderConcrete.playerOperations
@@ -127,8 +120,8 @@ public class ConcreteGameBuilder implements GameBuilder, Serializable {
 			dominationCard.setPlayerName(gameBuilderConcrete.playerOperations
 					.currentPlayer(gameBuilderConcrete.playerOperations.getPlayerCounter()).getPlayerName());
 			dominationCard
-					.setListCards(gameBuilderConcrete.cardOperations.cardStrings(gameBuilderConcrete.playerOperations
-							.currentPlayer(gameBuilderConcrete.playerOperations.getPlayerCounter()).getCardList()));
+			.setListCards(gameBuilderConcrete.cardOperations.cardStrings(gameBuilderConcrete.playerOperations
+					.currentPlayer(gameBuilderConcrete.playerOperations.getPlayerCounter()).getCardList()));
 			PlayerOperations.getInstance().gameEngine();
 		}
 
@@ -148,7 +141,6 @@ public class ConcreteGameBuilder implements GameBuilder, Serializable {
 
 		else if (gameBuilderConcrete.playerOperations.fortifyArmyFlag == true) {
 			dominationPhase.setCurrentGamePhase(DominationPhaseType.FORTIFY);
-			// dominationPhase.setCurrentPlayerName(PlayerOperations.getInstance().currentPlayer(PlayerOperations.getInstance().getPlayerCounter()).getPlayerName());
 			dominationPhase.setCurrentPlayerName(gameBuilderConcrete.playerOperations
 					.currentPlayer(gameBuilderConcrete.playerOperations.getPlayerCounter()).getPlayerName());
 			dominationPhase.setCurrentAction("Starting Fortify");
@@ -158,7 +150,7 @@ public class ConcreteGameBuilder implements GameBuilder, Serializable {
 		return "";
 	}
 
-	
+
 	/**
 	 * getPlayerOperations getter method to get PlayerOperations.
 	 * 

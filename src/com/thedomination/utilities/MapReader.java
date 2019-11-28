@@ -20,11 +20,9 @@ import com.thedomination.model.CountryModel;
 public class MapReader {
 
 	/**The continentModels ArrayList */
-
 	ArrayList<ContinentModel> continentModels = new ArrayList<>();
 
 	/**The countryModels ArrayList */
-
 	ArrayList<CountryModel> countryModels = new ArrayList<>();
 
 	/**
